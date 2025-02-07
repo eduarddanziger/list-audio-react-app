@@ -1,13 +1,23 @@
 import React from 'react';
-import AudioDeviceList from './components/AudioDeviceListComp.tsx';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import NavBar from './components/NavBar';
 import './App.css';
 
 const App: React.FC = () => {
     return (
-        <div className="App">
-            <h1>Audio Device Manager</h1>
-            <AudioDeviceList />
-        </div>
+        <Router>
+            <div className="App">
+                <NavBar />
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                </Routes>
+            </div>
+        </Router>
     );
 };
 
