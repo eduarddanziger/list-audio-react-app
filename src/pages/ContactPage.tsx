@@ -1,12 +1,17 @@
 // src/pages/ContactPage.tsx
 import React from 'react';
+import { Container, Typography } from '@mui/material';
 
 const ContactPage: React.FC = () => {
     return (
-        <div>
-            <h1>Contact Us</h1>
-            <p>This is the contact page.</p>
-        </div>
+        <Container>
+            <Typography variant="h4" component="h1" gutterBottom>
+                Contact Us
+            </Typography>
+            <Typography variant="body1">
+                This is the contact page.
+            </Typography>
+        </Container>
     );
 };
 

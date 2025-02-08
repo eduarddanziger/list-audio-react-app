@@ -1,12 +1,17 @@
 // src/pages/AboutPage.tsx
 import React from 'react';
+import { Container, Typography } from '@mui/material';
 
 const AboutPage: React.FC = () => {
     return (
-        <div>
-            <h1>About Us</h1>
-            <p>This is the about page.</p>
-        </div>
+        <Container>
+            <Typography variant="h4" component="h1" gutterBottom>
+                About Us
+            </Typography>
+            <Typography variant="body1">
+                This is the about page.
+            </Typography>
+        </Container>
     );
 };
 
