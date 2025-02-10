@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+	 <script>
+		const segmentCount = 1; // Adjust this based on your app's URL structure
+		const path = window.location.pathname.split('/').slice(0, segmentCount + 1).join('/');
+		window.location.href = path;
+	  </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
