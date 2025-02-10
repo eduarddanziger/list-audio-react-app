@@ -1,11 +1,23 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import NavBar from './components/NavBar';
-import './App.css';
 
+function App() {
+    return (
+        <BrowserRouter basename="/list-audio-react-app">
+            <NavBar />
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
+
+/*
 const App: React.FC = () => {
     return (
         <Router>
@@ -20,5 +32,6 @@ const App: React.FC = () => {
         </Router>
     );
 };
+*/
 
 export default App;
