@@ -15,10 +15,17 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore the entire .idea folder
+.idea/*
+
+# Except for these specific files
+!.idea/codeStyles/
+!.idea/runConfigurations/
+!.idea/inspectionProfiles/
