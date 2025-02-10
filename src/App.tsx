@@ -7,7 +7,7 @@ import NavBar from './components/NavBar';
 
 function App() {
     return (
-        <Router>
+        <Router basename="/list-audio-react-app">
             <NavBar />
             <Routes>
                 <Route path="/" element={<HomePage />} />
