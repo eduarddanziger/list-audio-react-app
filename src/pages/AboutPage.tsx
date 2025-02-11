@@ -1,18 +1,25 @@
 // src/pages/AboutPage.tsx
-import React from 'react';
-import { Container, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 
-const AboutPage: React.FC = () => {
+const AboutPage = () => {
+    const [version, setVersion] = useState('');
+
+    useEffect(() => {
+        fetch('/list-audio-react-app/version.json')
+            .then((response) => response.json())
+            .then((data) => setVersion(data.version))
+            .catch(() => {
+                console.log(`Exception!`);
+                setVersion('Unknown')});
+    }, []);
+
     return (
-        <Container>
-            <Typography variant="h4" component="h1" gutterBottom>
-                About Us
-            </Typography>
-            <Typography variant="body1">
-                This is the about page.
-            </Typography>
-        </Container>
+        <div>
+            <h1>About App</h1>
+            <p>Version: {version}</p>
+            <p>Developer: Eduard Danziger</p>
+            <p>Description: Lists audio devices</p>
+        </div>
     );
 };
-
 export default AboutPage;
