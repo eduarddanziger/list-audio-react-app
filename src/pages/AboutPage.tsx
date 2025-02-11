@@ -15,7 +15,7 @@ const AboutPage = () => {
 
     return (
         <div>
-            <h1>About</h1>
+            <h1>About App</h1>
             <p>Version: {version}</p>
             <p>Developer: Eduard Danziger</p>
             <p>Description: Lists audio devices</p>
