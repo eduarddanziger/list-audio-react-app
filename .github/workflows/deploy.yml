@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   pull_request:
-    types: [merged]
+    types: [closed]
     branches:
       - master
 
@@ -11,13 +11,14 @@ permissions:
 
 jobs:
   build-and-deploy:
-    if: github.ref == 'refs/pull/master'
+    if: github.event.pull_request.merged == true  # Only run if the PR was merged
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          ref: master  # Explicitly check out the master branch
           fetch-depth: 0  # Fetch all history and tags
 
       - name: Set up Node.js
