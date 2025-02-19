@@ -18,7 +18,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: master  # Explicitly check out the master branch
           fetch-depth: 0  # Fetch all history and tags
 
       - name: Set up Node.js
