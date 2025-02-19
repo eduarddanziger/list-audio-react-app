@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   pull_request:
-    types: [closed]
+    types: [merged]
     branches:
       - master
 
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    if: github.event.pull_request.merged == true
+    if: github.ref == 'refs/pull/master'
     runs-on: ubuntu-latest
 
     steps:
