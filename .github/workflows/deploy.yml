@@ -1,10 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
-      - master
+      - master  # Trigger only when changes are pushed to master
 
 permissions:
   contents: write
