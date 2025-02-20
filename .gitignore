@@ -65,4 +65,5 @@ dist-ssr
 
 /public/version.json
 
-**/wwwroot/lib
+**/wwwroot/lib/*
+**/.vs/*
