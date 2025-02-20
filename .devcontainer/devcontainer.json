@@ -1,0 +1,24 @@
+{
+    "name": "React and ASP.NET Core Dev Container",
+    "image": "mcr.microsoft.com/devcontainers/universal:2-linux", // Basis-Image
+    "features": {
+      "ghcr.io/devcontainers/features/dotnet:1": {
+        "version": "6.0" // .NET 6.0 SDK installieren
+      },
+      "ghcr.io/devcontainers/features/node:1": {
+        "version": "16" // Node.js 16 installieren
+      }
+    },
+    "postCreateCommand": "npm install && dotnet restore", // Befehle nach der Erstellung ausführen
+    "forwardPorts": [3000, 5000], // Ports für React (3000) und ASP.NET Core (5000) freigeben
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-dotnettools.csharp", // C#-Erweiterung für .NET
+          "dbaeumer.vscode-eslint", // ESLint für React
+          "esbenp.prettier-vscode" // Prettier für Code-Formatierung
+        ]
+      }
+    },
+    "workspaceFolder": "/workspaces/list-audio-react-app" // Standard-Arbeitsverzeichnis
+  }
