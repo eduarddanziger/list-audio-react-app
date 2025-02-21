@@ -8,7 +8,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         corsPolicyBuilder =>
         {
-            corsPolicyBuilder.WithOrigins("http://localhost:3000") // Update with your React app's URL
+            corsPolicyBuilder.WithOrigins("http://localhost:5173") // Update with your React app's URL
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
