@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { AudioDeviceType } from '../types/AudioDeviceType.ts';
 
 const AudioDeviceListComp: React.FC = () => {
     // Mock-up audio device data
-    // @ts-expect-error - This is a mock-up data
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [devices, setDevices] = useState<AudioDeviceType[]>([
-        { pnpId: 'USB\\VID_1234&PID_5678', name: 'Speakers (High Definition Audio)', volume: 75 },
-        { pnpId: 'USB\\VID_8765&PID_4321', name: 'Microphone (USB Audio)', volume: 50 },
-    ]);
+//    const [devices, setDevices] = useState<AudioDeviceType[]>([
+//        { pnpId: 'USB\\VID_1234&PID_5678', name: 'Speakers (High Definition Audio)', volume: 75 },
+//        { pnpId: 'USB\\VID_8765&PID_4321', name: 'Microphone (USB Audio)', volume: 50 },
+//    ]);
+
+    const [devices, setDevices] = useState<AudioDeviceType[]>([]);
+
+    useEffect(() => {
+        fetch('https://localhost:5027/api/AudioDevices') // Update with your API URL
+            .then(response => response.json())
+            .then(data => setDevices(data))
+            .catch(error => console.error('Error fetching audio devices:', error));
+    }, []);
 
     // State to track the selected device
     const [selectedDevice, setSelectedDevice] = useState<AudioDeviceType | null>(null);
