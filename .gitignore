@@ -52,7 +52,6 @@ dist-ssr
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
 
 # Ignore the entire .idea folder
@@ -65,4 +64,5 @@ dist-ssr
 
 /public/version.json
 
-**/wwwroot/lib
+**/wwwroot/lib/*
+**/.vs/*
