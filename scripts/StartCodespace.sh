@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-CODESPACE_NAME="your-codespace-name"
-PAT="your_personal_access_token"
+CODESPACE_NAME="CodeSpaceMain"
+PAT="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"
 
 # Check Codespace status
 STATUS=$(curl -s -H "Authorization: token $PAT" \
