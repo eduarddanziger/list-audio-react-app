@@ -1,2 +1,5 @@
 #!/bin/bash
-dotnet run --project /workspaces/list-audio-react-app/DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http
+
+cd /workspaces/list-audio-react-app
+git pull
+dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http
