@@ -20,4 +20,6 @@ nvp run dev
 - Then open the browser and navigate to `https://localhost:3000/` to see the application running. Or debug it in your WebStorm or Visual Studio Code.
 ''
 
-- Or use the latest GitHub Page version: [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/) 
+- Or use the latest GitHub Page version: [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/)
+
+- In order to connect client to GitHub codespace, change URL in AudioDeviceListComp to https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/
