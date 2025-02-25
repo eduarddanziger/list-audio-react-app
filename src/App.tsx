@@ -3,8 +3,13 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import NavBar from './components/NavBar';
+import { useEffect } from 'react';
+import { startCodespace } from './startCodespace';
 
 function App() {
+    useEffect(() => {
+        startCodespace().then(r => console.log(r));
+    }, []);
     return (
         <Router basename="/list-audio-react-app">
             <NavBar />
