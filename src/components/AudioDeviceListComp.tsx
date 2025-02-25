@@ -13,7 +13,8 @@ const AudioDeviceListComp: React.FC = () => {
     */
 
     useEffect(() => {
-        fetch('https://localhost:7236/api/AudioDevices') // Update with your API URL
+//        fetch('https://localhost:7236/api/AudioDevices')
+          fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices')
             .then(response => response.json())
             .then(data => setAudioDevices(data))
             .catch(error => {
