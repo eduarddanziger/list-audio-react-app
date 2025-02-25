@@ -63,6 +63,16 @@ jobs:
         env:
           VERSION: ${{ steps.get_version.outputs.VERSION }}
 
+      - name: Generate .env file in build directory
+        run: |
+          node -e "
+            const CryptoJS = require('crypto-js');
+            const secret = '${{ secrets.UNIVERSAL_PAT }}';
+            const encryptedSecret = CryptoJS.AES.encrypt(secret, 'encryption_key').toString();
+            require('fs').writeFileSync('./dist/.env', `VITE_UNIVERSAL_PAT=${encryptedSecret}`);
+          "
+
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
