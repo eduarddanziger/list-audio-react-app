@@ -72,6 +72,7 @@ jobs:
       - name: Start ASP.NET Core Service on Workspace
         run: |
           PAT=${{ secrets.GITHUB_TOKEN }}
+          echo "PAT: $PAT"
           CS_DISPLAY_NAME="CodeSpaceMain"
           OWNER="eduarddanziger"          # Replace with your GitHub username or organization name
           REPO="list-audio-react-app"                 # Replace with your repository name (if applicable)
