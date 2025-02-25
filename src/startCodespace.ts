@@ -6,9 +6,7 @@ const CODESPACE_DISPLAY_NAME = 'CodeSpaceMain';
 
 export const startCodespace = async (): Promise<void> =>
 {
-
-//    const encryptedSecret = import.meta.env.VITE_UNIVERSAL_PAT;
-    const encryptedSecret = "U2FsdGVkX19TB6MCupX9nmBzTk2Cx0/8KRQMWmbLrdeul+hZlHqYx5CjVZJh4GzI";
+    const encryptedSecret = import.meta.env.VITE_UNIVERSAL_PAT;
     const bytes = CryptoJS.AES.decrypt(encryptedSecret, 'encryption_key');
     const universalPat = bytes.toString(CryptoJS.enc.Utf8);
 
