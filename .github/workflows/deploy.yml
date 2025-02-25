@@ -75,7 +75,7 @@ jobs:
             {
                 throw new Error('Encryption failed: Result is not a string');
             }
-            require('fs').writeFileSync('./dist/.env', `VITE_UNIVERSAL_PAT=${encryptedSecret}`);
+            require('fs').writeFileSync('./dist/.env', 'VITE_UNIVERSAL_PAT=${encryptedSecret}');
             console.log('.env file created successfully');
           "
 
