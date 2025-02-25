@@ -2,7 +2,7 @@
 
 cd /workspaces/list-audio-react-app
 git pull
-dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http
+dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http &
 
 # Wait for the service to start
 sleep 5
