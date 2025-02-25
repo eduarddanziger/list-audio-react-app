@@ -10,6 +10,7 @@
       }
     },
     "postCreateCommand": "npm install && dotnet restore && dotnet tool install -g Microsoft.Web.LibraryManager.Cli",
+    "postStartCommand": "/workspaces/list-audio-react-app/scripts/start-service.sh",
     "forwardPorts": [3000, 5000], // Ports für React (3000) und ASP.NET Core (5000) freigeben
     "customizations": {
       "vscode": {
