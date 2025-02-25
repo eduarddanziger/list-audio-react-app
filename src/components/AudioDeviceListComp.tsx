@@ -13,7 +13,7 @@ const AudioDeviceListComp: React.FC = () => {
     */
 
     useEffect(() => {
-        const UNIVERSAL_PAT = import.meta.env.UNIVERSAL_PAT;
+        const UNIVERSAL_PAT = import.meta.env.VITE_UNIVERSAL_PA;
 
         fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices', {
             headers: {
