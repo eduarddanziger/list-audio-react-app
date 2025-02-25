@@ -66,3 +66,4 @@ dist-ssr
 
 **/wwwroot/lib/*
 **/.vs/*
+**/nohup.out
