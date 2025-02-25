@@ -10,14 +10,14 @@
       }
     },
     "postCreateCommand": "npm install && dotnet restore && dotnet tool install -g Microsoft.Web.LibraryManager.Cli",
-    "postStartCommand": "dotnet run --project /workspaces/list-audio-react-app/DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http",
+    "postStartCommand": "/workspaces/list-audio-react-app/scripts/start-service.sh",
     "portsAttributes": {
     "5027": {
-      "label": "ASP.NET Core Server, 5027",
+      "label": "ASP.NET Core Server",
       "onAutoForward": "openPreview",
       "requireLocalPort": false,
       "protocol": "http",
-      "visibility": "public" // Make the port public
+      "visibility": "public"
       }
     },
     "forwardPorts": [3000, 5000, 5027], // Ports für React (3000) und ASP.NET Core (5000) freigeben
