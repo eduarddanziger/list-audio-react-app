@@ -63,10 +63,6 @@ jobs:
         env:
           VERSION: ${{ steps.get_version.outputs.VERSION }}
 
-      - name: Generate .env file in build directory
-        run: |
-          echo "VITE_UNIVERSAL_PAT=${{ secrets.UNIVERSAL_PAT }}" > ./dist/.env
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
