@@ -7,7 +7,6 @@ nohup dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --
 
 # Wait for the service to start
 until $(curl --output /dev/null --silent --head --fail http://localhost:5027); do
-  printf '.'
   sleep 1
 done
 
