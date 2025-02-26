@@ -13,13 +13,7 @@ const AudioDeviceListComp: React.FC = () => {
     */
 
     useEffect(() => {
-        const UNIVERSAL_PAT = import.meta.env.VITE_UNIVERSAL_PA;
-
-        fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices', {
-            headers: {
-                'Authorization': `Bearer ${UNIVERSAL_PAT}`
-            }
-        })
+        fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices')
             .then(response => response.json())
             .then(data => setAudioDevices(data))
             .catch(error => {
