@@ -16,6 +16,7 @@ export const startCodespace = async (): Promise<void> => {
         const encryptedSecretFromEnv = import.meta.env.VITE_UNIVERSAL_PAT;
         console.log('Encrypted secret read out of .env:', encryptedSecretFromEnv);
         // = import.meta.env.VITE_UNIVERSAL_PAT;
+        console.log('All environment variables:', import.meta.env);
 
         const bytes = CryptoJS.AES.decrypt(encryptedSecret, '32-characters-long-secure-key-12');
         const universalPat = bytes.toString(CryptoJS.enc.Utf8);
