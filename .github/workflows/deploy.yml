@@ -68,10 +68,17 @@ jobs:
           node -e "
             const CryptoJS = require('crypto-js');
             const secret = '${{ secrets.UNIVERSAL_PAT }}';
-            const encryptedSecret = CryptoJS.AES.encrypt(secret, 'encryption_key').toString();
-            require('fs').writeFileSync('./dist/.env', `VITE_UNIVERSAL_PAT=${encryptedSecret}`);
+            const encryptionKey = '32-characters-long-secure-key-12';
+            if (!secret) {
+               throw new Error('Secret is empty or undefined');
+            }
+            const encryptedSecret = CryptoJS.AES.encrypt(secret, encryptionKey).toString();
+            if (typeof encryptedSecret !== 'string') {
+                throw new Error('Encryption failed: Result is not a string');
+            }
+            require('fs').writeFileSync('./dist/.env', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
+            console.log('.env file created successfully');
           "
-
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
