@@ -12,6 +12,7 @@ interface Codespace {
 export const startCodespace = async (): Promise<void> => {
     try {
         const encryptedSecret = 'U2FsdGVkX1/8XI4M3CWEaF5601nNeWedhnDAy4d+p2JaZDyeRxCGQ42XaTCNC8VSMcbXHjH20zIhxu9AQ3R0xQ==';
+        // = import.meta.env.VITE_UNIVERSAL_PAT;
         const bytes = CryptoJS.AES.decrypt(encryptedSecret, '32-characters-long-secure-key-12');
         const universalPat = bytes.toString(CryptoJS.enc.Utf8);
 
