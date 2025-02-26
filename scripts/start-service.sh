@@ -2,10 +2,8 @@
 
 cd /workspaces/list-audio-react-app
 git pull
-dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http &
 
-# Disown the process to detach it from the terminal
-disown
+nohup dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http &
 
 # Wait for the service to start
 until $(curl --output /dev/null --silent --head --fail http://localhost:5027); do
