@@ -1,51 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { AudioDevice } from '../types/AudioDevice.ts';
+import { AudioDevice } from '../types/AudioDevice';
+import { handleError } from '../utils/errorHandler';
+import AudioDeviceList from './AudioDeviceList';
+import AudioDeviceDetails from './AudioDeviceDetails';
+import { Box, CircularProgress, Alert } from '@mui/material';
 
 const AudioDeviceListComp: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
-
-    /*
-        const [audioDevices] = useState<AudioDevice[]>([
-            { pnpId: 'USB\\VID_1234&PID_5678', name: 'Speakers (High Definition Audio)', volume: 75 },
-            { pnpId: 'USB\\VID_8765&PID_4321', name: 'Microphone (USB Audio)', volume: 50 },
-        ]);
-    */
+    const [loading, setLoading] = useState<boolean>(false);
+    const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
 
     useEffect(() => {
-        fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices')
+        const isDevMode = process.env.NODE_ENV === 'development';
+        const apiUrl = isDevMode
+            ? 'http://localhost:5027/api/AudioDevices'
+            : 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
+
+        setLoading(true);
+        fetch(apiUrl)
             .then(response => response.json())
-            .then(data => setAudioDevices(data))
+            .then(data => {
+                setAudioDevices(data);
+                setSelectedDevice(data[0] || null); // Set the initial selection to the first element
+                setLoading(false);
+            })
             .catch(error => {
-                console.error('Error fetching audio devices:', error);
-                setError(`Error fetching audio devices: ${error.message}`);
+                handleError('Audio devices are not yet available. Try refreshing in 15 sec.', error, setError);
+                setLoading(false);
             });
     }, []);
 
-    const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
-
     return (
-        <div>
-            <h2>Audio Devices</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <ul>
-                {audioDevices.map((device) => (
-                    <li key={device.pnpId}>
-                        <button onClick={() => setSelectedDevice(device)}>
-                            {device.name}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-
-            {selectedDevice && (
-                <div>
-                    <h3>Selected Device: {selectedDevice.name}</h3>
-                    <p><strong>PnP ID:</strong> {selectedDevice.pnpId}</p>
-                    <p><strong>Volume:</strong> {selectedDevice.volume}%</p>
-                </div>
-            )}
-        </div>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
+            <Box sx={{ flex: 1 }}>
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    <>
+                        {error && <Alert severity="error">{error}</Alert>}
+                        <AudioDeviceList
+                            audioDevices={audioDevices}
+                            selectedDevice={selectedDevice}
+                            setSelectedDevice={setSelectedDevice}
+                        />
+                    </>
+                )}
+            </Box>
+            <Box sx={{ flex: 1 }}>
+                {selectedDevice && <AudioDeviceDetails device={selectedDevice} />}
+            </Box>
+        </Box>
     );
 };
 

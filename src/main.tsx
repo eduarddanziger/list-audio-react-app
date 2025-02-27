@@ -1,22 +1,25 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App'
+// filepath: /c:/Users/Rimma i Masha/DWP/list-audio-react-app/src/main.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from './i18n';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
-/*
+const Root = () => {
+    const { t } = useTranslation();
 
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
+    React.useEffect(() => {
+        document.title = t('title');
+    }, [t]);
 
-createRoot(document.getElementById("root")!).render(
-  <BrowserRouter basename="/list-audio-react-app">
-    <App />
-  </BrowserRouter>
+    return <App />;
+};
+
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container!);
+
+root.render(
+    <I18nextProvider i18n={i18n}>
+        <Root />
+    </I18nextProvider>
 );
-
-*/
