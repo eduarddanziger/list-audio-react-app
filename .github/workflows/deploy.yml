@@ -63,7 +63,7 @@ jobs:
         env:
           VERSION: ${{ steps.get_version.outputs.VERSION }}
 
-      - name: Generate .env file in build directory
+      - name: Generate .env.production file in build directory
         run: |
           node -e "
             const CryptoJS = require('crypto-js');
@@ -76,8 +76,8 @@ jobs:
             if (typeof encryptedSecret !== 'string') {
                 throw new Error('Encryption failed: Result is not a string');
             }
-            require('fs').writeFileSync('./dist/.env', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
-            console.log('.env file created successfully');
+            require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
+            console.log('.env.production file created successfully');
           "
 
       - name: Deploy to GitHub Pages
