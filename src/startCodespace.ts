@@ -43,15 +43,7 @@ export const startCodespace = async (): Promise<void> => {
         const startResponse
             = await axios.post(startUrl, {}, { headers });
         console.log('Codespace started successfully:', startResponse.data);
-
-        const patchUrl = `${GITHUB_API_URL}/user/codespaces/${codespace.name}/ports/5027/visibility`;
-        const patchResponse
-            = await axios.patch(patchUrl, {visibility: 'public'}, { headers: {
-                Authorization: `Bearer ${universalPat}`,
-                Accept: 'application/vnd.github.v3+json',
-            }, });
-        console.log('Codespace port patched successfully:', patchResponse.data);
     } catch (error) {
-        console.error('Error starting Codespace:', error);
+        console.error('Starting Codespace workflow error:', error);
     }
 };
