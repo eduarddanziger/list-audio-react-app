@@ -86,7 +86,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
 
-      - name: Start ASP.NET Core Service on Workspace
+      - name: Start and rebuild Codespace
         run: |
           PAT=${{ secrets.UNIVERSAL_PAT }}
           CS_DISPLAY_NAME="CodeSpaceMain"
@@ -106,11 +106,14 @@ jobs:
               echo "No codespaces found."
               exit 1
           fi
-          echo ".. Got codespaces. Try getting codespace name on display name..."
+          echo "...Got codespaces. Try getting codespace name on display name..."
           CS_NAME=$(echo "$RESPONSE" | jq -r --arg NAME "$CS_DISPLAY_NAME" '.codespaces[] | select(.display_name == $NAME) | .name')
-          echo ".. Got codespaces name: $CS_NAME. Try rebuilding codespace..."
-          START_URL="$GITHUB_API_URL/user/codespaces/$CS_NAME/rebuild"
-          curl -X POST "${HEADERS[@]}" "$START_URL"
+          echo "...Got codespaces name: $CS_NAME. Try starting codespace..."
+          CS_URL="$GITHUB_API_URL/user/codespaces/$CS_NAME/start"
+          curl -X POST "${HEADERS[@]}" "$CS_URL"
+          echo "...Codespaces started: $CS_NAME. Try rebuilding codespace..."
+          CS_URL="$GITHUB_API_URL/user/codespaces/$CS_NAME/rebuild"
+          curl -X POST "${HEADERS[@]}" "$CS_URL"
           echo "...Codespace rebuilded"
 
       - name: Create Release
