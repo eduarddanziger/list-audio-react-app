@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd /workspaces/list-audio-react-app
-git pull
+gh codespace ports visibility 5027:public -c "$CODESPACE_NAME"
 
 dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http
