@@ -13,7 +13,12 @@ const AudioDeviceListComp: React.FC = () => {
     */
 
     useEffect(() => {
-        fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices')
+        const isDevMode = process.env.NODE_ENV === 'development';
+        const apiUrl = isDevMode
+                ? 'http://localhost:5027/api/AudioDevices'
+                : 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
+
+            fetch(apiUrl)
             .then(response => response.json())
             .then(data => setAudioDevices(data))
             .catch(error => {

@@ -8,8 +8,11 @@ import { startCodespace } from './startCodespace';
 
 function App() {
     useEffect(() => {
-        startCodespace().then(r => console.log(r));
+        if (process.env.NODE_ENV != 'development') {
+            startCodespace().then(r => console.log(r));
+        }
     }, []);
+
     return (
         <Router basename="/list-audio-react-app">
             <NavBar />
