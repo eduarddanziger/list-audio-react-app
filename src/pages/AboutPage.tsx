@@ -1,5 +1,5 @@
-// src/pages/AboutPage.tsx
 import { useEffect, useState } from 'react';
+
 
 const AboutPage = () => {
     const [version, setVersion] = useState('');

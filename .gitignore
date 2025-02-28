@@ -68,3 +68,4 @@ dist-ssr
 **/.vs/*
 **/nohup.out
 **/.env
+**/*.csproj.user
