@@ -28,6 +28,17 @@ const AudioDeviceListComp: React.FC = () => {
 
     const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
 
+    const formatDateToSQL = (dateString: string) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
+
     return (
         <div>
             <h2>Audio Devices</h2>
@@ -52,6 +63,9 @@ const AudioDeviceListComp: React.FC = () => {
                     <h3>Selected Device: {selectedDevice.name}</h3>
                     <p><strong>PnP ID:</strong> {selectedDevice.pnpId}</p>
                     <p><strong>Volume:</strong> {selectedDevice.volume} of 1000</p>
+                    <p><strong>Last Seen:</strong> {formatDateToSQL(selectedDevice.lastSeen)}</p>
+                    <p><strong>Host Name:</strong> {selectedDevice.hostName}</p>
+                    <p><strong>Host IP:</strong> {selectedDevice.hostIp}</p>
                 </div>
             )}
         </div>
