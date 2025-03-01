@@ -6,12 +6,15 @@ const AboutPage = () => {
     const [version, setVersion] = useState('');
 
     useEffect(() => {
-        fetch('/list-audio-react-app/version.json')
+        const versionFile = '/list-audio-react-app/version.json';
+        fetch(versionFile)
             .then((response) => response.json())
             .then((data) => setVersion(data.version))
-            .catch(() => {
-                console.log(`Exception!`);
-                setVersion('Unknown')});
+            .catch(error => {
+                const devBuild = 'Developer Build';
+                console.log(`Exception fetching ${versionFile}: ${error.message}. Set version to:`, devBuild);
+                setVersion(devBuild)
+            });
     }, []);
 
     return (
