@@ -1,6 +1,6 @@
 // src/pages/HomePage.tsx
 import React from 'react';
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import AudioDeviceList from '../components/AudioDeviceListComp';
 
 const HomePage: React.FC = () => {
