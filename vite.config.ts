@@ -9,4 +9,9 @@ dotenv.config();
 export default defineConfig({
   plugins: [react()],
   base: '/list-audio-react-app/', // Replace with your repository name
-})
+  build: {
+    sourcemap: true,
+  },
+  server: {
+    port: 5173,
+  },  })

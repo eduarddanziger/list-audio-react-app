@@ -1,5 +1,6 @@
-// src/pages/AboutPage.tsx
 import { useEffect, useState } from 'react';
+import { Container, Typography } from '@mui/material';
+
 
 const AboutPage = () => {
     const [version, setVersion] = useState('');
@@ -14,12 +15,12 @@ const AboutPage = () => {
     }, []);
 
     return (
-        <div>
-            <h1>About-Info</h1>
+        <Container>
+            <h2>About App</h2>
             <p>Version: {version}</p>
             <p>Developer: Eduard Danziger</p>
             <p>Description: List of available audio devices</p>
-        </div>
+        </Container>
     );
 };
 export default AboutPage;

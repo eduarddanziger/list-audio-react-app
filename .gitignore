@@ -48,6 +48,7 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/launch.json
 .DS_Store
 *.suo
 *.ntvs*
@@ -68,3 +69,4 @@ dist-ssr
 **/.vs/*
 **/nohup.out
 **/.env
+**/*.csproj.user
