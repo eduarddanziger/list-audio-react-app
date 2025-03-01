@@ -9,10 +9,11 @@ namespace DeviceRepoAspNetCore.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<AudioDevice>> GetAudioDevices()
         {
-            var audioDevices = new List<AudioDevice>
+           var audioDevices = new List<AudioDevice>
             {
-                new() { PnpId = "PNP123", Name = "Device 1", Volume = 50 },
-                new() { PnpId = "PNP456", Name = "Device 2", Volume = 75 },
+                new() { PnpId = "USB\\VID_1234&PID_5678", Name = "Speakers (High Definition Audio)", Volume = 775 },
+                new() { PnpId = "USB\\VID_8765&PID_4321", Name = "Microphone (USB Audio)", Volume = 50 },
+                new() { PnpId = "USB\\VID_8666&PID_1320", Name = "Realtec", Volume = 500 },
             };
 
             return Ok(audioDevices);

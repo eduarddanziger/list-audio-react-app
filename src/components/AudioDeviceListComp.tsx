@@ -7,13 +7,6 @@ const AudioDeviceListComp: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    /*
-        const [audioDevices] = useState<AudioDevice[]>([
-            { pnpId: 'USB\\VID_1234&PID_5678', name: 'Speakers (High Definition Audio)', volume: 75 },
-            { pnpId: 'USB\\VID_8765&PID_4321', name: 'Microphone (USB Audio)', volume: 50 },
-        ]);
-    */
-
     useEffect(() => {
         const isDevMode = process.env.NODE_ENV === 'development';
         const apiUrl = isDevMode
@@ -58,7 +51,7 @@ const AudioDeviceListComp: React.FC = () => {
                 <div>
                     <h3>Selected Device: {selectedDevice.name}</h3>
                     <p><strong>PnP ID:</strong> {selectedDevice.pnpId}</p>
-                    <p><strong>Volume:</strong> {selectedDevice.volume}%</p>
+                    <p><strong>Volume:</strong> {selectedDevice.volume} of 1000</p>
                 </div>
             )}
         </div>
