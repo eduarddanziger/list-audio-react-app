@@ -5,6 +5,7 @@ import DeviceIcon from '@mui/icons-material/Devices';
 import HostIcon from '@mui/icons-material/Computer';
 import DateIcon from '@mui/icons-material/AccessTime';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import LabelIcon from '@mui/icons-material/Label';
 import { formatDateToSQL } from '../utils/formatDate';
 
 interface AudioDeviceDetailsProps {
@@ -17,6 +18,10 @@ const AudioDeviceDetails: React.FC<AudioDeviceDetailsProps> = ({ device }) => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 2 }}>
                 <DeviceIcon fontSize="medium" />
                 <Typography variant="h6">{device.name}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                <LabelIcon fontSize="small" />
+                <Typography variant="body1">{device.pnpId}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <HostIcon fontSize="small" />

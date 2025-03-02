@@ -3,7 +3,7 @@ import { AudioDevice } from '../types/AudioDevice';
 import { handleError } from '../utils/errorHandler';
 import AudioDeviceList from './AudioDeviceList';
 import AudioDeviceDetails from './AudioDeviceDetails';
-import { Box, Typography, CircularProgress, Alert } from '@mui/material';
+import { Box, CircularProgress, Alert } from '@mui/material';
 
 const AudioDeviceListComp: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
@@ -34,7 +34,6 @@ const AudioDeviceListComp: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
             <Box sx={{ flex: 1 }}>
-                <Typography variant="h4" gutterBottom>Audio Devices</Typography>
                 {loading ? (
                     <CircularProgress />
                 ) : (

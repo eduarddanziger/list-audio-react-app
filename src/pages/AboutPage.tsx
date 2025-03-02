@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, Typography, Box, Icon } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -21,9 +21,6 @@ const AboutPage = () => {
 
     return (
         <Container sx={{ marginTop: 2, marginLeft: 2 }}>
-            <Typography variant="h4" gutterBottom>
-                About App
-            </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
                 <InfoIcon sx={{ marginRight: 1 }} />
                 <Typography variant="body1">
