@@ -16,9 +16,9 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selecte
     return (
         <List>
             {audioDevices.map((device) => (
+                // @ts-expect-error ts-migrate(2769) No overload matches this call.
                 <ListItem
                     key={device.pnpId}
-                    component="div"
                     selected={selectedDevice?.pnpId === device.pnpId}
                     onClick={() => setSelectedDevice(device)}
                     sx={{
