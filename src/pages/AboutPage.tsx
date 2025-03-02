@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Container } from '@mui/material';
-
+import { Container, Typography, Box, Icon } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import PersonIcon from '@mui/icons-material/Person';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 const AboutPage = () => {
     const [version, setVersion] = useState('');
@@ -13,17 +15,35 @@ const AboutPage = () => {
             .catch(error => {
                 const devBuild = 'Developer Build';
                 console.log(`Exception fetching ${versionFile}: ${error.message}. Set version to:`, devBuild);
-                setVersion(devBuild)
+                setVersion(devBuild);
             });
     }, []);
 
     return (
-        <Container>
-            <h2>About App</h2>
-            <p>Version: {version}</p>
-            <p>Developer: Eduard Danziger</p>
-            <p>Description: List of available audio devices</p>
+        <Container sx={{ marginTop: 2, marginLeft: 2 }}>
+            <Typography variant="h4" gutterBottom>
+                About App
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                <InfoIcon sx={{ marginRight: 1 }} />
+                <Typography variant="body1">
+                    {version}
+                </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                <PersonIcon sx={{ marginRight: 1 }} />
+                <Typography variant="body1">
+                    Eduard Danziger
+                </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                <DescriptionIcon sx={{ marginRight: 1 }} />
+                <Typography variant="body1">
+                    List of available audio devices
+                </Typography>
+            </Box>
         </Container>
     );
 };
+
 export default AboutPage;

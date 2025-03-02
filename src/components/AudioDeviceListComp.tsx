@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { AudioDevice } from '../types/AudioDevice.ts';
+import { AudioDevice } from '../types/AudioDevice';
 import { handleError } from '../utils/errorHandler';
+import AudioDeviceList from './AudioDeviceList';
+import AudioDeviceDetails from './AudioDeviceDetails';
+import { Box, Typography, CircularProgress, Alert } from '@mui/material';
 
 const AudioDeviceListComp: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
 
     useEffect(() => {
         const isDevMode = process.env.NODE_ENV === 'development';
@@ -18,6 +22,7 @@ const AudioDeviceListComp: React.FC = () => {
             .then(response => response.json())
             .then(data => {
                 setAudioDevices(data);
+                setSelectedDevice(data[0] || null); // Set the initial selection to the first element
                 setLoading(false);
             })
             .catch(error => {
@@ -26,49 +31,27 @@ const AudioDeviceListComp: React.FC = () => {
             });
     }, []);
 
-    const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
-
-    const formatDateToSQL = (dateString: string) => {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    };
-
     return (
-        <div>
-            <h2>Audio Devices</h2>
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
-                <>
-                    {error && <p style={{ color: 'darkorange' }}>{error}</p>}
-                    <ul>
-                        {audioDevices.map((device) => (
-                            <li key={device.pnpId}>
-                                <button onClick={() => setSelectedDevice(device)}>
-                                    {device.name}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
-            {selectedDevice && (
-                <div>
-                    <h3>Selected Device: {selectedDevice.name}</h3>
-                    <p><strong>PnP ID:</strong> {selectedDevice.pnpId}</p>
-                    <p><strong>Volume:</strong> {selectedDevice.volume} of 1000</p>
-                    <p><strong>Last Seen:</strong> {formatDateToSQL(selectedDevice.lastSeen)}</p>
-                    <p><strong>Host Name:</strong> {selectedDevice.hostName}</p>
-                    <p><strong>Host IP:</strong> {selectedDevice.hostIp}</p>
-                </div>
-            )}
-        </div>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
+            <Box sx={{ flex: 1 }}>
+                <Typography variant="h4" gutterBottom>Audio Devices</Typography>
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    <>
+                        {error && <Alert severity="error">{error}</Alert>}
+                        <AudioDeviceList
+                            audioDevices={audioDevices}
+                            selectedDevice={selectedDevice}
+                            setSelectedDevice={setSelectedDevice}
+                        />
+                    </>
+                )}
+            </Box>
+            <Box sx={{ flex: 1 }}>
+                {selectedDevice && <AudioDeviceDetails device={selectedDevice} />}
+            </Box>
+        </Box>
     );
 };
 
