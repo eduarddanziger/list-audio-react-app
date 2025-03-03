@@ -15,7 +15,6 @@ const AudioDeviceListComp: React.FC = () => {
     const { t } = useTranslation();
     const isDevMode = process.env.NODE_ENV === 'development';
 
-
     useEffect(() => {
         const deviceApiUrl = isDevMode
             ? 'http://localhost:5027/api/AudioDevices'
