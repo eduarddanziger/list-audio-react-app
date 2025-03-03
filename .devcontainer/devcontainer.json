@@ -9,7 +9,7 @@
         "version": "16" // Node.js 16 installieren
       }
     },
-    "postCreateCommand": "npm install && dotnet restore && dotnet tool install -g Microsoft.Web.LibraryManager.Cli",
+    "postCreateCommand": "npm install && dotnet restore && dotnet tool install -g Microsoft.Web.LibraryManager.Cli && git fetch origin main && git reset --hard FETCH_HEAD",
     "postStartCommand": "gh codespace ports visibility 5027:public -c $CODESPACE_NAME && dotnet run --project ./DeviceRepoAspNetCore/DeviceRepoAspNetCore.csproj --launch-profile http",
     "forwardPorts": [3000, 5000, 5027], // Ports für React (3000) und ASP.NET Core (5000) freigeben
     "portsAttributes": {
