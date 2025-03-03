@@ -6,7 +6,7 @@ import HostIcon from '@mui/icons-material/Computer';
 import DateIcon from '@mui/icons-material/AccessTime';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LabelIcon from '@mui/icons-material/Label';
-import { formatDateToSQL } from '../utils/formatDate';
+import { formatDateTimeToSQL } from '../utils/formatDate';
 
 interface AudioDeviceDetailsProps {
     device: AudioDevice;
@@ -29,7 +29,7 @@ const AudioDeviceDetails: React.FC<AudioDeviceDetailsProps> = ({ device }) => {
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <DateIcon fontSize="small" />
-                <Typography variant="body1">{formatDateToSQL(device.lastSeen)}</Typography>
+                <Typography variant="body1">{formatDateTimeToSQL(device.lastSeen)}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <VolumeUpIcon fontSize="small" />

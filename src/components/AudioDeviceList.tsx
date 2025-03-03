@@ -4,7 +4,7 @@ import { List, ListItem, Typography, Box } from '@mui/material';
 import DeviceIcon from '@mui/icons-material/Devices';
 import HostIcon from '@mui/icons-material/Computer';
 import DateIcon from '@mui/icons-material/AccessTime';
-import { formatDateToSQL } from '../utils/formatDate';
+import { formatDateTimeToSQL } from '../utils/formatDate';
 
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
@@ -43,7 +43,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selecte
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
                         <DateIcon fontSize="small" />
-                        <Typography variant="body2">{formatDateToSQL(device.lastSeen)}</Typography>
+                        <Typography variant="body2">{formatDateTimeToSQL(device.lastSeen)}</Typography>
                     </Box>
                 </ListItem>
             ))}

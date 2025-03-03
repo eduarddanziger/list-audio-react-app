@@ -1,3 +1,5 @@
 {
-  "title": "Audio Device Repository"
+  "appTitle": "Audio Device Repository",
+  "audioDevicesErrorProdMode": "Audio devices are not (yet) available. Try refreshing in 20 sec, at ca. {{sqlTime}}.",
+  "audioDevicesErrorDevMode": "Audio devices are not available. The web server is probably not running or not configured correctly."
 }

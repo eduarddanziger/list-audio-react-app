@@ -4,10 +4,11 @@ import App from './App';
 
 const Root = () => {
     const { t } = useTranslation();
+    const appTitle = process.env.NODE_ENV === 'development' ? t('appTitle') + ' (Dev)' : t('appTitle');
 
     React.useEffect(() => {
-        document.title = t('title');
-    }, [t]);
+        document.title = appTitle;
+    }, [appTitle]);
 
     return <App />;
 };
