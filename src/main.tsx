@@ -1,19 +1,7 @@
-// filepath: /c:/Users/Rimma i Masha/DWP/list-audio-react-app/src/main.tsx
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import { I18nextProvider, useTranslation } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
-
-const Root = () => {
-    const { t } = useTranslation();
-
-    React.useEffect(() => {
-        document.title = t('title');
-    }, [t]);
-
-    return <App />;
-};
+import Root from './Root'; // Import the Root component
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container!);
