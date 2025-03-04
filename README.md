@@ -9,21 +9,20 @@ Shows a list of audio devices in a React application. The application is built u
 
 ```powershell or bash
 cd DeviceListServer
-dotnet run --launch-profile https
+dotnet run --launch-profile http
 ```
 
-## Starting a client application
-- In development environment, you can start the client application vie Terminal using the following command:
-- Then open the browser and navigate to `https://localhost:3000/` to see the application running. Or debug it in your WebStorm or Visual Studio Code.
+## Starting a client application from the cloud (latest GitHub Pages version)
+- Open a browser and navigate to [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/)
+
+
+## Starting a client application, development environment
+- In development environment, you can start the client application via Terminal using the following command:
+
+```powershell or bash
+npm run dev
+```
+
+- Open a browser and navigate to [https://localhost:5173/](https://localhost:5173/)
 ''
-
-- Or use the latest GitHub Page version: [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/)
-
-- In order to connect client to GitHub codespace, change URL in AudioDeviceListComp to https://[https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices](https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices)
-
-```
-...
-        fetch('https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices')
-...
-```
 
