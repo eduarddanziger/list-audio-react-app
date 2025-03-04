@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { AudioDevice } from '../types/AudioDevice';
 import { handleError } from '../utils/errorHandler';
 import AudioDeviceList from './AudioDeviceList';
-import AudioDeviceDetails from './AudioDeviceDetails';
 import { Box, Alert } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { startCodespace } from '../startCodespace.ts';
 import LoadingComponent from './LoadingComponent';
 
-const AudioDeviceListComp: React.FC = () => {
+const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -71,11 +70,8 @@ const AudioDeviceListComp: React.FC = () => {
                     </>
                 )}
             </Box>
-            <Box sx={{ flex: 1 }}>
-                {selectedDevice && <AudioDeviceDetails device={selectedDevice} />}
-            </Box>
         </Box>
     );
 };
 
-export default AudioDeviceListComp;
+export default AudioDeviceListComponent;
