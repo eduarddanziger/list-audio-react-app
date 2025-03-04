@@ -14,26 +14,26 @@ interface AudioDeviceDetailsProps {
 
 const AudioDeviceDetails: React.FC<AudioDeviceDetailsProps> = ({ device }) => {
     return (
-        <Paper elevation={3} sx={{ padding: '16px', margin: '16px', maxWidth: '400px' }}>
+        <Paper elevation={3} sx={{ padding: '10px', margin: '10px', maxWidth: '400px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 2 }}>
-                <DeviceIcon fontSize="medium" />
-                <Typography variant="h6">{device.name}</Typography>
+                <DeviceIcon fontSize="small" />
+                <Typography variant="h6" sx= {{ fontSize: '0.9rem' , lineHeight: 1 }}>{device.name}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <LabelIcon fontSize="small" />
-                <Typography variant="body1">{device.pnpId}</Typography>
+                <Typography variant="body1" sx= {{ fontSize: '0.9rem' , lineHeight: 0.8 }}>{device.pnpId}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <HostIcon fontSize="small" />
-                <Typography variant="body1">{device.hostName}</Typography>
+                <Typography variant="body1" sx= {{ fontSize: '0.9rem' , lineHeight: 0.8 }}>{device.hostName}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <DateIcon fontSize="small" />
-                <Typography variant="body1">{formatDateTimeToSQL(device.lastSeen)}</Typography>
+                <Typography variant="body1" sx= {{ fontSize: '0.9rem' , lineHeight: 0.8 }}>{formatDateTimeToSQL(device.lastSeen)}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <VolumeUpIcon fontSize="small" />
-                <Typography variant="body1">{device.volume} / 1000</Typography>
+                <Typography variant="body1" sx= {{ fontSize: '0.9rem' , lineHeight: 0.8 }}>{device.volume} / 1000</Typography>
             </Box>
         </Paper>
     );

@@ -35,15 +35,15 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selecte
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <DeviceIcon fontSize="small" />
-                        <Typography variant="subtitle1">{device.name}</Typography>
+                        <Typography variant="subtitle1" sx={{ fontSize: '0.9rem' }}>{device.name}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
                         <HostIcon fontSize="small" />
-                        <Typography variant="body2">{device.hostName}</Typography>
+                        <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>{device.hostName}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
                         <DateIcon fontSize="small" />
-                        <Typography variant="body2">{formatDateTimeToSQL(device.lastSeen)}</Typography>
+                        <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>{formatDateTimeToSQL(device.lastSeen)}</Typography>
                     </Box>
                 </ListItem>
             ))}
