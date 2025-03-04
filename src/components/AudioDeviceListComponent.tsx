@@ -2,29 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { AudioDevice } from '../types/AudioDevice';
 import { handleError } from '../utils/errorHandler';
 import AudioDeviceList from './AudioDeviceList';
-import AudioDeviceDetails from './AudioDeviceDetails';
-import { Box, CircularProgress, Alert, Typography } from '@mui/material';
+import { Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
-//import { formatTimeToSQL } from '../utils/formatDate';
-import {startCodespace} from "../startCodespace.ts";
+import { startCodespace } from '../startCodespace.ts';
+import LoadingComponent from './LoadingComponent';
 
-const AudioDeviceListComp: React.FC = () => {
+const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
+    const [progress, setProgress] = useState<number>(0);
     const { t } = useTranslation();
     const isDevMode = process.env.NODE_ENV === 'development';
 
     useEffect(() => {
         const fetchData = async () => {
-            const retryNumber = 25;
+            const retryNumber = 22;
             const pauseDurationMs = 1000;
 
             const deviceApiUrl = isDevMode
                 ? 'http://localhost:5027/api/AudioDevices'
                 : 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
             setLoading(true);
+            setProgress(100 / retryNumber); // ~7%
             let attempts = 0;
             while (attempts < retryNumber) {
                 try {
@@ -33,15 +35,17 @@ const AudioDeviceListComp: React.FC = () => {
                     setAudioDevices(data);
                     setSelectedDevice(data[0] || null); // Set the initial selection to the first element
                     setError(null);
+                    setProgress(100); // 100%
                     break;
                 } catch (error) {
                     if (isDevMode || ++attempts === retryNumber) {
                         handleError(t('audioDevicesErrorDevMode'), error, setError);
                         break;
                     } else {
-                        handleError(t('audioDevicesErrorProdMode', { currRetry: attempts+1, retryNumber: retryNumber }), error, setError);
+                        handleError(t('audioDevicesErrorProdMode'), error, setError);
                         await startCodespace();
                         await new Promise(resolve => setTimeout(resolve, pauseDurationMs));
+                        setProgress((attempts+1) * 100 / retryNumber);
                     }
                 }
             }
@@ -55,13 +59,22 @@ const AudioDeviceListComp: React.FC = () => {
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
             <Box sx={{ flex: 1 }}>
                 {loading ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CircularProgress />
-                        {error && <Typography variant="body2" color="error">{error}</Typography>}
-                    </Box>
+                    <LoadingComponent progress={progress} error={error} />
                 ) : (
                     <>
-                        {error && <Alert severity="error">{error}</Alert>}
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>Understand List of Audio Devices (use arrow button on your right to expand it)</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Shows a list of audio devices that were collected on connected host computers.
+                                    The application is built using React (TypeScript + Vite).
+                                    The server part is implemented as ASP.Net Core Web API with MongoDB as a database.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        {error && <Alert severity="info">{error}</Alert>}
                         <AudioDeviceList
                             audioDevices={audioDevices}
                             selectedDevice={selectedDevice}
@@ -70,11 +83,8 @@ const AudioDeviceListComp: React.FC = () => {
                     </>
                 )}
             </Box>
-            <Box sx={{ flex: 1 }}>
-                {selectedDevice && <AudioDeviceDetails device={selectedDevice} />}
-            </Box>
         </Box>
     );
 };
 
-export default AudioDeviceListComp;
+export default AudioDeviceListComponent;

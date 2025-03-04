@@ -1,42 +1,42 @@
 import React from 'react';
 import { AudioDevice } from '../types/AudioDevice';
-import { Box, Typography, Paper } from '@mui/material';
-import DeviceIcon from '@mui/icons-material/Devices';
+import { Box, Typography } from '@mui/material';
 import HostIcon from '@mui/icons-material/Computer';
+import HeadsetIcon from '@mui/icons-material/Headset';
 import DateIcon from '@mui/icons-material/AccessTime';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LabelIcon from '@mui/icons-material/Label';
 import { formatDateTimeToSQL } from '../utils/formatDate';
 
-interface AudioDeviceDetailsProps {
+interface AudioDeviceDetailsExpandedProps {
     device: AudioDevice;
 }
 
-const AudioDeviceDetails: React.FC<AudioDeviceDetailsProps> = ({ device }) => {
+const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({ device }) => {
     return (
-        <Paper elevation={3} sx={{ padding: '16px', margin: '16px', maxWidth: '400px' }}>
+        <Box sx={{ padding: '10px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 2 }}>
-                <DeviceIcon fontSize="medium" />
-                <Typography variant="h6">{device.name}</Typography>
+                <HeadsetIcon fontSize="small" />
+                <Typography variant="h6" sx={{ fontSize: '0.9rem', lineHeight: 1 }}>{device.name}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <LabelIcon fontSize="small" />
-                <Typography variant="body1">{device.pnpId}</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.pnpId}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <HostIcon fontSize="small" />
-                <Typography variant="body1">{device.hostName}</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.hostName}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <DateIcon fontSize="small" />
-                <Typography variant="body1">{formatDateTimeToSQL(device.lastSeen)}</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{formatDateTimeToSQL(device.lastSeen)}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <VolumeUpIcon fontSize="small" />
-                <Typography variant="body1">{device.volume} / 1000</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.volume} / 1000</Typography>
             </Box>
-        </Paper>
+        </Box>
     );
 };
 
-export default AudioDeviceDetails;
+export default AudioDeviceDetailsExpanded;
