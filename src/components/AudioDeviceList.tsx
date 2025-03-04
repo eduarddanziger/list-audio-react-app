@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AudioDevice } from '../types/AudioDevice';
-import { List, Typography, Box, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { List, Typography, Box, Accordion, AccordionSummary, AccordionDetails, useTheme } from '@mui/material';
 import HeadsetIcon from '@mui/icons-material/Headset';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { formatDateTimeToSQL } from '../utils/formatDate';
@@ -14,6 +14,7 @@ interface AudioDeviceListProps {
 
 const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selectedDevice, setSelectedDevice }) => {
     const [expanded, setExpanded] = useState<string | false>(false);
+    const theme = useTheme();
 
     const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
@@ -31,9 +32,10 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selecte
                         expandIcon={<ExpandMoreIcon />}
                         onClick={() => setSelectedDevice(device)}
                         sx={{
-                            backgroundColor: selectedDevice?.pnpId === device.pnpId ? '#f0f0f0' : 'inherit',
+                            backgroundColor: selectedDevice?.pnpId === device.pnpId ? (theme.palette.mode === 'dark' ? '#424242' : '#f0f0f0') : 'inherit',
+                            color: selectedDevice?.pnpId === device.pnpId ? (theme.palette.mode === 'dark' ? '#ffffff' : 'inherit') : 'inherit',
                             '&:hover': {
-                                backgroundColor: '#e0e0e0',
+                                backgroundColor: theme.palette.mode === 'dark' ? '#616161' : '#e0e0e0',
                             },
                             cursor: 'pointer',
                         }}

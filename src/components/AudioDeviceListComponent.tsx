@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { AudioDevice } from '../types/AudioDevice';
 import { handleError } from '../utils/errorHandler';
 import AudioDeviceList from './AudioDeviceList';
-import { Box, Alert } from '@mui/material';
+import { Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { startCodespace } from '../startCodespace.ts';
 import LoadingComponent from './LoadingComponent';
@@ -61,6 +62,18 @@ const AudioDeviceListComponent: React.FC = () => {
                     <LoadingComponent progress={progress} error={error} />
                 ) : (
                     <>
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>Understand List of Audio Devices (use arrow button on your right to expand it)</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Shows a list of audio devices that were collected on connected host computers.
+                                    The application is built using React (TypeScript + Vite).
+                                    The server part is implemented as ASP.Net Core Web API with MongoDB as a database.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
                         {error && <Alert severity="info">{error}</Alert>}
                         <AudioDeviceList
                             audioDevices={audioDevices}
