@@ -11,7 +11,7 @@ const LoadingComponent: React.FC<LoadingComponentProps> = ({ progress, error }) 
     const { t } = useTranslation();
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5, mt: 1}}>
             <Button
                 variant="contained"
                 color="primary"
