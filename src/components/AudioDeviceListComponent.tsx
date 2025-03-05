@@ -19,7 +19,7 @@ const AudioDeviceListComponent: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const retryNumber = 22;
+            const retryNumber = 30;
             const pauseDurationMs = 1000;
 
             const deviceApiUrl = isDevMode
@@ -58,23 +58,24 @@ const AudioDeviceListComponent: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
             <Box sx={{ flex: 1 }}>
+                <Accordion sx={{ fontSize: '0.8rem' }}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography sx={{ fontSize: 'inherit' }}>This repository shows collected audio devices. Expand to learn more...</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography sx={{ fontSize: 'inherit' }}>
+                            This repository shows a list of audio devices that were collected on connected host computers.<br />
+                            The application is built using React (TypeScript + Vite).<br />
+                            The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br />
+                            Note: Initializing could delay due to the infrastructure starting process.
+                        </Typography>
+                    </AccordionDetails>
+                </Accordion>
                 {loading ? (
                     <LoadingComponent progress={progress} error={error} />
                 ) : (
                     <>
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Understand List of Audio Devices (use arrow button on your right to expand it)</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>
-                                    Shows a list of audio devices that were collected on connected host computers.
-                                    The application is built using React (TypeScript + Vite).
-                                    The server part is implemented as ASP.Net Core Web API with MongoDB as a database.
-                                </Typography>
-                            </AccordionDetails>
-                        </Accordion>
-                        {error && <Alert severity="info">{error}</Alert>}
+                        {error && <Alert severity="info" sx={{ mt: 1 }}>{error}</Alert>}
                         <AudioDeviceList
                             audioDevices={audioDevices}
                             selectedDevice={selectedDevice}
