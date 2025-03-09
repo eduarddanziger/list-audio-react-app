@@ -7,8 +7,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { startCodespace } from '../startCodespace.ts';
 import LoadingComponent from './LoadingComponent';
+import { useTheme } from '@mui/material/styles';
 
 const AudioDeviceListComponent: React.FC = () => {
+    const theme = useTheme();
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -59,8 +61,16 @@ const AudioDeviceListComponent: React.FC = () => {
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
             <Box sx={{ flex: 1 }}>
                 <Accordion sx={{ fontSize: '0.8rem' }}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography sx={{ fontSize: 'inherit' }}>This repository shows collected audio devices. Expand to learn more...</Typography>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{
+                            '& .MuiAccordionSummary-expandIconWrapper': {
+                                order: -1,
+                                marginRight: theme.spacing(1),
+                            },
+                        }}
+                    >
+                    <Typography sx={{ fontSize: 'inherit' }}>This repository shows collected audio devices. Expand to learn more...</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography sx={{ fontSize: 'inherit' }}>
