@@ -2,9 +2,14 @@ using DeviceRepoAspNetCore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddEventSourceLogger();
+
 // Add services to the container.
 builder.Services.AddSingleton<IAudioDeviceStorage, InMemoryAudioDeviceStorage>();
-
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -29,7 +34,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//!! app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
