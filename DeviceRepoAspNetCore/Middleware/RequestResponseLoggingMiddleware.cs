@@ -12,26 +12,24 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next, ILogger<Requ
     {
         // Log the request
         var request = await FormatRequest(context.Request);
-        logger.LogInformation("Request: {Request}", request);
+        logger.LogInformation("Request: {Method} {Path} {Request}", context.Request.Method, context.Request.Path, request);
 
         // Copy the original response body stream
         var originalBodyStream = context.Response.Body;
 
-        // ReSharper disable once ConvertToUsingDeclaration
-        using (var responseBody = new MemoryStream())
-        {
-            context.Response.Body = responseBody;
+        using var responseBody = new MemoryStream();
 
-            // Call the next middleware in the pipeline
-            await next(context);
+        context.Response.Body = responseBody;
 
-            // Log the response
-            var response = await FormatResponse(context.Response);
-            logger.LogInformation("Response: {Response}", response);
+        // Call the next middleware in the pipeline
+        await next(context);
 
-            // Copy the contents of the new memory stream (which contains the response) to the original stream
-            await responseBody.CopyToAsync(originalBodyStream);
-        }
+        // Log the response
+        var response = await FormatResponse(context.Response);
+        logger.LogInformation("Response: {StatusCode} {Response}", context.Response.StatusCode, response);
+
+        // Copy the contents of the new memory stream (which contains the response) to the original stream
+        await responseBody.CopyToAsync(originalBodyStream);
     }
 
     private static async Task<string> FormatRequest(HttpRequest request)
@@ -44,7 +42,7 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next, ILogger<Requ
         var bodyAsText = Encoding.UTF8.GetString(buffer);
         request.Body.Position = 0;
 
-        return $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}";
+        return $"Query: {request.QueryString} | Body: {bodyAsText}";
     }
 
     private static async Task<string> FormatResponse(HttpResponse response)
@@ -53,6 +51,6 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next, ILogger<Requ
         var text = await new StreamReader(response.Body).ReadToEndAsync();
         response.Body.Seek(0, SeekOrigin.Begin);
 
-        return $"Status Code: {response.StatusCode}; {text}";
+        return text;
     }
 }
