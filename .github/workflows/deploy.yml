@@ -65,20 +65,21 @@ jobs:
 
       - name: Generate .env.production file in build directory
         run: |
-          node -e "
-            const CryptoJS = require('crypto-js');
-            const secret = '${{ secrets.UNIVERSAL_PAT }}';
-            const encryptionKey = '32-characters-long-secure-key-12';
-            if (!secret) {
-               throw new Error('Secret is empty or undefined');
-            }
-            const encryptedSecret = CryptoJS.AES.encrypt(secret, encryptionKey).toString();
-            if (typeof encryptedSecret !== 'string') {
-                throw new Error('Encryption failed: Result is not a string');
-            }
-            require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
-            console.log('.env.production file created successfully');
-          "
+          echo ".env.production generation is commented out..."
+# node -e "
+#   const CryptoJS = require('crypto-js');
+#   const secret = '${{ secrets.UNIVERSAL_PAT }}';
+#   const encryptionKey = '32-characters-long-secure-key-12';
+#   if (!secret) {
+#      throw new Error('Secret is empty or undefined');
+#   }
+#   const encryptedSecret = CryptoJS.AES.encrypt(secret, encryptionKey).toString();
+#   if (typeof encryptedSecret !== 'string') {
+#       throw new Error('Encryption failed: Result is not a string');
+#   }
+#   require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
+#   console.log('.env.production file created successfully');
+# "
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

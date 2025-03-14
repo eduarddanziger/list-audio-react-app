@@ -11,8 +11,8 @@ interface Codespace {
 
 export const startCodespace = async (): Promise<void> => {
     try {
-        const encryptedSecret = 'U2FsdGVkX1/8XI4M3CWEaF5601nNeWedhnDAy4d+p2JaZDyeRxCGQ42XaTCNC8VSMcbXHjH20zIhxu9AQ3R0xQ==';
-        // = import.meta.env.VITE_UNIVERSAL_PAT;
+        const encryptedSecret //= 'U2FsdGVkX1/8XI4M3CWEaF5601nNeWedhnDAy4d+p2JaZDyeRxCGQ42XaTCNC8VSMcbXHjH20zIhxu9AQ3R0xQ==';
+            = import.meta.env.VITE_UNIVERSAL_PAT;
         console.log('Hardcoded encrypted secret:', encryptedSecret);
         const encryptedSecretFromEnv = import.meta.env.VITE_UNIVERSAL_PAT;
         console.log('Encrypted secret read out of .env:', encryptedSecretFromEnv);
