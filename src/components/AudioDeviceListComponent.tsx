@@ -18,15 +18,22 @@ const AudioDeviceListComponent: React.FC = () => {
     const [progress, setProgress] = useState<number>(0);
     const { t } = useTranslation();
     const isDevMode = process.env.NODE_ENV === 'development';
+    let deviceApiUrl: string;
+    if (isDevMode)
+    {
+        const deviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
+        deviceApiUrl = deviceApiUrlFromEnv && deviceApiUrlFromEnv !== '' ? deviceApiUrlFromEnv : 'http://localhost:5027/api/AudioDevices';
+    }
+    else
+    {
+        deviceApiUrl = 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             const retryNumber = 30;
             const pauseDurationMs = 1000;
 
-            const deviceApiUrl = isDevMode
-                ? 'http://localhost:5027/api/AudioDevices'
-                : 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
             setLoading(true);
             setProgress(100 / retryNumber); // ~7%
             let attempts = 0;
@@ -55,7 +62,7 @@ const AudioDeviceListComponent: React.FC = () => {
         };
 
         fetchData().then(r => console.log(r));
-    }, [t, isDevMode]);
+    }, [t, isDevMode, deviceApiUrl]);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>

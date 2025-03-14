@@ -68,5 +68,5 @@ dist-ssr
 **/wwwroot/lib/*
 **/.vs/*
 **/nohup.out
-**/.env
+# **/.env
 **/*.csproj.user
