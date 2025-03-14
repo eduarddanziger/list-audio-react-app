@@ -5,33 +5,47 @@ namespace DeviceRepoAspNetCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AudioDevicesController(IAudioDeviceStorage storage) : ControllerBase
+    public class AudioDevicesController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<AudioDevice>> GetAudioDevices()
+        private readonly IAudioDeviceStorage _storage;
+
+        public AudioDevicesController(IAudioDeviceStorage storage)
         {
-            var audioDevices = storage.GetAll();
-            return Ok(audioDevices);
+            _storage = storage;
         }
+
+        [HttpGet]
+        public IEnumerable<AudioDevice> GetAll() => _storage.GetAll();
 
         [HttpPost]
-        public IActionResult AddAudioDevice([FromBody] AudioDevice device)
+        public IActionResult Add([FromBody] AudioDevice device)
         {
-            storage.Add(device);
-            return CreatedAtAction(nameof(GetAudioDevices), new { pnpId = device.PnpId }, device);
+            _storage.Add(device);
+            return CreatedAtAction(nameof(GetByKey), new { pnpId = device.PnpId, hostName = device.HostName }, device);
         }
 
-        [HttpDelete("{pnpId}")]
-        public IActionResult RemoveAudioDevice(string pnpId)
+        [HttpGet("{pnpId}/{hostName}")]
+        public IActionResult GetByKey(string pnpId, string hostName)
         {
-            storage.Remove(pnpId);
+            var device = _storage.GetAll().FirstOrDefault(d => d.PnpId == pnpId && d.HostName == hostName);
+            if (device == null)
+            {
+                return NotFound();
+            }
+            return Ok(device);
+        }
+
+        [HttpDelete("{pnpId}/{hostName}")]
+        public IActionResult Remove(string pnpId, string hostName)
+        {
+            _storage.Remove(pnpId, hostName);
             return NoContent();
         }
 
-        [HttpPut("{pnpId}/volume")]
-        public IActionResult UpdateVolume(string pnpId, [FromBody] int volume)
+        [HttpPut("{pnpId}/{hostName}/volume")]
+        public IActionResult UpdateVolume(string pnpId, string hostName, [FromBody] int volume)
         {
-            storage.UpdateVolume(pnpId, volume);
+            _storage.UpdateVolume(pnpId, hostName, volume);
             return NoContent();
         }
     }
