@@ -58,12 +58,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Using version: $VERSION"
 
-      - name: Build project
-        run: npm run build
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
-
-      - name: Generate .env.production file in build directory
+      - name: Generate .env.production file
         run: |
           node -e "
             const CryptoJS = require('crypto-js');
@@ -79,11 +74,16 @@ jobs:
             }
             const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
             const fs = require('fs');
-            fs.writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./dist/.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
             console.log('.env.production file created successfully');
           "
-#         echo ".env.production generation is commented out..."
+      #         echo ".env.production generation is commented out..."
+
+      - name: Build project
+        run: npm run build
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
