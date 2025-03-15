@@ -63,6 +63,7 @@ jobs:
           node -e "
             const CryptoJS = require('crypto-js');
             const encryptionKey = '32-characters-long-secure-key-12';
+            // decrypt the secrets:
             const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
             if (!tokenSecret) {
                throw new Error('UNIVERSAL_PAT secret is empty or undefined');
@@ -73,9 +74,13 @@ jobs:
                throw new Error('AUDIO_API_URL secret is empty or undefined');
             }
             const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
+            // use environment for version
+            const version = '${{ steps.get_version.outputs.VERSION }}'';
+            // Write the secrets to .env.production file:
             const fs = require('fs');
             fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
             fs.appendFileSync('./.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + encryptedUrlSecret + '\n');
             console.log('.env.production file created successfully');
           "
       #         echo ".env.production generation is commented out..."
