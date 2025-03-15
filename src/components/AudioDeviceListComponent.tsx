@@ -26,7 +26,7 @@ const AudioDeviceListComponent: React.FC = () => {
         if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== '')
         {
             console.log('Encrypted secret read out of environment:', encryptedDeviceApiUrlFromEnv);
-            const bytes = CryptoJS.AES.decrypt(encryptedSecret, '32-characters-long-secure-key-12');
+            const bytes = CryptoJS.AES.decrypt(encryptedDeviceApiUrlFromEnv, '32-characters-long-secure-key-12');
             deviceApiUrl = bytes.toString(CryptoJS.enc.Utf8);
         }
         else
