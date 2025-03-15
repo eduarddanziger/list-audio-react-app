@@ -65,21 +65,25 @@ jobs:
 
       - name: Generate .env.production file in build directory
         run: |
-          echo ".env.production generation is commented out..."
-# node -e "
-#   const CryptoJS = require('crypto-js');
-#   const secret = '${{ secrets.UNIVERSAL_PAT }}';
-#   const encryptionKey = '32-characters-long-secure-key-12';
-#   if (!secret) {
-#      throw new Error('Secret is empty or undefined');
-#   }
-#   const encryptedSecret = CryptoJS.AES.encrypt(secret, encryptionKey).toString();
-#   if (typeof encryptedSecret !== 'string') {
-#       throw new Error('Encryption failed: Result is not a string');
-#   }
-#   require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
-#   console.log('.env.production file created successfully');
-# "
+          node -e "
+            const CryptoJS = require('crypto-js');
+            const encryptionKey = '32-characters-long-secure-key-12';
+            const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
+            if (!tokenSecret) {
+               throw new Error('UNIVERSAL_PAT secret is empty or undefined');
+            }
+            const encryptedTokenSecret = CryptoJS.AES.encrypt(tokenSecret, encryptionKey).toString();
+            const urlSecret = '${{ secrets.AUDIO_API_URL }}';
+            if (!urlSecret) {
+               throw new Error('AUDIO_API_URL secret is empty or undefined');
+            }
+            const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
+          
+            require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            require('fs').writeFileSync('./dist/.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            console.log('.env.production file created successfully');
+          "
+#         echo ".env.production generation is commented out..."
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { startCodespace } from '../startCodespace.ts';
 import LoadingComponent from './LoadingComponent';
 import { useTheme } from '@mui/material/styles';
+import CryptoJS from "crypto-js";
 
 const AudioDeviceListComponent: React.FC = () => {
     const theme = useTheme();
@@ -21,8 +22,17 @@ const AudioDeviceListComponent: React.FC = () => {
     let deviceApiUrl: string;
     if (isDevMode)
     {
-        const deviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
-        deviceApiUrl = deviceApiUrlFromEnv && deviceApiUrlFromEnv !== '' ? deviceApiUrlFromEnv : 'http://localhost:5027/api/AudioDevices';
+        const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
+        if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== '')
+        {
+            console.log('Encrypted secret read out of environment:', encryptedDeviceApiUrlFromEnv);
+            const bytes = CryptoJS.AES.decrypt(encryptedSecret, '32-characters-long-secure-key-12');
+            deviceApiUrl = bytes.toString(CryptoJS.enc.Utf8);
+        }
+        else
+        {
+            deviceApiUrl = 'http://localhost:5027/api/AudioDevices';
+        }
     }
     else
     {
