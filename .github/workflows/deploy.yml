@@ -78,9 +78,9 @@ jobs:
                throw new Error('AUDIO_API_URL secret is empty or undefined');
             }
             const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
-          
-            require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            require('fs').writeFileSync('./dist/.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            const fs = require('fs');
+            fs.writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            fs.appendFileSync('./dist/.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
             console.log('.env.production file created successfully');
           "
 #         echo ".env.production generation is commented out..."
