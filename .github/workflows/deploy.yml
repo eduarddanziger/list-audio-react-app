@@ -95,16 +95,18 @@ jobs:
                throw new Error('UNIVERSAL_PAT secret is empty or undefined');
             }
             const encryptedTokenSecret = encrypt(tokenSecret, encryptionKey);
-          
             const urlSecret = '${{ secrets.AUDIO_API_URL }}';
             if (!urlSecret) {
                throw new Error('AUDIO_API_URL secret is empty or undefined');
             }
             const encryptedUrlSecret = encrypt(urlSecret, encryptionKey);
-          
+            // use environment for version
+            const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
+            // Write the secrets to .env.production file:
             const fs = require('fs');
-            fs.writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./dist/.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
             console.log('.env.production file created successfully');
           "
 #         echo ".env.production generation is commented out..."
