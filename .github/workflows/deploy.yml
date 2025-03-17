@@ -60,46 +60,20 @@ jobs:
 
       - name: Generate .env.production file
         run: |
-          npm install --no-save @stablelib/xchacha20poly1305 @stablelib/random @stablelib/base64
           node -e "
-            const { XChaCha20Poly1305 } = require('@stablelib/xchacha20poly1305');
-            const { randomBytes } = require('@stablelib/random');
-            const { encode: base64Encode } = require('@stablelib/base64');
-            const crypto = require('crypto');
-          
-            // Convert string to key using SHA-256 (ensures correct key length)
-            function stringToKey(str) {
-              return crypto.createHash('sha256').update(str).digest();
-            }
-          
-            // Encrypt function using XChaCha20-Poly1305
-            function encrypt(text, password) {
-              const key = stringToKey(password);
-              const nonce = randomBytes(24); // XChaCha20 uses 24-byte nonces
-          
-              const cipher = new XChaCha20Poly1305(key);
-              const messageBytes = Buffer.from(text, 'utf8');
-              const ciphertext = cipher.seal(nonce, messageBytes);
-          
-              // Combine nonce and ciphertext and encode as base64
-              const combined = new Uint8Array(nonce.length + ciphertext.length);
-              combined.set(nonce);
-              combined.set(ciphertext, nonce.length);
-          
-              return base64Encode(combined);
-            }
-          
+            const CryptoJS = require('crypto-js');
             const encryptionKey = '32-characters-long-secure-key-12';
+            // decrypt the secrets:
             const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
             if (!tokenSecret) {
                throw new Error('UNIVERSAL_PAT secret is empty or undefined');
             }
-            const encryptedTokenSecret = encrypt(tokenSecret, encryptionKey);
+            const encryptedTokenSecret = CryptoJS.AES.encrypt(tokenSecret, encryptionKey).toString();
             const urlSecret = '${{ secrets.AUDIO_API_URL }}';
             if (!urlSecret) {
                throw new Error('AUDIO_API_URL secret is empty or undefined');
             }
-            const encryptedUrlSecret = encrypt(urlSecret, encryptionKey);
+            const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
             // use environment for version
             const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
             // Write the secrets to .env.production file:
@@ -109,7 +83,7 @@ jobs:
             fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
             console.log('.env.production file created successfully');
           "
-#         echo ".env.production generation is commented out..."
+      #         echo ".env.production generation is commented out..."
 
       - name: Build project
         run: npm run build
