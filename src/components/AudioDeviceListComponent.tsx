@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { startCodespace } from '../startCodespace.ts';
 import LoadingComponent from './LoadingComponent';
 import { useTheme } from '@mui/material/styles';
-import CryptoJS from "crypto-js";
+import { initializeSodium, decryptWithXChaCha20Poly1305 } from '../utils/encryption';
 
 const AudioDeviceListComponent: React.FC = () => {
     const theme = useTheme();
@@ -17,34 +17,46 @@ const AudioDeviceListComponent: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
     const [progress, setProgress] = useState<number>(0);
+    const [deviceApiUrl, setDeviceApiUrl] = useState<string>('');
     const { t } = useTranslation();
-    const isDevMode = process.env.NODE_ENV === 'development';
-    let deviceApiUrl: string;
-    if (isDevMode)
-    {
-        const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
-        if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== '')
-        {
-            console.log('Encrypted secret read out of environment:', encryptedDeviceApiUrlFromEnv);
-            const bytes = CryptoJS.AES.decrypt(encryptedDeviceApiUrlFromEnv, '32-characters-long-secure-key-12');
-            deviceApiUrl = bytes.toString(CryptoJS.enc.Utf8);
-            if (deviceApiUrl === '')
-            {
-                deviceApiUrl = encryptedDeviceApiUrlFromEnv;
+    const isDevMode = import.meta.env.MODE === 'development';
+
+    useEffect(() => {
+        const setupApiUrl = async () => {
+            await initializeSodium();
+
+            let url: string;
+            if (isDevMode) {
+                const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
+                if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== '') {
+                    console.log('Encrypted secret read out of environment:', encryptedDeviceApiUrlFromEnv);
+                    try {
+                        url = await decryptWithXChaCha20Poly1305(
+                            encryptedDeviceApiUrlFromEnv,
+                            '32-characters-long-secure-key-12'
+                        );
+                    } catch (e) {
+                        console.error('Error decrypting API URL:', e);
+                        url = 'http://localhost:5027/api/AudioDevices';
+                    }
+                } else {
+                    url = 'http://localhost:5027/api/AudioDevices';
+                }
+            } else {
+                url = 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
             }
-        }
-        else
-        {
-            deviceApiUrl = 'http://localhost:5027/api/AudioDevices';
-        }
-    }
-    else
-    {
-        deviceApiUrl = 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
-    }
+            setDeviceApiUrl(url);
+        };
+
+        setupApiUrl().catch((error) => {
+            console.error('Error setting up API URL:', error);
+        });
+    }, [isDevMode]);
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!deviceApiUrl) return;
+
             const retryNumber = 30;
             const pauseDurationMs = 1000;
 
@@ -75,7 +87,9 @@ const AudioDeviceListComponent: React.FC = () => {
             setLoading(false);
         };
 
-        fetchData().then(r => console.log(r));
+        if (deviceApiUrl) {
+            fetchData().then(r => console.log(r));
+        }
     }, [t, isDevMode, deviceApiUrl]);
 
     return (
@@ -91,7 +105,7 @@ const AudioDeviceListComponent: React.FC = () => {
                             },
                         }}
                     >
-                    <Typography sx={{ fontSize: 'inherit' }}>This repository shows collected audio devices. Expand to learn more...</Typography>
+                        <Typography sx={{ fontSize: 'inherit' }}>This repository shows collected audio devices. Expand to learn more...</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography sx={{ fontSize: 'inherit' }}>
