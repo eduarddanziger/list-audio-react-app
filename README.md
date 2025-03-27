@@ -1,22 +1,23 @@
-# List Audio Devices in React (TypeScript + Vite)
+# Audio Device Repository, React / ASP.NET Core 
 
 
-Shows a list of audio devices in a React application. The application is built using TypeScript and Vite.
+Visualizes an audio devices repository utilizing React JS (TypeScript). The backend is ASP.Net Core Server with REST API (C# / MongoDB).
 
-## Starting Device List ASP.NET Core Web API Server
+## Staring a latest rollout on GitHub Infrastructure
+- Open a browser and navigate to [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/)
 
-- In development environment, you can start the server vie Terminal using the following command:
+## Development environment
+
+### Starting ASP.NET Core Web API Server
+
+- Via Terminal using the following command:
 
 ```powershell or bash
 cd DeviceListServer
 dotnet run --launch-profile http
 ```
 
-## Starting a client application from the cloud (latest GitHub Pages version)
-- Open a browser and navigate to [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/)
-
-
-## Starting a client application, development environment
+### Starting a client application
 - In development environment, you can start the client application via Terminal using the following command:
 
 ```powershell or bash
