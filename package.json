@@ -5,8 +5,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "generateVersion": "node scripts/generateVersion.js",
-    "prebuild": "npm run generateVersion",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",

@@ -1,4 +1,16 @@
+using DeviceRepoAspNetCore.Middleware;
+using DeviceRepoAspNetCore.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+// builder.Logging.AddEventSourceLogger(); // ETW (Event Tracing for Windows) or EventPipe (cross-platform).
+
+// Add services to the container.
+builder.Services.AddSingleton<IAudioDeviceStorage, InMemoryAudioDeviceStorage>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -23,7 +35,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+// Use my middleware
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
 app.UseStaticFiles();
 
 app.UseRouting();

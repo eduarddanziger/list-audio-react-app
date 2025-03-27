@@ -1,6 +1,7 @@
 import React, { useState, useMemo, ReactNode } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import { ThemeContext } from './themeContextUtils';
+import { GlobalStyles } from '@mui/material';
 
 interface ThemeProviderComponentProps {
     children: ReactNode;
@@ -25,7 +26,17 @@ export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ 
 
     return (
         <ThemeContext.Provider value={{ toggleTheme, theme }}>
-            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <GlobalStyles
+                    styles={{
+                        body: {
+                            backgroundColor: theme.palette.background.default,
+                        },
+                    }}
+                />
+                {children}
+            </ThemeProvider>
         </ThemeContext.Provider>
     );
 };

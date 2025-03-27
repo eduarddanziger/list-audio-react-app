@@ -1,4 +1,4 @@
-﻿namespace DeviceRepoAspNetCore;
+﻿namespace DeviceRepoAspNetCore.Models;
 
 public class AudioDevice
 {
@@ -7,5 +7,4 @@ public class AudioDevice
     public int Volume { get; set; }
     public required DateTime LastSeen { get; set; }
     public required string HostName { get; set; }
-    public required string HostIp { get; set; }
 }

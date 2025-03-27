@@ -32,12 +32,29 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selecte
                         expandIcon={<ExpandMoreIcon />}
                         onClick={() => setSelectedDevice(device)}
                         sx={{
-                            backgroundColor: selectedDevice?.pnpId === device.pnpId ? (theme.palette.mode === 'dark' ? '#424242' : '#f0f0f0') : 'inherit',
-                            color: selectedDevice?.pnpId === device.pnpId ? (theme.palette.mode === 'dark' ? '#ffffff' : 'inherit') : 'inherit',
+                            backgroundColor:
+                                selectedDevice?.pnpId === device.pnpId
+                                    ? theme.palette.mode === 'dark'
+                                        ? '#424242'
+                                        : '#f0f0f0'
+                                    : 'inherit',
+                            color:
+                                selectedDevice?.pnpId === device.pnpId
+                                    ? theme.palette.mode === 'dark'
+                                        ? '#ffffff'
+                                        : 'inherit'
+                                    : 'inherit',
                             '&:hover': {
-                                backgroundColor: theme.palette.mode === 'dark' ? '#616161' : '#e0e0e0',
+                                backgroundColor:
+                                    theme.palette.mode === 'dark'
+                                        ? '#616161'
+                                        : '#e0e0e0',
                             },
                             cursor: 'pointer',
+                            '& .MuiAccordionSummary-expandIconWrapper': {
+                                order: -1,
+                                marginRight: theme.spacing(1),
+                            },
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
