@@ -21,7 +21,7 @@ internal class InMemoryAudioDeviceStorage : IAudioDeviceStorage
             "{5DDB4DA4-52FF-4175-A061-8071ECBDB55D}_Host2",
             new AudioDevice
             {
-                PnpId = "{5DDB4DA4-52FF-4175-A061-8071ECBDB55D}",
+                PnpId = "{74FE0EBE-7670-55DB-8C9E-14DC1ABC2231}",
                 Name = "Microphone (USB Audio)",
                 Volume = 50,
                 LastSeen = DateTime.Parse("2023-07-01T11:20:00"),
