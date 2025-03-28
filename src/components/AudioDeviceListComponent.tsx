@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AudioDevice } from '../types/AudioDevice';
+import { ApiAudioDevice } from '../types/ApiAudioDevice';
 import { handleError } from '../utils/errorHandler';
 import AudioDeviceList from './AudioDeviceList';
 import { Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
@@ -54,9 +55,21 @@ const AudioDeviceListComponent: React.FC = () => {
             while (attempts < retryNumber) {
                 try {
                     const response = await fetch(deviceApiUrl);
-                    const data = await response.json();
-                    setAudioDevices(data);
-                    setSelectedDevice(data[0] || null); // Set the initial selection to the first element
+                    const data = (await response.json()) as ApiAudioDevice[];
+
+                    // Convert to AudioDevice instances
+                    const audioDeviceInstances = data.map(apiDevice =>
+                        new AudioDevice(
+                            apiDevice.pnpId,
+                            apiDevice.name,
+                            apiDevice.volume,
+                            apiDevice.lastSeen,
+                            apiDevice.hostName
+                        )
+                    );
+                    setAudioDevices(audioDeviceInstances);
+                    setSelectedDevice(audioDeviceInstances[0] || null);
+
                     setError(null);
                     setProgress(100); // 100%
                     break;

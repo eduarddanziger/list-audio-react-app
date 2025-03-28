@@ -1,8 +1,14 @@
-export interface AudioDevice {
-    pnpId: string;
-    name: string;
-    volume: number;
-    lastSeen: string; // Assuming the date is returned as a string from the API
-    hostName: string;
-    hostIp: string;
+export class AudioDevice {
+    constructor(
+        public pnpId: string,
+        public name: string,
+        public volume: number,
+        public lastSeen: string,
+        public hostName: string,
+    ) {}
+
+    // Dynamic getter for 'key' (calculated on access)
+    get key(): string {
+        return `${this.pnpId}_${this.hostName}`; // Example: Combine with a delimiter
+    }
 }
