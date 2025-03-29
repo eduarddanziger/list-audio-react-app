@@ -24,22 +24,22 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({ audioDevices, selecte
         <List>
             {audioDevices.map((device) => (
                 <Accordion
-                    key={device.pnpId}
-                    expanded={expanded === device.pnpId}
-                    onChange={handleChange(device.pnpId)}
+                    key={device.key}
+                    expanded={expanded === device.key}
+                    onChange={handleChange(device.key)}
                 >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         onClick={() => setSelectedDevice(device)}
                         sx={{
                             backgroundColor:
-                                selectedDevice?.pnpId === device.pnpId
+                                selectedDevice?.key === device.key
                                     ? theme.palette.mode === 'dark'
                                         ? '#424242'
                                         : '#f0f0f0'
                                     : 'inherit',
                             color:
-                                selectedDevice?.pnpId === device.pnpId
+                                selectedDevice?.key === device.key
                                     ? theme.palette.mode === 'dark'
                                         ? '#ffffff'
                                         : 'inherit'
