@@ -63,4 +63,14 @@ internal class InMemoryAudioDeviceStorage : IAudioDeviceStorage
             device.Volume = volume;
         }
     }
+
+    public IEnumerable<AudioDevice> Search(string query)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<AudioDevice> SearchByField(string field, string query)
+    {
+        throw new NotImplementedException();
+    }
 }
