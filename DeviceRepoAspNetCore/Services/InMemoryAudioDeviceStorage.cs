@@ -1,4 +1,5 @@
 ﻿using DeviceRepoAspNetCore.Models;
+using System.Reflection;
 
 namespace DeviceRepoAspNetCore.Services;
 
@@ -66,11 +67,32 @@ internal class InMemoryAudioDeviceStorage : IAudioDeviceStorage
 
     public IEnumerable<AudioDevice> Search(string query)
     {
-        throw new NotImplementedException();
-    }
+        if (string.IsNullOrWhiteSpace(query))
+            return Enumerable.Empty<AudioDevice>();
 
+        var normalizedQuery = query.ToLowerInvariant();
+        return _audioDevices.Values.Where(device =>
+#pragma warning disable CA1862
+               device.Name.ToLowerInvariant().Contains(normalizedQuery) 
+            || device.HostName.ToLowerInvariant().Contains(normalizedQuery)
+#pragma warning restore CA1862
+        );
+    }
     public IEnumerable<AudioDevice> SearchByField(string field, string query)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(query))
+            return Enumerable.Empty<AudioDevice>();
+
+        var property = typeof(AudioDevice).GetProperty(field,
+            BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+
+        if (property == null)
+            throw new ArgumentException($"Unknown field: {field}");
+
+        return _audioDevices.Values.Where(d =>
+        {
+            var value = property.GetValue(d);
+            return value != null && value.ToString()!.Equals(query, StringComparison.OrdinalIgnoreCase);
+        });
     }
 }
