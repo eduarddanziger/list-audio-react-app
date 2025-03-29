@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useTranslation} from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
 import {useTheme} from '@mui/material/styles';
-import CryptoJS from "crypto-js";
+import { getDeviceApiUrl } from '../utils/getDeviceApiUrl';
 
 const AudioDeviceListComponent: React.FC = () => {
     const theme = useTheme();
@@ -16,37 +16,23 @@ const AudioDeviceListComponent: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
     const [progress, setProgress] = useState<number>(0);
-    const {t} = useTranslation();
+    const { t: translate } = useTranslation();
+
     const isDevMode = process.env.NODE_ENV === 'development';
-    let deviceApiUrl: string;
-    if (isDevMode) {
-        const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
-        if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== '') {
-            console.log('Encrypted secret read out of environment:', encryptedDeviceApiUrlFromEnv);
-            const bytes = CryptoJS.AES.decrypt(encryptedDeviceApiUrlFromEnv, '32-characters-long-secure-key-12');
-            deviceApiUrl = bytes.toString(CryptoJS.enc.Utf8);
-            if (deviceApiUrl === '') {
-                deviceApiUrl = encryptedDeviceApiUrlFromEnv;
-            }
-        } else {
-            deviceApiUrl = 'http://localhost:5027/api/AudioDevices';
-        }
-    } else {
-        deviceApiUrl = 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
-    }
+    const deviceApiUrl = getDeviceApiUrl(isDevMode);
 
     useEffect(() => {
-        const service = new AudioDeviceFetchService(
+        const service = new AudioDeviceFetchService( // create fetch service
             deviceApiUrl,
             isDevMode,
             ({ progress, error }) => {
                 setProgress(progress);
                 setError(error);
             },
-            t
+            translate
         );
 
-        const fetchData = async () => {
+        const fetchData = async () => { // fetch data
             setLoading(true);
             setProgress(3);
 
@@ -58,7 +44,7 @@ const AudioDeviceListComponent: React.FC = () => {
         };
 
         fetchData().catch(console.error);
-    }, [t, isDevMode, deviceApiUrl]);
+    }, [translate, isDevMode, deviceApiUrl]);
 
     return (
         <Box sx={{display: 'flex', flexDirection: {xs: 'column', md: 'row'}, gap: 2, padding: 2}}>
