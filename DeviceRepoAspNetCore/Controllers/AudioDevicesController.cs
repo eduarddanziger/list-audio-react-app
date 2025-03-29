@@ -1,5 +1,4 @@
 using DeviceRepoAspNetCore.Models;
-using DeviceRepoAspNetCore.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceRepoAspNetCore.Controllers
