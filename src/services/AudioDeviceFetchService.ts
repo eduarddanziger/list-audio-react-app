@@ -8,7 +8,7 @@ export interface FetchProgress {
 }
 
 export class AudioDeviceFetchService {
-    private readonly retryCount = 15;
+    private readonly retryCount = 32;
     private readonly pauseDuration = 2000;
 
     constructor(
