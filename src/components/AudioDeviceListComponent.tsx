@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { AudioDeviceFetchService } from '../services/AudioDeviceFetchService.ts';
 import {AudioDevice} from '../types/AudioDevice';
+import {ApiAudioDevice} from '../types/ApiAudioDevice';
+import {handleError} from '../utils/errorHandler';
 import AudioDeviceList from './AudioDeviceList';
 import {Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useTranslation} from 'react-i18next';
+import {startCodespace} from '../services/startCodespace.ts';
 import LoadingComponent from './LoadingComponent';
 import {useTheme} from '@mui/material/styles';
 import CryptoJS from "crypto-js";
@@ -36,28 +38,41 @@ const AudioDeviceListComponent: React.FC = () => {
     }
 
     useEffect(() => {
-        const service = new AudioDeviceFetchService(
-            deviceApiUrl,
-            isDevMode,
-            ({ progress, error }) => {
-                setProgress(progress);
-                setError(error);
-            },
-            t
-        );
-
         const fetchData = async () => {
+            const retryNumber = 30;
+            const pauseDurationMs = 1000;
+
             setLoading(true);
-            setProgress(3);
+            setProgress(100 / retryNumber); // ~7%
+            let attempts = 0;
+            while (attempts < retryNumber) {
+                try {
+                    const response = await fetch(deviceApiUrl);
+                    const apiAudioDeviceInstances = (await response.json()) as ApiAudioDevice[];
 
-            const audioDeviceInstances = await service.fetchAudioDevices();
-            setAudioDevices(audioDeviceInstances);
-            setSelectedDevice(audioDeviceInstances[0] || null);
+                    const audioDeviceInstances = apiAudioDeviceInstances.map(AudioDevice.fromApiData);
+                    setAudioDevices(audioDeviceInstances);
+                    setSelectedDevice(audioDeviceInstances[0] || null);
 
+                    setError(null);
+                    setProgress(100); // 100%
+                    break;
+                } catch (error) {
+                    if (isDevMode || ++attempts === retryNumber) {
+                        handleError(t('audioDevicesErrorDevMode'), error, setError);
+                        break;
+                    } else {
+                        handleError(t('audioDevicesErrorProdMode'), error, setError);
+                        await startCodespace();
+                        await new Promise(resolve => setTimeout(resolve, pauseDurationMs));
+                        setProgress((attempts + 1) * 100 / retryNumber);
+                    }
+                }
+            }
             setLoading(false);
         };
 
-        fetchData().catch(console.error);
+        fetchData().then(r => console.log(r));
     }, [t, isDevMode, deviceApiUrl]);
 
     return (
