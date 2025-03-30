@@ -12,30 +12,38 @@ import {
     SelectChangeEvent,
     FormControl,
     InputLabel,
-    IconButton
+    IconButton,
+    TextField,
+    Divider
 } from '@mui/material';
 import HeadsetIcon from '@mui/icons-material/Headset';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 import { formatDateTimeToSQL } from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
-import {AudioDevice} from "../types/AudioDevice.ts";
+import { AudioDevice } from "../types/AudioDevice.ts";
 
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
     selectedDevice: AudioDevice | null;
     setSelectedDevice: (device: AudioDevice) => void;
+    onSearch: (query: string, field: string | null) => void;
 }
 
 const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              audioDevices,
                                                              selectedDevice,
-                                                             setSelectedDevice
+                                                             setSelectedDevice,
+                                                             onSearch
                                                          }) => {
     const [expanded, setExpanded] = useState<string | false>(false);
     const [sortField, setSortField] = useState<keyof AudioDevice>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchField, setSearchField] = useState<'all' | keyof AudioDevice>('all');
     const theme = useTheme();
 
     // Sorted devices (cached with useMemo)
@@ -57,52 +65,113 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
         setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
     };
 
+    const handleSearch = () => {
+        onSearch(searchQuery, searchField === 'all' ? null : searchField);
+    };
+
+    const clearSearch = () => {
+        setSearchQuery('');
+        setSearchField('all');
+        onSearch('', null);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
 
     return (
         <Box>
-            {/* Sorting Controls */}
+            {/* Combined Sort/Search Controls */}
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0,
+                gap: 1,
                 mb: 2,
-                paddingTop: 4,
-                paddingLeft: 1,
+                p: 1,
                 backgroundColor: theme.palette.background.paper,
                 borderRadius: 1,
-                fontSize: '0.8rem'
+                boxShadow: theme.shadows[1],
+                flexWrap: 'wrap'
             }}>
-                <IconButton onClick={toggleSortDirection}>
-                    {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-                </IconButton>
-                <FormControl size="small" sx={{ minWidth: 120 ,fontSize: 'inherit', paddingLeft: 0}}>
-                    <InputLabel sx={{ paddingLeft: 0}}>Sort by</InputLabel>
-                    <Select
-                        sx={{ fontSize: 'inherit'}}
-                        value={sortField}
-                        label="Sort by"
-                        onChange={handleSortFieldChange}
-                        MenuProps={{
-                            sx: {
-                                '& .MuiMenu-paper': {
-                                    '& .MuiMenuItem-root': {
-                                        fontSize: '0.8rem'
+                {/* Sort Controls */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <IconButton onClick={toggleSortDirection} size="small">
+                        {sortDirection === 'asc' ? <ArrowUpwardIcon fontSize="small" /> : <ArrowDownwardIcon fontSize="small" />}
+                    </IconButton>
+                    <FormControl size="small" sx={{ minWidth: 120 }}>
+                        <InputLabel>Sort by</InputLabel>
+                        <Select
+                            value={sortField}
+                            label="Sort by"
+                            onChange={handleSortFieldChange}
+                            MenuProps={{
+                                PaperProps: {
+                                    sx: {
+                                        '& .MuiMenuItem-root': {
+                                            fontSize: '0.8rem'
+                                        }
                                     }
                                 }
+                            }}
+                        >
+                            <MenuItem value="name">Device Name</MenuItem>
+                            <MenuItem value="hostName">Host Name</MenuItem>
+                            <MenuItem value="lastSeen">Last Seen</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
+
+                <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
+
+                {/* Search Controls */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <TextField
+                        size="small"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        sx={{
+                            fontSize: '0.8rem',
+                            width: 180,
+                            '& .MuiInputBase-root': {
+                                paddingLeft: 1
                             }
                         }}
-                    >
-                        <MenuItem value="name">Device Name</MenuItem>
-                        <MenuItem value="hostName">Host Name</MenuItem>
-                        <MenuItem value="lastSeen">Last Seen</MenuItem>                    </Select>
-                </FormControl>
+                        InputProps={{
+                            startAdornment: (
+                                <SearchIcon fontSize="small" sx={{ mr: 1, color: 'action.active' }} />
+                            ),
+                            endAdornment: searchQuery && (
+                                <IconButton onClick={clearSearch} size="small" edge="end">
+                                    <ClearIcon fontSize="small" />
+                                </IconButton>
+                            )
+                        }}
+                    />
+                    <FormControl size="small" sx={{ minWidth: 120 }}>
+                        <InputLabel>Search in</InputLabel>
+                        <Select
+                            value={searchField}
+                            label="Search in"
+                            onChange={(e) => setSearchField(e.target.value as 'all' | keyof AudioDevice)}
+                        >
+                            <MenuItem value="all">All Fields</MenuItem>
+                            <MenuItem value="name">Device Name</MenuItem>
+                            <MenuItem value="hostName">Host Name</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
             </Box>
 
             {/* Device List */}
-                <List>
+            <List>
                 {sortedDevices.map((device) => (
                     <Accordion
                         key={device.key}
