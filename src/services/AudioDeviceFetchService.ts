@@ -36,7 +36,7 @@ export class AudioDeviceFetchService {
         params.append('query', query);
         if (field) params.append('field', field)
 
-        const response = await fetch(`${this.apiUrl}/audio-devices/search?${params}`);
+        const response = await fetch(`${this.apiUrl}/search?${params}`);
         return await response.json();
     }
 
