@@ -97,13 +97,15 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                 backgroundColor: theme.palette.background.paper,
                 borderRadius: 1,
                 boxShadow: theme.shadows[0],
+                fontSize: '0.8rem',
                 flexWrap: 'wrap'
             }}>
                 {/* Sort Controls */}
-                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                    <FormControl size="small" sx={{minWidth: 150}}>
-                        <InputLabel>Sort by</InputLabel>
+                <Box sx={{display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit'}}>
+                    <FormControl size="small" sx={{minWidth: 125, fontSize: 'inherit'}}>
+                        <InputLabel sx={{fontSize: 'inherit'}}>Sort by</InputLabel>
                         <Select
+                            sx={{fontSize: 'inherit'}}
                             value={sortField}
                             label="Sort by"
                             onChange={handleSortFieldChange}
@@ -111,13 +113,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 PaperProps: {
                                     sx: {
                                         '& .MuiMenuItem-root': {
-                                            fontSize: '0.8rem'
+                                            fontSize: '0.8rem',
                                         }
                                     }
                                 }
                             }}
                         >
-                            <MenuItem value="name">Device Name</MenuItem>
+                            <MenuItem value="name" >Device Name</MenuItem>
                             <MenuItem value="hostName">Host Name</MenuItem>
                             <MenuItem value="lastSeen">Last Seen</MenuItem>
                         </Select>
@@ -131,13 +133,21 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                 <Box sx={{width: 20}}/>
 
                 {/* Search Controls */}
-                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                    <FormControl size="small" sx={{minWidth: 150}}>
-                        <InputLabel>Search in</InputLabel>
+                <Box sx={{display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit'}}>
+                    <FormControl size="small" sx={{minWidth: 125}}>
+                        <InputLabel sx={{fontSize: 'inherit'}}>Search in</InputLabel>
                         <Select
                             value={searchField}
+                            sx={{fontSize: 'inherit'}}
                             label="Search in"
                             onChange={(e) => setSearchField(e.target.value as 'all' | keyof AudioDevice)}
+                            MenuProps={{
+                                    sx: {
+                                        '& .MuiMenuItem-root': {
+                                            fontSize: '0.8rem',
+                                        }
+                                    }
+                            }}
                         >
                             <MenuItem value="all">All Fields</MenuItem>
                             <MenuItem value="name">Device Name</MenuItem>
@@ -146,14 +156,19 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                     </FormControl>
                     <TextField
                         size="small"
+                        sx={{
+                            width: 200,
+                            '& .MuiInputBase-input': {
+                                fontSize: '0.8rem'
+                            }
+                        }}
                         placeholder="Search..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        sx={{fontSize: '0.8rem', width: 180}}
                         InputProps={{
                             startAdornment: (
-                                <InputAdornment position="start">
+                                <InputAdornment position="start" >
                                     <SearchIcon fontSize="small" sx={{mr: 1, color: 'action.active'}}/>
                                 </InputAdornment>
                             ),
