@@ -55,20 +55,20 @@ const AudioDeviceListComponent: React.FC = () => {
                         sx={{
                             '& .MuiAccordionSummary-expandIconWrapper': {
                                 order: -1,
-                                marginRight: theme.spacing(1),
+                                marginRight: theme.spacing(0),
                             },
                         }}
                     >
                     <Typography sx={{fontSize: 'inherit'}}>This repository shows collected audio devices. Expand to
                         learn more...</Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
+                    <AccordionDetails sx={{fontSize: 'inherit'}}>
                         <Typography sx={{fontSize: 'inherit'}}>
                             This repository shows a list of audio devices that were collected on connected host
                             computers.<br/>
                             The application is built using React (TypeScript + Vite).<br/>
-                            The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br/>
-                            Note: Initializing could delay due to the infrastructure starting process.
+                            The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br/><br/>
+                            NOTE: Initializing could delay due to the infrastructure starting process.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -76,12 +76,17 @@ const AudioDeviceListComponent: React.FC = () => {
                     <LoadingComponent progress={progress} error={error}/>
                 ) : (
                     <>
-                        {error && <Alert severity="info" sx={{mt: 1}}>{error}</Alert>}
-                        <AudioDeviceList
-                            audioDevices={audioDevices}
-                            selectedDevice={selectedDevice}
-                            setSelectedDevice={setSelectedDevice}
-                        />
+                        {error ? (
+                            <Alert severity="info" sx={{ mt: 1 }}>
+                                {error}
+                            </Alert>
+                        ) : (
+                            <AudioDeviceList
+                                audioDevices={audioDevices}
+                                selectedDevice={selectedDevice}
+                                setSelectedDevice={setSelectedDevice}
+                            />
+                        )}
                     </>
                 )}
             </Box>

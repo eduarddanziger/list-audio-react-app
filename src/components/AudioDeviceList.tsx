@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import HeadsetIcon from '@mui/icons-material/Headset';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SortIcon from '@mui/icons-material/Sort';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { formatDateTimeToSQL } from '../utils/formatDate';
@@ -68,19 +67,21 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1,
+                gap: 0,
                 mb: 2,
                 paddingTop: 4,
-                paddingLeft: 2,
+                paddingLeft: 1,
                 backgroundColor: theme.palette.background.paper,
                 borderRadius: 1,
                 fontSize: '0.8rem'
             }}>
-                <SortIcon color="action" />
-                <FormControl size="small" sx={{ minWidth: 120 ,fontSize: 'inherit'}}>
-                    <InputLabel sx={{fontSize: 'inherit'}}>Sort by</InputLabel>
+                <IconButton onClick={toggleSortDirection}>
+                    {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+                </IconButton>
+                <FormControl size="small" sx={{ minWidth: 120 ,fontSize: 'inherit', paddingLeft: 0}}>
+                    <InputLabel sx={{ paddingLeft: 0}}>Sort by</InputLabel>
                     <Select
-                        sx={{ fontSize: 'inherit' }}
+                        sx={{ fontSize: 'inherit'}}
                         value={sortField}
                         label="Sort by"
                         onChange={handleSortFieldChange}
@@ -98,9 +99,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         <MenuItem value="hostName">Host Name</MenuItem>
                         <MenuItem value="lastSeen">Last Seen</MenuItem>                    </Select>
                 </FormControl>
-                <IconButton onClick={toggleSortDirection}>
-                    {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-                </IconButton>
             </Box>
 
             {/* Device List */}
