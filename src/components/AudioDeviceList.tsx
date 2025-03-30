@@ -39,11 +39,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              setSelectedDevice,
                                                              onSearch
                                                          }) => {
-    const [expanded, setExpanded] = useState<string | false>(false);
+    //const [expanded, setExpanded] = useState<string | false>(false);
     const [sortField, setSortField] = useState<keyof AudioDevice>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [searchQuery, setSearchQuery] = useState('');
     const [searchField, setSearchField] = useState<'all' | keyof AudioDevice>('all');
+    const SORT_SEARCH_ACCORDION_ID = 'sort-search-accordion'
+    const [expanded, setExpanded] = useState<string | false>(SORT_SEARCH_ACCORDION_ID);
     const theme = useTheme();
 
     // Sorted devices (cached with useMemo)
@@ -86,103 +88,125 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     };
 
     return (
-        <Box>
-            {/* Combined Sort/Search Controls */}
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                mb: 2,
-                paddingTop: 3,
-                backgroundColor: theme.palette.background.paper,
-                borderRadius: 1,
-                boxShadow: theme.shadows[0],
-                fontSize: '0.8rem',
-                flexWrap: 'wrap'
-            }}>
-                {/* Sort Controls */}
-                <Box sx={{display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit'}}>
-                    <FormControl size="small" sx={{minWidth: 125, fontSize: 'inherit'}}>
-                        <InputLabel sx={{fontSize: 'inherit'}}>Sort by</InputLabel>
-                        <Select
-                            sx={{fontSize: 'inherit'}}
-                            value={sortField}
-                            label="Sort by"
-                            onChange={handleSortFieldChange}
-                            MenuProps={{
-                                PaperProps: {
-                                    sx: {
-                                        '& .MuiMenuItem-root': {
-                                            fontSize: '0.8rem',
-                                        }
-                                    }
-                                }
-                            }}
-                        >
-                            <MenuItem value="name" >Device Name</MenuItem>
-                            <MenuItem value="hostName">Host Name</MenuItem>
-                            <MenuItem value="lastSeen">Last Seen</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <IconButton onClick={toggleSortDirection} size="small">
-                        {sortDirection === 'asc' ? <ArrowUpwardIcon fontSize="small"/> :
-                            <ArrowDownwardIcon fontSize="small"/>}
-                    </IconButton>
-                </Box>
+        <Box sx={{ flexGrow: 1, paddingTop: '0.5rem' }}>
+            <Accordion
+                expanded={expanded === SORT_SEARCH_ACCORDION_ID}
+                onChange={handleChange(SORT_SEARCH_ACCORDION_ID)}
+                sx={{fontSize: '0.8rem'}}
+            >
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon/>}
+                    sx={{
+                        '& .MuiAccordionSummary-expandIconWrapper': {
+                            order: -1,
+                            marginRight: theme.spacing(0),
+                        },
+                    }}
+                >
+                    <Typography sx={{fontSize: 'inherit'}}>
+                        Sort / Search
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{fontSize: 'inherit', p: 0}}>
 
-                <Box sx={{width: 20}}/>
-
-                {/* Search Controls */}
-                <Box sx={{display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit'}}>
-                    <FormControl size="small" sx={{minWidth: 125}}>
-                        <InputLabel sx={{fontSize: 'inherit'}}>Search in</InputLabel>
-                        <Select
-                            value={searchField}
-                            sx={{fontSize: 'inherit'}}
-                            label="Search in"
-                            onChange={(e) => setSearchField(e.target.value as 'all' | keyof AudioDevice)}
-                            MenuProps={{
-                                    sx: {
-                                        '& .MuiMenuItem-root': {
-                                            fontSize: '0.8rem',
+                    {/* Combined Sort/Search Controls */}
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        paddingLeft: 5,
+                        mb: 2,
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius: 1,
+                        boxShadow: theme.shadows[0],
+                        fontSize: '0.8rem',
+                        flexWrap: 'wrap'
+                    }}>
+                        {/* Sort Controls */}
+                        <Box sx={{display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit'}}>
+                            <FormControl size="small" sx={{minWidth: 125, fontSize: 'inherit'}}>
+                                <InputLabel sx={{fontSize: 'inherit'}}>Sort by</InputLabel>
+                                <Select
+                                    sx={{fontSize: 'inherit'}}
+                                    value={sortField}
+                                    label="Sort by"
+                                    onChange={handleSortFieldChange}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            sx: {
+                                                '& .MuiMenuItem-root': {
+                                                    fontSize: '0.8rem',
+                                                }
+                                            }
                                         }
+                                    }}
+                                >
+                                    <MenuItem value="name">Device Name</MenuItem>
+                                    <MenuItem value="hostName">Host Name</MenuItem>
+                                    <MenuItem value="lastSeen">Last Seen</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <IconButton onClick={toggleSortDirection} size="small">
+                                {sortDirection === 'asc' ? <ArrowUpwardIcon fontSize="small"/> :
+                                    <ArrowDownwardIcon fontSize="small"/>}
+                            </IconButton>
+                        </Box>
+
+                        <Box sx={{width: 20}}/>
+
+                        {/* Search Controls */}
+                        <Box sx={{display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit'}}>
+                            <FormControl size="small" sx={{minWidth: 125}}>
+                                <InputLabel sx={{fontSize: 'inherit'}}>Search in</InputLabel>
+                                <Select
+                                    value={searchField}
+                                    sx={{fontSize: 'inherit'}}
+                                    label="Search in"
+                                    onChange={(e) => setSearchField(e.target.value as 'all' | keyof AudioDevice)}
+                                    MenuProps={{
+                                        sx: {
+                                            '& .MuiMenuItem-root': {
+                                                fontSize: '0.8rem',
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="all">All Fields</MenuItem>
+                                    <MenuItem value="name">Device Name</MenuItem>
+                                    <MenuItem value="hostName">Host Name</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField
+                                size="small"
+                                sx={{
+                                    width: 200,
+                                    '& .MuiInputBase-input': {
+                                        fontSize: '0.8rem'
                                     }
-                            }}
-                        >
-                            <MenuItem value="all">All Fields</MenuItem>
-                            <MenuItem value="name">Device Name</MenuItem>
-                            <MenuItem value="hostName">Host Name</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        size="small"
-                        sx={{
-                            width: 200,
-                            '& .MuiInputBase-input': {
-                                fontSize: '0.8rem'
-                            }
-                        }}
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start" >
-                                    <SearchIcon fontSize="small" sx={{mr: 1, color: 'action.active'}}/>
-                                </InputAdornment>
-                            ),
-                            endAdornment: searchQuery && (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={clearSearch} size="small" edge="end">
-                                        <ClearIcon fontSize="small"/>
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                    />
-                </Box>
-            </Box>
+                                }}
+                                placeholder="Search..."
+                                value={searchQuery}
+                                onChange={e => setSearchQuery(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchIcon fontSize="small" sx={{mr: 1, color: 'action.active'}}/>
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: searchQuery && (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={clearSearch} size="small" edge="end">
+                                                <ClearIcon fontSize="small"/>
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                </AccordionDetails>
+            </Accordion>
 
             {/* Device List */}
             <List>

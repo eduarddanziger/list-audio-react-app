@@ -62,9 +62,9 @@ const AudioDeviceListComponent: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, padding: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, padding: 2 }}>
             <Box sx={{ flex: 1 }}>
-                <Accordion sx={{ fontSize: '0.8rem' }}>
+                <Accordion sx={{ fontSize: '0.8rem', padding: 0 }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         sx={{
@@ -75,10 +75,10 @@ const AudioDeviceListComponent: React.FC = () => {
                         }}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
-                            This repository shows collected audio devices. Expand to learn more...
+                            This repository shows collected audio devices...
                         </Typography>
                     </AccordionSummary>
-                    <AccordionDetails sx={{ fontSize: 'inherit' }}>
+                    <AccordionDetails sx={{ fontSize: 'inherit', paddingLeft:5, paddingRight: 5, paddingTop: 0, paddingBottom: 0 }}>
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows a list of audio devices that were collected on connected host
                             computers.<br />
