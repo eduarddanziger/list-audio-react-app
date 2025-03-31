@@ -1,6 +1,6 @@
-import { AudioDevice } from '../types/AudioDevice';
-import { ApiAudioDevice } from '../types/ApiAudioDevice';
-import { startCodespace } from './startCodespace.ts';
+import {AudioDevice} from '../types/AudioDevice';
+import {ApiAudioDevice} from '../types/ApiAudioDevice';
+import {startCodespace} from './startCodespace.ts';
 
 export interface FetchProgress {
     progress: number;
@@ -28,6 +28,15 @@ export class AudioDeviceFetchService {
 
     private async fetchDevices(): Promise<ApiAudioDevice[]> {
         const response = await fetch(this.apiUrl);
+        return await response.json();
+    }
+
+    private async searchDevices(query: string, field: string | null): Promise<ApiAudioDevice[]> {
+        const params = new URLSearchParams();
+        params.append('query', query);
+        if (field) params.append('field', field)
+
+        const response = await fetch(`${this.apiUrl}/search?${params}`);
         return await response.json();
     }
 
@@ -70,4 +79,12 @@ export class AudioDeviceFetchService {
 
         return [];
     }
+
+    async searchAudioDevices(query: string, field: string | null = null): Promise<AudioDevice[]> {
+        const apiDevices = await this.searchDevices(query, field);
+        const audioDevices = apiDevices.map(AudioDevice.fromApiData);
+        this.onProgress({ progress: 100, error: null });
+        return audioDevices;
+    }
+
 }
