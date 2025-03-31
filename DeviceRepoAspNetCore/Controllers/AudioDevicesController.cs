@@ -54,13 +54,11 @@ namespace DeviceRepoAspNetCore.Controllers
             [FromQuery] string query,
             [FromQuery] string field = null)
         {
-            if (string.IsNullOrEmpty(field))
-            {
+            return string.IsNullOrEmpty(field) ?
                 // Full-text search across all fields
-                return storage.Search(query);
-            }
-            // Field-specific search (e.g., hostName)
-            return storage.SearchByField(field, query);
+                storage.Search(query) :
+                // Field-specific search (e.g., hostName)
+                storage.SearchByField(field, query);
         }
     }
 }
