@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {
     List,
     Typography,
@@ -14,7 +14,8 @@ import {
     InputLabel,
     IconButton,
     TextField,
-    InputAdornment
+    InputAdornment,
+    Chip
 } from '@mui/material';
 import HeadsetIcon from '@mui/icons-material/Headset';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -24,7 +25,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import {formatDateTimeToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
-import {AudioDevice} from "../types/AudioDevice.ts";
+import {AudioDevice} from '../types/AudioDevice.ts';
 
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
@@ -43,13 +44,21 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [searchQuery, setSearchQuery] = useState('');
     const [searchField, setSearchField] = useState<'all' | keyof AudioDevice>('all');
+    const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
 
-    const SORT_SEARCH_ACCORDION_ID = 'sort-search-accordion'
+    const SORT_SEARCH_ACCORDION_ID = 'sort-search-accordion';
     const [expanded, setExpanded] = useState<string | false>(SORT_SEARCH_ACCORDION_ID);
 
     const theme = useTheme();
 
-    // Sorted devices (cached with useMemo)
+    useEffect(() => {
+        const savedQuery = localStorage.getItem('appliedSearchQuery');
+        if (savedQuery) {
+            setSearchQuery(savedQuery);
+            setAppliedSearchQuery(savedQuery);
+        }
+    }, []);
+
     const sortedDevices = useMemo(() => {
         return [...audioDevices].sort((a, b) => {
             const aValue = String(a[sortField]).toLowerCase();
@@ -65,17 +74,21 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     };
 
     const toggleSortDirection = () => {
-        setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+        setSortDirection(prev => (prev === 'asc' ? 'desc' : 'asc'));
     };
 
     const handleSearch = () => {
         onSearch(searchQuery, searchField === 'all' ? null : searchField);
+        setAppliedSearchQuery(searchQuery);
+        localStorage.setItem('appliedSearchQuery', searchQuery);
     };
 
     const clearSearch = () => {
         setSearchQuery('');
         setSearchField('all');
+        setAppliedSearchQuery('');
         onSearch('', null);
+        localStorage.removeItem('appliedSearchQuery');
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -93,23 +106,22 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             <Accordion
                 expanded={expanded === SORT_SEARCH_ACCORDION_ID}
                 onChange={handleChange(SORT_SEARCH_ACCORDION_ID)}
-                sx={{fontSize: '0.8rem'}}
+                sx={{ fontSize: '0.8rem' }}
             >
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
+                    expandIcon={<ExpandMoreIcon />}
                     sx={{
                         '& .MuiAccordionSummary-expandIconWrapper': {
                             order: -1,
-                            marginRight: theme.spacing(0),
-                        },
+                            marginRight: theme.spacing(0)
+                        }
                     }}
                 >
-                    <Typography sx={{fontSize: 'inherit'}}>
-                        Sort / Search
+                    <Typography sx={{ fontSize: 'inherit' }}>
+                        Sort/Search...
                     </Typography>
                 </AccordionSummary>
-                <AccordionDetails sx={{fontSize: 'inherit', p: 0}}>
-                    {/* Combined Sort/Search Controls */}
+                <AccordionDetails sx={{ fontSize: 'inherit', p: 0 }}>
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -120,14 +132,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         boxShadow: theme.shadows[0],
                         fontSize: '0.8rem',
                         flexWrap: 'wrap',
-                        paddingLeft: 1,
+                        paddingLeft: 1
                     }}>
-                        {/* Sort Controls */}
-                        <Box sx={{display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit'}}>
-                            <FormControl size="small" sx={{minWidth: 125, fontSize: 'inherit'}}>
-                                <InputLabel sx={{fontSize: 'inherit'}}>Sort by</InputLabel>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit' }}>
+                            <FormControl size="small" sx={{ minWidth: 125, fontSize: 'inherit' }}>
+                                <InputLabel sx={{ fontSize: 'inherit' }}>Sort by</InputLabel>
                                 <Select
-                                    sx={{fontSize: 'inherit'}}
+                                    sx={{ fontSize: 'inherit' }}
                                     value={sortField}
                                     label="Sort by"
                                     onChange={handleSortFieldChange}
@@ -135,7 +146,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                         PaperProps: {
                                             sx: {
                                                 '& .MuiMenuItem-root': {
-                                                    fontSize: '0.8rem',
+                                                    fontSize: '0.8rem'
                                                 }
                                             }
                                         }
@@ -147,26 +158,26 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 </Select>
                             </FormControl>
                             <IconButton onClick={toggleSortDirection} size="small">
-                                {sortDirection === 'asc' ? <ArrowUpwardIcon fontSize="small"/> :
-                                    <ArrowDownwardIcon fontSize="small"/>}
+                                {sortDirection === 'asc'
+                                    ? <ArrowUpwardIcon fontSize="small" />
+                                    : <ArrowDownwardIcon fontSize="small" />}
                             </IconButton>
                         </Box>
 
-                        <Box sx={{width: 10}}/>
+                        <Box sx={{ width: 10 }} />
 
-                        {/* Search Controls */}
-                        <Box sx={{display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit'}}>
-                            <FormControl size="small" sx={{minWidth: 125}}>
-                                <InputLabel sx={{fontSize: 'inherit'}}>Search in</InputLabel>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit' }}>
+                            <FormControl size="small" sx={{ minWidth: 125 }}>
+                                <InputLabel sx={{ fontSize: 'inherit' }}>Search in</InputLabel>
                                 <Select
                                     value={searchField}
-                                    sx={{fontSize: 'inherit'}}
+                                    sx={{ fontSize: 'inherit' }}
                                     label="Search in"
                                     onChange={(e) => setSearchField(e.target.value as 'all' | keyof AudioDevice)}
                                     MenuProps={{
                                         sx: {
                                             '& .MuiMenuItem-root': {
-                                                fontSize: '0.8rem',
+                                                fontSize: '0.8rem'
                                             }
                                         }
                                     }}
@@ -179,7 +190,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             <TextField
                                 size="small"
                                 sx={{
-                                    width: 170,
+                                    width: 160,
                                     '& .MuiInputBase-input': {
                                         fontSize: '0.8rem'
                                     }
@@ -191,24 +202,38 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <SearchIcon fontSize="small" sx={{mr: 1, color: 'action.active'}}/>
+                                            <SearchIcon fontSize="small" sx={{ mr: 1, color: 'action.active' }} />
                                         </InputAdornment>
                                     ),
                                     endAdornment: searchQuery && (
                                         <InputAdornment position="end">
                                             <IconButton onClick={clearSearch} size="small" edge="end">
-                                                <ClearIcon fontSize="small"/>
+                                                <ClearIcon fontSize="small" />
                                             </IconButton>
                                         </InputAdornment>
                                     )
                                 }}
                             />
+                            {appliedSearchQuery && (
+                                <Box sx={{ mt: 1, ml: 1, fontSize: 'inherit' , paddingBottom: 1}}>
+                                    <Chip
+                                        label={`Filter: ${appliedSearchQuery}`}
+                                        onDelete={clearSearch}
+                                        variant="outlined"
+                                        sx={{
+                                            fontSize: 'inherit',
+                                            border: `1.8px solid ${theme.palette.divider}`,
+                                            backgroundColor: theme.palette.background.paper,
+                                            '& .MuiChip-label': { padding: '0 0.6rem' },
+                                        }}
+                                    />
+                                </Box>
+                            )}
                         </Box>
                     </Box>
                 </AccordionDetails>
             </Accordion>
 
-            {/* Device List */}
             <List>
                 {sortedDevices.map((device) => (
                     <Accordion
@@ -217,7 +242,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         onChange={handleChange(device.key)}
                     >
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon/>}
+                            expandIcon={<ExpandMoreIcon />}
                             onClick={() => setSelectedDevice(device)}
                             sx={{
                                 paddingTop: 0,
@@ -238,16 +263,16 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     backgroundColor:
                                         theme.palette.mode === 'dark'
                                             ? '#616161'
-                                            : '#e0e0e0',
+                                            : '#e0e0e0'
                                 },
                                 cursor: 'pointer',
                                 '& .MuiAccordionSummary-expandIconWrapper': {
                                     order: -1,
-                                    marginRight: theme.spacing(1),
-                                },
+                                    marginRight: theme.spacing(1)
+                                }
                             }}
                         >
-                            <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, width: '100%' }}>
                                 <Box sx={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -255,7 +280,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     flex: '1 1 50%',
                                     paddingRight: 1
                                 }}>
-                                    <HeadsetIcon fontSize="small"/>
+                                    <HeadsetIcon fontSize="small" />
                                     <Typography variant="subtitle1">{device.name}</Typography>
                                 </Box>
                                 <Box sx={{
@@ -280,7 +305,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             </Box>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <AudioDeviceDetailsExpanded device={device}/>
+                            <AudioDeviceDetailsExpanded device={device} />
                         </AccordionDetails>
                     </Accordion>
                 ))}

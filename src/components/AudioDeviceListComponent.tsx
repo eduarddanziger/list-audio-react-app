@@ -26,6 +26,13 @@ const AudioDeviceListComponent: React.FC = () => {
     const deviceApiUrl = getDeviceApiUrl(isDevMode);
 
     useEffect(() => {
+        const savedQuery = localStorage.getItem('appliedSearchQuery');
+        if (savedQuery) {
+            setSearchParams({ query: savedQuery, field: null });
+        }
+    }, []);
+
+    useEffect(() => {
         const service = new AudioDeviceFetchService(
             deviceApiUrl,
             isDevMode,
@@ -78,7 +85,7 @@ const AudioDeviceListComponent: React.FC = () => {
                             This repository shows collected audio devices...
                         </Typography>
                     </AccordionSummary>
-                    <AccordionDetails sx={{ fontSize: 'inherit' }}>
+                    <AccordionDetails sx={{ fontSize: 'inherit'}}>
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows a list of audio devices that were collected on connected host
                             computers.<br />
