@@ -5,7 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure logging
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+builder.Logging.AddConsole(options =>
+{
+#pragma warning disable CS0618 // Type or member is obsolete
+    options.TimestampFormat = "[yyyy-MM-dd HH:mm:ss.fff] ";
+#pragma warning restore CS0618 // Type or member is obsolete
+});
 builder.Logging.AddDebug();
 // builder.Logging.AddEventSourceLogger(); // ETW (Event Tracing for Windows) or EventPipe (cross-platform).
 
