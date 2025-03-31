@@ -68,7 +68,7 @@ internal class InMemoryAudioDeviceStorage : IAudioDeviceStorage
     public IEnumerable<AudioDevice> Search(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
-            return Enumerable.Empty<AudioDevice>();
+            return [];
 
         var normalizedQuery = query.ToLowerInvariant();
         return _audioDevices.Values.Where(device =>
@@ -81,7 +81,7 @@ internal class InMemoryAudioDeviceStorage : IAudioDeviceStorage
     public IEnumerable<AudioDevice> SearchByField(string field, string query)
     {
         if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(query))
-            return Enumerable.Empty<AudioDevice>();
+            return [];
 
         var property = typeof(AudioDevice).GetProperty(field,
             BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);

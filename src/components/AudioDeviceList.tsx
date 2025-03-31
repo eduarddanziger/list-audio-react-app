@@ -39,13 +39,14 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              setSelectedDevice,
                                                              onSearch
                                                          }) => {
-    //const [expanded, setExpanded] = useState<string | false>(false);
     const [sortField, setSortField] = useState<keyof AudioDevice>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [searchQuery, setSearchQuery] = useState('');
     const [searchField, setSearchField] = useState<'all' | keyof AudioDevice>('all');
+
     const SORT_SEARCH_ACCORDION_ID = 'sort-search-accordion'
     const [expanded, setExpanded] = useState<string | false>(SORT_SEARCH_ACCORDION_ID);
+
     const theme = useTheme();
 
     // Sorted devices (cached with useMemo)
@@ -108,19 +109,18 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails sx={{fontSize: 'inherit', p: 0}}>
-
                     {/* Combined Sort/Search Controls */}
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: 1,
-                        paddingLeft: 5,
                         mb: 2,
                         backgroundColor: theme.palette.background.paper,
                         borderRadius: 1,
                         boxShadow: theme.shadows[0],
                         fontSize: '0.8rem',
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        paddingLeft: 1,
                     }}>
                         {/* Sort Controls */}
                         <Box sx={{display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit'}}>
@@ -152,7 +152,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             </IconButton>
                         </Box>
 
-                        <Box sx={{width: 20}}/>
+                        <Box sx={{width: 10}}/>
 
                         {/* Search Controls */}
                         <Box sx={{display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit'}}>
@@ -179,7 +179,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             <TextField
                                 size="small"
                                 sx={{
-                                    width: 200,
+                                    width: 170,
                                     '& .MuiInputBase-input': {
                                         fontSize: '0.8rem'
                                     }
