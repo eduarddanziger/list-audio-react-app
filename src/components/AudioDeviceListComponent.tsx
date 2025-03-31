@@ -78,7 +78,7 @@ const AudioDeviceListComponent: React.FC = () => {
                             This repository shows collected audio devices...
                         </Typography>
                     </AccordionSummary>
-                    <AccordionDetails sx={{ fontSize: 'inherit', paddingLeft:5, paddingRight: 5, paddingTop: 0, paddingBottom: 0 }}>
+                    <AccordionDetails sx={{ fontSize: 'inherit' }}>
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows a list of audio devices that were collected on connected host
                             computers.<br />
