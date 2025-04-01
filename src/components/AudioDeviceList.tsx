@@ -146,13 +146,12 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         borderRadius: 1,
                         boxShadow: theme.shadows[0],
                         fontSize: 'inherit',
-                        flexWrap: 'wrap',
                         paddingLeft: 1,
                     }}>
                         <TextField
                             size="small"
                             sx={{
-                                width: 230,
+                                width: 180,
                                 '& .MuiInputBase-input': {
                                     fontSize: '0.8rem'
                                 }
