@@ -16,10 +16,7 @@ const AudioDeviceListComponent: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
     const [progress, setProgress] = useState<number>(0);
-    const [searchParams, setSearchParams] = useState<{ query: string; field: string | null }>({
-        query: '',
-        field: null
-    });
+    const [searchQuery, setSearchQuery] = useState('');
     const { t: translate } = useTranslation();
 
     const isDevMode = process.env.NODE_ENV === 'development';
@@ -28,7 +25,7 @@ const AudioDeviceListComponent: React.FC = () => {
     useEffect(() => {
         const savedQuery = localStorage.getItem('appliedSearchQuery');
         if (savedQuery) {
-            setSearchParams({ query: savedQuery, field: null });
+            setSearchQuery(savedQuery);
         }
     }, []);
 
@@ -43,13 +40,13 @@ const AudioDeviceListComponent: React.FC = () => {
             translate
         );
 
-        const fetchData = async (searchQuery: string = '', searchField: string | null = null) => {
+        const fetchData = async (searchQuery: string = '') => {
             setLoading(true);
             setProgress(3);
 
             try {
                 const audioDeviceInstances = searchQuery
-                    ? await service.searchAudioDevices(searchQuery, searchField ?? undefined)
+                    ? await service.searchAudioDevices(searchQuery)
                     : await service.fetchAudioDevices();
 
                 setAudioDevices(audioDeviceInstances);
@@ -61,11 +58,11 @@ const AudioDeviceListComponent: React.FC = () => {
             }
         };
 
-        fetchData(searchParams.query, searchParams.field).catch(console.error);
-    }, [translate, isDevMode, deviceApiUrl, searchParams]);
+        fetchData(searchQuery).catch(console.error);
+    }, [translate, isDevMode, deviceApiUrl, searchQuery]);
 
-    const handleSearch = (query: string, field: string | null) => {
-        setSearchParams({ query, field });
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
     };
 
     return (

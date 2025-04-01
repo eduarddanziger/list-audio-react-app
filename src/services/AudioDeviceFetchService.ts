@@ -31,10 +31,9 @@ export class AudioDeviceFetchService {
         return await response.json();
     }
 
-    private async searchDevices(query: string, field: string | null): Promise<ApiAudioDevice[]> {
+    private async searchDevices(query: string): Promise<ApiAudioDevice[]> {
         const params = new URLSearchParams();
         params.append('query', query);
-        if (field) params.append('field', field)
 
         const response = await fetch(`${this.apiUrl}/search?${params}`);
         return await response.json();
@@ -80,8 +79,8 @@ export class AudioDeviceFetchService {
         return [];
     }
 
-    async searchAudioDevices(query: string, field: string | null = null): Promise<AudioDevice[]> {
-        const apiDevices = await this.searchDevices(query, field);
+    async searchAudioDevices(query: string): Promise<AudioDevice[]> {
+        const apiDevices = await this.searchDevices(query);
         const audioDevices = apiDevices.map(AudioDevice.fromApiData);
         this.onProgress({ progress: 100, error: null });
         return audioDevices;
