@@ -117,9 +117,26 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         }
                     }}
                 >
-                    <Typography sx={{ fontSize: 'inherit' }}>
-                        Sort/Search...
-                    </Typography>
+                    <Box sx={{display: 'flex', fontSize: 'inherit', alignItems: 'center'}}>
+                        <Typography sx={{ fontSize: 'inherit' }}>
+                            Filter / Sort
+                        </Typography>
+                        {appliedSearchQuery && (
+                            <Box sx={{ mt: 1, ml: 1, fontSize: 'inherit' , paddingBottom: 1}}>
+                                <Chip
+                                    label={`Current Filter: ${appliedSearchQuery}`}
+                                    onDelete={clearSearch}
+                                    variant="outlined"
+                                    sx={{
+                                        fontSize: 'inherit',
+                                        border: `1.8px solid ${theme.palette.divider}`,
+                                        backgroundColor: theme.palette.background.paper,
+                                        '& .MuiChip-label': { padding: '0 0.6rem' },
+                                    }}
+                                />
+                            </Box>
+                        )}
+                    </Box>
                 </AccordionSummary>
                 <AccordionDetails sx={{ fontSize: 'inherit', p: 0 }}>
                     <Box sx={{
@@ -130,42 +147,10 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         backgroundColor: theme.palette.background.paper,
                         borderRadius: 1,
                         boxShadow: theme.shadows[0],
-                        fontSize: '0.8rem',
+                        fontSize: 'inherit',
                         flexWrap: 'wrap',
                         paddingLeft: 1
                     }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit' }}>
-                            <FormControl size="small" sx={{ minWidth: 125, fontSize: 'inherit' }}>
-                                <InputLabel sx={{ fontSize: 'inherit' }}>Sort by</InputLabel>
-                                <Select
-                                    sx={{ fontSize: 'inherit' }}
-                                    value={sortField}
-                                    label="Sort by"
-                                    onChange={handleSortFieldChange}
-                                    MenuProps={{
-                                        PaperProps: {
-                                            sx: {
-                                                '& .MuiMenuItem-root': {
-                                                    fontSize: '0.8rem'
-                                                }
-                                            }
-                                        }
-                                    }}
-                                >
-                                    <MenuItem value="name">Device Name</MenuItem>
-                                    <MenuItem value="hostName">Host Name</MenuItem>
-                                    <MenuItem value="lastSeen">Last Seen</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <IconButton onClick={toggleSortDirection} size="small">
-                                {sortDirection === 'asc'
-                                    ? <ArrowUpwardIcon fontSize="small" />
-                                    : <ArrowDownwardIcon fontSize="small" />}
-                            </IconButton>
-                        </Box>
-
-                        <Box sx={{ width: 10 }} />
-
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: 'inherit' }}>
                             <FormControl size="small" sx={{ minWidth: 125 }}>
                                 <InputLabel sx={{ fontSize: 'inherit' }}>Search in</InputLabel>
@@ -214,22 +199,40 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     )
                                 }}
                             />
-                            {appliedSearchQuery && (
-                                <Box sx={{ mt: 1, ml: 1, fontSize: 'inherit' , paddingBottom: 1}}>
-                                    <Chip
-                                        label={`Filter: ${appliedSearchQuery}`}
-                                        onDelete={clearSearch}
-                                        variant="outlined"
-                                        sx={{
-                                            fontSize: 'inherit',
-                                            border: `1.8px solid ${theme.palette.divider}`,
-                                            backgroundColor: theme.palette.background.paper,
-                                            '& .MuiChip-label': { padding: '0 0.6rem' },
-                                        }}
-                                    />
-                                </Box>
-                            )}
                         </Box>
+
+                        <Box sx={{ width: 5 }} />
+
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', fontSize: 'inherit' }}>
+                            <FormControl size="small" sx={{ minWidth: 125, fontSize: 'inherit' }}>
+                                <InputLabel sx={{ fontSize: 'inherit' }}>Sort by</InputLabel>
+                                <Select
+                                    sx={{ fontSize: 'inherit' }}
+                                    value={sortField}
+                                    label="Sort by"
+                                    onChange={handleSortFieldChange}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            sx: {
+                                                '& .MuiMenuItem-root': {
+                                                    fontSize: '0.8rem'
+                                                }
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="name">Device Name</MenuItem>
+                                    <MenuItem value="hostName">Host Name</MenuItem>
+                                    <MenuItem value="lastSeen">Last Seen</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <IconButton onClick={toggleSortDirection} size="small">
+                                {sortDirection === 'asc'
+                                    ? <ArrowUpwardIcon fontSize="small" />
+                                    : <ArrowDownwardIcon fontSize="small" />}
+                            </IconButton>
+                        </Box>
+
                     </Box>
                 </AccordionDetails>
             </Accordion>
