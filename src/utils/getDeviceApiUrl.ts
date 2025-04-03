@@ -22,6 +22,7 @@ export function getDeviceApiUrl(
         }
     } else {
         deviceApiUrl = 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
+// https://crispy-system-wrxg596p5wrrh9wg9-5027.app.github.dev/api/AudioDevices
         console.log('Prod Mode: Use hardcoded Api URL: ', deviceApiUrl);
     }
     return deviceApiUrl;
