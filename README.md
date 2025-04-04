@@ -1,7 +1,6 @@
-# Audio Device Repository, React / ASP.NET Core 
+# Audio Device Repository, React / TypeScript 
 
-
-Visualizes an audio devices repository utilizing React JS (TypeScript). The backend is ASP.Net Core Server with REST API (C# / MongoDB).
+Visualizes an audio devices repository utilizing React JS (TypeScript). The backend ASP.Net Core Server resides in a repository [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/).
 
 ## Staring a latest rollout on GitHub Infrastructure
 - Open a browser and navigate to [https://eduarddanziger.github.io/list-audio-react-app/](https://eduarddanziger.github.io/list-audio-react-app/)
@@ -10,7 +9,9 @@ Visualizes an audio devices repository utilizing React JS (TypeScript). The back
 
 ### Starting ASP.NET Core Web API Server
 
-- Via Terminal using the following command:
+- Checkout a repo [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/) and install dotnet tools
+
+- Start via Terminal using the following command:
 
 ```powershell or bash
 cd DeviceListServer
@@ -18,7 +19,7 @@ dotnet run --launch-profile http
 ```
 
 ### Starting a client application
-- In development environment, you can start the client application via Terminal using the following command:
+- In development environment, start the static development web server via Terminal::
 
 ```powershell or bash
 npm run dev
