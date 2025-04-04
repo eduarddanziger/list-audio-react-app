@@ -21,7 +21,7 @@ export function getDeviceApiUrl(
             console.log('Dev Mode: No encrypted secret found in environment, set it to the local one: ', deviceApiUrl);
         }
     } else {
-        deviceApiUrl = 'https://studious-bassoon-7vp9wvpw7rxjf4wg-5027.app.github.dev/api/AudioDevices';
+        deviceApiUrl = 'https://probable-space-computing-machine-x5vwx5vxr959cvq6j-5027.app.github.dev/api/AudioDevices';
 // https://crispy-system-wrxg596p5wrrh9wg9-5027.app.github.dev/api/AudioDevices
         console.log('Prod Mode: Use hardcoded Api URL: ', deviceApiUrl);
     }

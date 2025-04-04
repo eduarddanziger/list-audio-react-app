@@ -64,9 +64,3 @@ dist-ssr
 !.idea/inspectionProfiles/
 
 /public/version.json
-
-**/wwwroot/lib/*
-**/.vs/*
-**/nohup.out
-# **/.env
-**/*.csproj.user
