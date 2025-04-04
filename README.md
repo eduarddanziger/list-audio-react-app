@@ -1,4 +1,4 @@
-# Audio Device Repository, React / TypeScript 
+# Audio Device Repository Client, React / TypeScript 
 
 Visualizes an audio devices repository utilizing React JS (TypeScript). The backend ASP.Net Core Server resides in a repository [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/).
 
