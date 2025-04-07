@@ -1,12 +1,15 @@
 import { ApiAudioDevice } from './ApiAudioDevice';
+import {DeviceFlowType} from "./DeviceFlowType.ts";
 
 export class AudioDevice {
     constructor(
         public pnpId: string,
         public name: string,
-        public volume: number,
-        public lastSeen: string,
+        public renderVolume: number,
+        public captureVolume: number,
+        public updateDate: string,
         public hostName: string,
+        public flowType: DeviceFlowType
     ) {}
 
     // Dynamic getter for 'key' (calculated on access)
@@ -18,9 +21,11 @@ export class AudioDevice {
         return new AudioDevice(
             apiDevice.pnpId,
             apiDevice.name,
-            apiDevice.volume,
-            apiDevice.lastSeen,
+            apiDevice.renderVolume,
+            apiDevice.captureVolume,
+            apiDevice.updateDate,
             apiDevice.hostName,
+            apiDevice.flowType
        );
     }
 }

@@ -17,7 +17,9 @@ import {
     InputAdornment,
     Chip
 } from '@mui/material';
-import HeadsetIcon from '@mui/icons-material/Headset';
+import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
+import MicIcon from '@mui/icons-material/Mic';
+import CampaignIcon from '@mui/icons-material/Campaign';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -26,6 +28,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import {formatDateTimeToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
 import {AudioDevice} from '../types/AudioDevice.ts';
+import {DeviceFlowType} from "../types/DeviceFlowType.ts";
 
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
@@ -198,7 +201,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 >
                                     <MenuItem value="name">Device Name</MenuItem>
                                     <MenuItem value="hostName">Host Name</MenuItem>
-                                    <MenuItem value="lastSeen">Last Seen</MenuItem>
+                                    <MenuItem value="updateDate">Last Seen</MenuItem>
                                 </Select>
                             </FormControl>
                             <IconButton onClick={toggleSortDirection} size="small">
@@ -251,16 +254,20 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             }}
                         >
                             <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
-                                <Box sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 'inherit',
-                                    flex: '1 1 50%',
-                                    paddingRight: 1
-                                }}>
-                                    <HeadsetIcon fontSize="small"/>
+
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>
+                                    {
+                                        device.flowType === DeviceFlowType.RenderAndCapture ? (
+                                            <SpeakerGroupIcon fontSize="small" />
+                                        ) : device.flowType === DeviceFlowType.Capture ? (
+                                            <MicIcon fontSize="small" />
+                                        ) : ( // Render
+                                            <CampaignIcon fontSize="small" />
+                                        )
+                                    }
                                     <Typography variant="subtitle1">{device.name}</Typography>
                                 </Box>
+
                                 <Box sx={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -278,7 +285,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     flex: '1 1 30%',
                                     paddingLeft: 1
                                 }}>
-                                    <Typography variant="body2">{formatDateTimeToSQL(device.lastSeen)}</Typography>
+                                    <Typography variant="body2">{formatDateTimeToSQL(device.updateDate)}</Typography>
                                 </Box>
                             </Box>
                         </AccordionSummary>
