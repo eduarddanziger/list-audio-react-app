@@ -66,18 +66,19 @@ const AudioDeviceListComponent: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, padding: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, paddingTop: 1 }}>
             <Box sx={{ flex: 1 }}>
                 <Accordion sx={{ fontSize: '0.8rem', padding: 0 }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         sx={{
+                            paddingLeft: 1,
                             minHeight: '32px!important',
                             '&.Mui-expanded': {
                                 minHeight: '32px!important'
                             },
                             '.MuiAccordionSummary-content': {
-                                margin: '0.3rem 0'
+                                margin: '0.5rem 0'
                             },
                             '& .MuiAccordionSummary-expandIconWrapper': {
                                 order: -1,

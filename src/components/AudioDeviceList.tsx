@@ -42,8 +42,9 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              setSelectedDevice,
                                                              onSearch
                                                          }) => {
-    const [sortField, setSortField] = useState<keyof AudioDevice>('name');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [sortField, setSortField] = useState<keyof AudioDevice>('updateDate');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
     const [searchQuery, setSearchQuery] = useState('');
     const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
 
@@ -111,12 +112,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                     sx={{
+                        paddingLeft: 1,
                         minHeight: '32px!important',
                         '&.Mui-expanded': {
                             minHeight: '32px!important'
                         },
                         '.MuiAccordionSummary-content': {
-                            margin: '0.3rem 0'
+                            margin: '0.5rem 0'
                         },
                         '& .MuiAccordionSummary-expandIconWrapper': {
                             order: -1,
@@ -155,7 +157,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         borderRadius: 1,
                         boxShadow: theme.shadows[0],
                         fontSize: 'inherit',
-                        paddingLeft: 2,
+                        paddingLeft: 1,
                     }}>
                         <TextField
                             size="small"
@@ -207,7 +209,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 >
                                     <MenuItem value="name">Device Name</MenuItem>
                                     <MenuItem value="hostName">Host Name</MenuItem>
-                                    <MenuItem value="updateDate">Last Seen</MenuItem>
+                                    <MenuItem value="updateDate">Last Update</MenuItem>
                                 </Select>
                             </FormControl>
                             <IconButton onClick={toggleSortDirection} size="small">
@@ -232,6 +234,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             expandIcon={<ExpandMoreIcon/>}
                             onClick={() => setSelectedDevice(device)}
                             sx={{
+                                paddingLeft: 1,
                                 minHeight: '32px!important',
                                 '&.Mui-expanded': {
                                     minHeight: '32px!important'
@@ -290,7 +293,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             sx={{
                                 paddingTop: '0.3rem',
                                 paddingBottom: '0.3rem',
-                                paddingLeft: '14px'
+                                paddingLeft: 1
                             }}
                         >
                             <AudioDeviceDetailsExpanded device={device}/>
