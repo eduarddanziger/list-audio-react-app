@@ -15,7 +15,7 @@ interface AudioDeviceDetailsExpandedProps {
 
 const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({ device }) => {
     return (
-        <Box sx={{ padding: '10px' }}>
+        <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <LabelIcon fontSize="small" />
                 <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.pnpId}</Typography>
