@@ -1,5 +1,5 @@
 {
   "appTitle": "Audio Device Repository",
   "audioDevicesErrorProdMode": "Starting backend...",
-  "audioDevicesErrorDevMode": "Audio devices are not available. The web server is probably not running or not configured correctly."
+  "audioDevicesErrorDevMode": "Audio device repository server (dev mode) is not available. The corresponding web server is probably not running or not configured correctly."
 }
