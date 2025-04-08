@@ -17,9 +17,9 @@ import {
     InputAdornment,
     Chip
 } from '@mui/material';
-import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
-import MicIcon from '@mui/icons-material/Mic';
-import CampaignIcon from '@mui/icons-material/Campaign';
+import SpeakerGroupOutlinedIcon from '@mui/icons-material/SpeakerGroupOutlined';
+import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
+import SpeakerOutlinedIcon from '@mui/icons-material/SpeakerOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -258,11 +258,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>
                                     {
                                         device.flowType === DeviceFlowType.RenderAndCapture ? (
-                                            <SpeakerGroupIcon fontSize="small" />
+                                            <SpeakerGroupOutlinedIcon fontSize="medium" />
                                         ) : device.flowType === DeviceFlowType.Capture ? (
-                                            <MicIcon fontSize="small" />
+                                            <MicOutlinedIcon fontSize="medium" />
                                         ) : ( // Render
-                                            <CampaignIcon fontSize="small" />
+                                            <SpeakerOutlinedIcon fontSize="medium" />
                                         )
                                     }
                                     <Typography variant="subtitle1">{device.name}</Typography>

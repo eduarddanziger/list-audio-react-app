@@ -5,7 +5,7 @@ import HostIcon from '@mui/icons-material/Computer';
 import DateIcon from '@mui/icons-material/AccessTime';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LabelIcon from '@mui/icons-material/Label';
-import MicIcon from '@mui/icons-material/Mic';
+import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
 import { formatDateTimeToSQL } from '../utils/formatDate';
 import {DeviceFlowType} from "../types/DeviceFlowType.ts";
 
@@ -38,7 +38,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             {
                 (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Capture) &&
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
-                    <MicIcon fontSize="small" />
+                    <MicOutlinedIcon fontSize="small" />
                     <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.captureVolume} / 1000</Typography>
                 </Box>
             }
