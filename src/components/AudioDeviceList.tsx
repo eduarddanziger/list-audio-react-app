@@ -17,9 +17,9 @@ import {
     InputAdornment,
     Chip
 } from '@mui/material';
-import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
-import MicIcon from '@mui/icons-material/Mic';
-import CampaignIcon from '@mui/icons-material/Campaign';
+import SpeakerGroupOutlinedIcon from '@mui/icons-material/SpeakerGroupOutlined';
+import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
+import SpeakerOutlinedIcon from '@mui/icons-material/SpeakerOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -39,7 +39,6 @@ interface AudioDeviceListProps {
 
 const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              audioDevices,
-                                                             selectedDevice,
                                                              setSelectedDevice,
                                                              onSearch
                                                          }) => {
@@ -112,6 +111,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                     sx={{
+                        minHeight: '32px!important',
+                        '&.Mui-expanded': {
+                            minHeight: '32px!important'
+                        },
+                        '.MuiAccordionSummary-content': {
+                            margin: '0.3rem 0'
+                        },
                         '& .MuiAccordionSummary-expandIconWrapper': {
                             order: -1,
                             marginRight: theme.spacing(0),
@@ -149,7 +155,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         borderRadius: 1,
                         boxShadow: theme.shadows[0],
                         fontSize: 'inherit',
-                        paddingLeft: 1,
+                        paddingLeft: 2,
                     }}>
                         <TextField
                             size="small"
@@ -226,25 +232,17 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             expandIcon={<ExpandMoreIcon/>}
                             onClick={() => setSelectedDevice(device)}
                             sx={{
-                                paddingTop: 0,
-                                paddingBottom: 0,
-                                backgroundColor:
-                                    selectedDevice?.key === device.key
-                                        ? theme.palette.mode === 'dark'
-                                            ? '#424242'
-                                            : '#f0f0f0'
-                                        : 'inherit',
-                                color:
-                                    selectedDevice?.key === device.key
-                                        ? theme.palette.mode === 'dark'
-                                            ? '#ffffff'
-                                            : 'inherit'
-                                        : 'inherit',
+                                minHeight: '32px!important',
+                                '&.Mui-expanded': {
+                                    minHeight: '32px!important'
+                                },
+                                '.MuiAccordionSummary-content': {
+                                    margin: '0.3rem 0'
+                                },
+                                backgroundColor: 'inherit',
+                                color: 'inherit',
                                 '&:hover': {
-                                    backgroundColor:
-                                        theme.palette.mode === 'dark'
-                                            ? '#616161'
-                                            : '#e0e0e0'
+                                    backgroundColor: 'transparent'
                                 },
                                 cursor: 'pointer',
                                 '& .MuiAccordionSummary-expandIconWrapper': {
@@ -254,15 +252,14 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             }}
                         >
                             <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
-
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>
                                     {
                                         device.flowType === DeviceFlowType.RenderAndCapture ? (
-                                            <SpeakerGroupIcon fontSize="small" />
+                                            <SpeakerGroupOutlinedIcon fontSize="medium" />
                                         ) : device.flowType === DeviceFlowType.Capture ? (
-                                            <MicIcon fontSize="small" />
+                                            <MicOutlinedIcon fontSize="medium" />
                                         ) : ( // Render
-                                            <CampaignIcon fontSize="small" />
+                                            <SpeakerOutlinedIcon fontSize="medium" />
                                         )
                                     }
                                     <Typography variant="subtitle1">{device.name}</Typography>
@@ -289,7 +286,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 </Box>
                             </Box>
                         </AccordionSummary>
-                        <AccordionDetails>
+                        <AccordionDetails
+                            sx={{
+                                paddingTop: '0.3rem',
+                                paddingBottom: '0.3rem',
+                                paddingLeft: '14px'
+                            }}
+                        >
                             <AudioDeviceDetailsExpanded device={device}/>
                         </AccordionDetails>
                     </Accordion>
