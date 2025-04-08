@@ -32,14 +32,11 @@ import {DeviceFlowType} from "../types/DeviceFlowType.ts";
 
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
-    selectedDevice: AudioDevice | null;
-    setSelectedDevice: (device: AudioDevice) => void;
     onSearch: (query: string) => void;
 }
 
 const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              audioDevices,
-                                                             setSelectedDevice,
                                                              onSearch
                                                          }) => {
     const [sortField, setSortField] = useState<keyof AudioDevice>('updateDate');
@@ -232,7 +229,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                     >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
-                            onClick={() => setSelectedDevice(device)}
                             sx={{
                                 paddingLeft: 1,
                                 minHeight: '32px!important',
@@ -293,7 +289,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             sx={{
                                 paddingTop: '0.3rem',
                                 paddingBottom: '0.3rem',
-                                paddingLeft: 1
+                                paddingLeft: 1.3
                             }}
                         >
                             <AudioDeviceDetailsExpanded device={device}/>
