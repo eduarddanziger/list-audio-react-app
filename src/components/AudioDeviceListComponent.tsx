@@ -14,7 +14,6 @@ const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [selectedDevice, setSelectedDevice] = useState<AudioDevice | null>(null);
     const [progress, setProgress] = useState<number>(0);
     const [searchQuery, setSearchQuery] = useState('');
     const { t: translate } = useTranslation();
@@ -50,7 +49,6 @@ const AudioDeviceListComponent: React.FC = () => {
                     : await service.fetchAudioDevices();
 
                 setAudioDevices(audioDeviceInstances);
-                setSelectedDevice(audioDeviceInstances[0] || null);
             } catch (err) {
                 setError(err instanceof Error ? err.message : String(err));
             } finally {
@@ -90,7 +88,14 @@ const AudioDeviceListComponent: React.FC = () => {
                             This repository shows collected audio devices...
                         </Typography>
                     </AccordionSummary>
-                    <AccordionDetails sx={{ fontSize: 'inherit'}}>
+                    <AccordionDetails
+                        sx={{
+                            fontSize: 'inherit',
+                            paddingTop: '0.3rem',
+                            paddingBottom: '0.3rem',
+                            paddingLeft: 1.3
+                        }}
+                    >
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows a list of audio devices that were collected on connected host
                             computers.<br />
@@ -111,8 +116,6 @@ const AudioDeviceListComponent: React.FC = () => {
                         ) : (
                             <AudioDeviceList
                                 audioDevices={audioDevices}
-                                selectedDevice={selectedDevice}
-                                setSelectedDevice={setSelectedDevice}
                                 onSearch={handleSearch}
                             />
                         )}
