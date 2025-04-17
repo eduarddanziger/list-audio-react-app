@@ -45,29 +45,25 @@ jobs:
           # Get the distance since the latest tag
           DISTANCE=$(git rev-list --count "$LATEST_TAG"..HEAD)
           echo "DISTANCE: $DISTANCE"
-          # Append -SP<distance> if distance is greater than 0
+          # Append -RC<distance> if distance is greater than 0
           if [ "$DISTANCE" -gt 0 ]; then
             # Increment the third number
             VERSION_NUMBER=$(echo "$VERSION_NUMBER" | awk -F. -v OFS=. '{$3++; print}')
-            # Add SP info
+            # Add RC info
             DISTANCE=$(printf "%03d" "$DISTANCE")
-            VERSION="$VERSION_NUMBER-SP$DISTANCE"
+            VERSION="$VERSION_NUMBER-RC$DISTANCE"
           else
             VERSION="$VERSION_NUMBER"
           fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Using version: $VERSION"
 
-      - name: Build project
-        run: npm run build
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
-
-      - name: Generate .env.production file in build directory
+      - name: Generate .env.production file
         run: |
           node -e "
             const CryptoJS = require('crypto-js');
             const encryptionKey = '32-characters-long-secure-key-12';
+            // decrypt the secrets:
             const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
             if (!tokenSecret) {
                throw new Error('UNIVERSAL_PAT secret is empty or undefined');
@@ -78,12 +74,20 @@ jobs:
                throw new Error('AUDIO_API_URL secret is empty or undefined');
             }
             const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
+            // use environment for version
+            const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
+            // Write the secrets to .env.production file:
             const fs = require('fs');
-            fs.writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./dist/.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
             console.log('.env.production file created successfully');
           "
-#         echo ".env.production generation is commented out..."
+
+      - name: Build project
+        run: npm run build
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -91,35 +95,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
 
-      - name: Start Codespace
-        run: |
-          PAT=${{ secrets.UNIVERSAL_PAT }}
-          CS_DISPLAY_NAME="CodeSpaceMain"
-          OWNER="eduarddanziger"          # Replace with your GitHub username or organization name
-          REPO="list-audio-react-app"     # Replace with your repository name (if applicable)
-          GITHUB_API_URL="https://api.github.com"
-          # Headers for API requests
-          HEADERS=(
-              "-H" "Authorization: token $PAT"
-              "-H" "Accept: application/vnd.github+json"
-          )
-          echo "Try getting codespaces..."
-          INFO_URL="$GITHUB_API_URL/user/codespaces"
-          RESPONSE=$(curl -s "${HEADERS[@]}" "$INFO_URL")
-          # Check if the response contains Codespaces
-          if echo "$RESPONSE" | jq -e '.codespaces == null or .codespaces == []' > /dev/null; then
-              echo "No codespaces found."
-              exit 1
-          fi
-          echo "...Got codespaces. Try getting codespace name on display name..."
-          CS_NAME=$(echo "$RESPONSE" | jq -r --arg NAME "$CS_DISPLAY_NAME" '.codespaces[] | select(.display_name == $NAME) | .name')
-          echo "...Got codespaces name: $CS_NAME. Try starting codespace..."
-          CS_URL="$GITHUB_API_URL/user/codespaces/$CS_NAME/start"
-          curl -X POST "${HEADERS[@]}" "$CS_URL"
-          echo "...Codespaces started: $CS_NAME."
-
       - name: Create Release
         run: |
           VERS=${{ steps.get_version.outputs.VERSION }}
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-          gh release create "$VERS" --title "Audio Device Manager $VERS" --notes "Release of Audio Device Manager $VERS"
+          gh release create "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"

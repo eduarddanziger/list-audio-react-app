@@ -2,23 +2,37 @@ import React from 'react';
 import { AudioDevice } from '../types/AudioDevice';
 import { Box, Typography } from '@mui/material';
 import HostIcon from '@mui/icons-material/Computer';
-import HeadsetIcon from '@mui/icons-material/Headset';
 import DateIcon from '@mui/icons-material/AccessTime';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LabelIcon from '@mui/icons-material/Label';
+import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
 import { formatDateTimeToSQL } from '../utils/formatDate';
+import {DeviceFlowType} from "../types/DeviceFlowType";
+import {DeviceMessageType} from "../types/DeviceMessageType";
 
 interface AudioDeviceDetailsExpandedProps {
     device: AudioDevice;
 }
 
 const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({ device }) => {
+    const deviceMessageTypeToString = (deviceMessageType: DeviceMessageType): string => {
+        switch (deviceMessageType) {
+            case DeviceMessageType.Confirmed:
+                return 'Confirmed';
+            case DeviceMessageType.Detached:
+                return 'Detached';
+            case DeviceMessageType.Discovered:
+                return 'Discovered';
+            case DeviceMessageType.VolumeRenderChanged:
+                return 'Render Volume Updated';
+            case DeviceMessageType.VolumeCaptureChanged:
+                return 'Capture Volume Updated';
+            default:
+                return 'Unknown';
+        }
+    }
     return (
-        <Box sx={{ padding: '10px' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 2 }}>
-                <HeadsetIcon fontSize="small" />
-                <Typography variant="h6" sx={{ fontSize: '0.9rem', lineHeight: 1 }}>{device.name}</Typography>
-            </Box>
+        <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <LabelIcon fontSize="small" />
                 <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.pnpId}</Typography>
@@ -29,12 +43,22 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <DateIcon fontSize="small" />
-                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{formatDateTimeToSQL(device.lastSeen)}</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{formatDateTimeToSQL(device.updateDate)} ({deviceMessageTypeToString(device.deviceMessageType)})</Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
-                <VolumeUpIcon fontSize="small" />
-                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.volume} / 1000</Typography>
-            </Box>
+            {
+                (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Render) &&
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                    <VolumeUpIcon fontSize="small" />
+                    <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.renderVolume} / 1000</Typography>
+                </Box>
+            }
+            {
+                (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Capture) &&
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                    <MicOutlinedIcon fontSize="small" />
+                    <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.captureVolume} / 1000</Typography>
+                </Box>
+            }
         </Box>
     );
 };
