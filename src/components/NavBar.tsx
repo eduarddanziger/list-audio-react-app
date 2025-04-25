@@ -49,7 +49,8 @@ const Navbar: React.FC = () => {
                         sx={{
                             fontSize: '1rem',
                             fontWeight: 700,
-                            textAlign: 'center',
+                            textAlign: 'left',
+                            paddingLeft: '12px',
                             flex: 1,
                         }}
                     >
