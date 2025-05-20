@@ -27,8 +27,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import {formatDateTimeToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
-import {AudioDevice} from '../types/AudioDevice.ts';
-import {DeviceFlowType} from "../types/DeviceFlowType.ts";
+import {AudioDevice} from '../types/AudioDevice';
+import {DeviceFlowType} from "../types/DeviceFlowType";
+import {accordionSummaryStyles} from "../styles/accordionSummaryStyles";
+
 
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
@@ -108,20 +110,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
-                    sx={{
-                        paddingLeft: 1,
-                        minHeight: '32px!important',
-                        '&.Mui-expanded': {
-                            minHeight: '32px!important'
-                        },
-                        '.MuiAccordionSummary-content': {
-                            margin: '0.5rem 0'
-                        },
-                        '& .MuiAccordionSummary-expandIconWrapper': {
-                            order: -1,
-                            marginRight: theme.spacing(0),
-                        },
-                    }}
+                    sx={accordionSummaryStyles(theme)}
                 >
                     <Box sx={{display: 'flex', fontSize: 'inherit', alignItems: 'center', gap: 1}}>
                         <Typography sx={{fontSize: 'inherit'}}>

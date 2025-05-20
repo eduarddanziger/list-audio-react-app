@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
 import { useTheme } from '@mui/material/styles';
 import { getDeviceApiUrl } from '../utils/getDeviceApiUrl';
+import { accordionSummaryStyles } from '../styles/accordionSummaryStyles';
+
 
 const AudioDeviceListComponent: React.FC = () => {
     const theme = useTheme();
@@ -69,20 +71,7 @@ const AudioDeviceListComponent: React.FC = () => {
                 <Accordion sx={{ fontSize: '0.8rem', padding: 0 }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        sx={{
-                            paddingLeft: 1,
-                            minHeight: '32px!important',
-                            '&.Mui-expanded': {
-                                minHeight: '32px!important'
-                            },
-                            '.MuiAccordionSummary-content': {
-                                margin: '0.5rem 0'
-                            },
-                            '& .MuiAccordionSummary-expandIconWrapper': {
-                                order: -1,
-                                marginRight: theme.spacing(0),
-                            },
-                        }}
+                        sx={accordionSummaryStyles(theme)}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows collected audio devices...
