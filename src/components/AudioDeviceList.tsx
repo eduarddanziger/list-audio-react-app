@@ -218,26 +218,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                     >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
-                            sx={{
-                                paddingLeft: 1,
-                                minHeight: '32px!important',
-                                '&.Mui-expanded': {
-                                    minHeight: '32px!important'
-                                },
-                                '.MuiAccordionSummary-content': {
-                                    margin: '0.3rem 0'
-                                },
-                                backgroundColor: 'inherit',
-                                color: 'inherit',
-                                '&:hover': {
-                                    backgroundColor: 'transparent'
-                                },
-                                cursor: 'pointer',
-                                '& .MuiAccordionSummary-expandIconWrapper': {
-                                    order: -1,
-                                    marginRight: theme.spacing(1)
-                                }
-                            }}
+                            sx={accordionSummaryStyles(theme)}
                         >
                             <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>
