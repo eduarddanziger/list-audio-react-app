@@ -7,6 +7,8 @@ on:
     tags:
       - 'Release-*'
 
+  workflow_dispatch:
+
 permissions:
   contents: write
 
@@ -58,6 +60,14 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Using version: $VERSION"
 
+      - name: Get latest check-in time from Git
+        id: get_latest_commit_date
+        run: |
+          # Get the latest commit date in ISO 8601 format
+          LATEST_COMMIT_DATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%MT%H:%M:%S%z')
+          echo "LATEST_COMMIT_DATE=$LATEST_COMMIT_DATE" >> $GITHUB_OUTPUT
+          echo "Latest commit date: $LATEST_COMMIT_DATE"    
+
       - name: Generate .env.production file
         run: |
           node -e "
@@ -74,13 +84,15 @@ jobs:
                throw new Error('AUDIO_API_URL secret is empty or undefined');
             }
             const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
-            // use environment for version
+            // use environment for version and commit date:
             const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
-            // Write the secrets to .env.production file:
+            const latestCommitDate = '${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}';
+            // Write to .env.production file:
             const fs = require('fs');
             fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
             fs.appendFileSync('./.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
             fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
             console.log('.env.production file created successfully');
           "
 

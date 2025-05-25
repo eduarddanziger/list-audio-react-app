@@ -8,11 +8,12 @@ dotenv.config();
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [react()],
-    base: '/list-audio-react-app', // Replace with your repository name
+    base: '/list-audio-react-app',
     build: {
         sourcemap: true,
     },
     server: {
+        host: true,
         port: 5173,
     },
 })
