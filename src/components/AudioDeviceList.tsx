@@ -29,7 +29,7 @@ import {formatDateTimeToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
 import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
-import {accordionSummaryStyles} from "../styles/accordionSummaryStyles";
+import {accordionStyles} from "../styles/accordionStyles.ts";
 
 
 interface AudioDeviceListProps {
@@ -106,11 +106,15 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             <Accordion
                 expanded={expanded === SORT_SEARCH_ACCORDION_ID}
                 onChange={handleChange(SORT_SEARCH_ACCORDION_ID)}
-                sx={{fontSize: '0.8rem'}}
+                sx={{
+                    fontSize: '0.8rem',
+                    padding: 0,
+                    boxShadow: 'none'
+                }}
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
-                    sx={accordionSummaryStyles(theme)}
+                    sx={accordionStyles.accordionSummary}
                 >
                     <Box sx={{display: 'flex', fontSize: 'inherit', alignItems: 'center', gap: 1}}>
                         <Typography sx={{fontSize: 'inherit'}}>
@@ -215,10 +219,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         key={device.key}
                         expanded={expanded === device.key}
                         onChange={handleChange(device.key)}
+                        sx={accordionStyles.accordion}
                     >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
-                            sx={accordionSummaryStyles(theme)}
+                            sx={accordionStyles.accordionSummary}
                         >
                             <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>

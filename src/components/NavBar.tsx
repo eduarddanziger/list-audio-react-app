@@ -3,10 +3,11 @@ import {AppBar, Toolbar, IconButton, Typography, Box, Tooltip} from '@mui/materi
 import {Link} from 'react-router-dom';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
 import InfoIcon from '@mui/icons-material/Info';
 import {useThemeContext} from '../contexts/themeContextUtils';
 import {useTheme} from '@mui/material/styles';
+import SpeakerGroupOutlinedIcon from '@mui/icons-material/SpeakerGroupOutlined';
+
 
 
 const Navbar: React.FC = () => {
@@ -44,30 +45,30 @@ const Navbar: React.FC = () => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <Typography
-                        variant="subtitle1"
-                        sx={{
-                            fontSize: '1rem',
-                            fontWeight: 700,
-                            textAlign: 'left',
-                            paddingLeft: '12px',
-                            flex: 1,
-                        }}
-                    >
-                        Audio Device Repository
-                    </Typography>
-
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit', flex: 1 }}>
+                        <Typography
+                            variant="subtitle1"
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                fontSize: '1rem',
+                                fontWeight: 700,
+                                textAlign: 'left',
+                                paddingLeft: '12px',
+                                flex: 1,
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <SpeakerGroupOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+                            Audio Device Repository
+                        </Typography>
+                    </Link>
                     <Box sx={{
                         display: 'flex',
                         justifyContent: 'flex-end',
                         flexBasis: '80px',
                         gap: 1
                     }}>
-                        <Tooltip title="Device List">
-                            <IconButton color="inherit" component={Link} to="/" size="small">
-                                <SpeakerGroupIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
                         <Tooltip title={theme.palette.mode === 'dark' ? "Light Mode" : "Dark Mode"}>
                             <IconButton color="inherit" onClick={toggleTheme} size="small">
                                 {theme.palette.mode === 'dark' ? <Brightness7Icon fontSize="small"/> : <Brightness4Icon fontSize="small"/>}

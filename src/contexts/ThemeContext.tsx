@@ -8,7 +8,9 @@ interface ThemeProviderComponentProps {
 }
 
 export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ children }) => {
-    const [darkMode, setDarkMode] = useState(false);
+    const defaultForDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+    const [darkMode, setDarkMode] = useState(defaultForDarkMode);
 
     const theme = useMemo(
         () =>
