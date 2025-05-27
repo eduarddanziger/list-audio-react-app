@@ -74,7 +74,7 @@ const AudioDeviceListComponent: React.FC = () => {
                         sx={accordionSummaryStyles(theme)}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
-                            This repository shows collected audio devices...
+                            List of collected audio devices
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails
@@ -86,10 +86,9 @@ const AudioDeviceListComponent: React.FC = () => {
                         }}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
-                            This repository shows a list of audio devices that were collected on connected host
-                            computers.<br />
+                            This repository shows a list of audio devices that were collected on connected hosts.<br />
                             The application is built using React (TypeScript + Vite).<br />
-                            The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br /><br />
+                            The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br />
                             NOTE: Initializing could delay due to the infrastructure starting process.
                         </Typography>
                     </AccordionDetails>
