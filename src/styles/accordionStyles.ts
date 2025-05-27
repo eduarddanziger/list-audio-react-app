@@ -1,27 +1,30 @@
-export const accordionStyles = {
-    accordion: {
-        padding: 0,
-        boxShadow: 'none',
-        border: 'none',
-        '&:before': { display: 'none' }
-    },
-    accordionSummary: {
+import {Theme} from "@mui/material/styles";
+
+export const accordionStyle = {
+    padding: 0,
+    boxShadow: 'none',
+    border: 'none',
+    '&:before': {display: 'none'}
+}
+
+export const accordionSummaryStyle = (theme: Theme) => (
+    {
         paddingLeft: 1,
-        minHeight: '32px!important',
+        minHeight: '32px',
         '&.Mui-expanded': {
-            minHeight: '32px!important'
+            minHeight: '32px'
         },
         '.MuiAccordionSummary-content': {
-            margin: '0.4rem 0'
+            margin: '0.3rem 0'
         },
-        backgroundColor: 'inherit',
-        color: 'inherit',
         '&:hover': {
             backgroundColor: 'transparent'
         },
         cursor: 'pointer',
         '& .MuiAccordionSummary-expandIconWrapper': {
-            order: -1
+            order: -1,
+            color: theme.palette.text.primary
         }
     }
-}
+);
+

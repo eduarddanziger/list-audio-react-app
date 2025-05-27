@@ -12,6 +12,8 @@ export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ 
 
     const [darkMode, setDarkMode] = useState(defaultForDarkMode);
 
+    //setDarkMode(defaultForDarkMode);
+
     const theme = useMemo(
         () =>
             createTheme({

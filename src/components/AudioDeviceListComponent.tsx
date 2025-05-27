@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { AudioDeviceFetchService } from '../services/AudioDeviceFetchService.ts';
 import { AudioDevice } from '../types/AudioDevice';
 import AudioDeviceList from './AudioDeviceList';
-import { Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import {Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
 import { getDeviceApiUrl } from '../utils/getDeviceApiUrl';
-import { accordionStyles } from '../styles/accordionStyles.ts';
-
 
 const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
@@ -75,7 +73,15 @@ const AudioDeviceListComponent: React.FC = () => {
                 >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        sx={accordionStyles.accordionSummary}
+                        sx={{
+                            paddingLeft: 1,
+                            '.MuiAccordionSummary-content': {
+                                margin: '0.3rem 0'
+                            },
+                            '& .MuiAccordionSummary-expandIconWrapper': {
+                                order: -1,
+                            }
+                        }}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
                             List of collected audio devices

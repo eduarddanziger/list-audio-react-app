@@ -29,7 +29,7 @@ import {formatDateTimeToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
 import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
-import {accordionStyles} from "../styles/accordionStyles.ts";
+import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles.ts";
 
 
 interface AudioDeviceListProps {
@@ -114,7 +114,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
-                    sx={accordionStyles.accordionSummary}
+                    sx={accordionSummaryStyle(theme)}
                 >
                     <Box sx={{display: 'flex', fontSize: 'inherit', alignItems: 'center', gap: 1}}>
                         <Typography sx={{fontSize: 'inherit'}}>
@@ -219,11 +219,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         key={device.key}
                         expanded={expanded === device.key}
                         onChange={handleChange(device.key)}
-                        sx={accordionStyles.accordion}
+                        sx={accordionStyle}
                     >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
-                            sx={accordionStyles.accordionSummary}
+                            sx={accordionSummaryStyle(theme)}
                         >
                             <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>
