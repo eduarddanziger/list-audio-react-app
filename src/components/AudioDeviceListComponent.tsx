@@ -6,13 +6,11 @@ import { Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography }
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
-import { useTheme } from '@mui/material/styles';
 import { getDeviceApiUrl } from '../utils/getDeviceApiUrl';
-import { accordionSummaryStyles } from '../styles/accordionSummaryStyles';
+import { accordionStyles } from '../styles/accordionStyles.ts';
 
 
 const AudioDeviceListComponent: React.FC = () => {
-    const theme = useTheme();
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -68,10 +66,16 @@ const AudioDeviceListComponent: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, paddingTop: 1 }}>
             <Box sx={{ flex: 1 }}>
-                <Accordion sx={{ fontSize: '0.8rem', padding: 0 }}>
+                <Accordion
+                    sx={{
+                        fontSize: '0.8rem',
+                        padding: 0,
+                        boxShadow: 'none'
+                    }}
+                >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        sx={accordionSummaryStyles(theme)}
+                        sx={accordionStyles.accordionSummary}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
                             List of collected audio devices

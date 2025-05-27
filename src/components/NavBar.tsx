@@ -3,7 +3,6 @@ import {AppBar, Toolbar, IconButton, Typography, Box, Tooltip} from '@mui/materi
 import {Link} from 'react-router-dom';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
 import InfoIcon from '@mui/icons-material/Info';
 import {useThemeContext} from '../contexts/themeContextUtils';
 import {useTheme} from '@mui/material/styles';
