@@ -2,8 +2,8 @@ import { createContext, useContext } from 'react';
 import { Theme } from '@mui/material/styles';
 
 interface ThemeContextProps {
-    toggleTheme: () => void;
     theme: Theme;
+    toggleTheme: () => void;
 }
 
 export const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);

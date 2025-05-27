@@ -5,14 +5,11 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import InfoIcon from '@mui/icons-material/Info';
 import {useThemeContext} from '../contexts/themeContextUtils';
-import {useTheme} from '@mui/material/styles';
 import SpeakerGroupOutlinedIcon from '@mui/icons-material/SpeakerGroupOutlined';
-
 
 
 const Navbar: React.FC = () => {
     const {toggleTheme, theme} = useThemeContext();
-    const muiTheme = useTheme();
 
     return (
         <AppBar
@@ -20,10 +17,10 @@ const Navbar: React.FC = () => {
             elevation={0}
             sx={{
                 backgroundColor:
-                    muiTheme.palette.mode === 'dark'
+                    theme.palette.mode === 'dark'
                         ? 'rgba(30,30,30,0.7)'
                         : 'rgba(255,255,255,0.7)',
-                color: muiTheme.palette.text.primary,
+                color: theme.palette.text.primary,
                 backdropFilter: 'blur(8px)',
                 boxShadow: '0 2px 8px 0 rgba(0,0,0,0.02)',
                 borderRadius: '0 0 12px 12px',
