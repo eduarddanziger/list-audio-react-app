@@ -225,8 +225,8 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             expandIcon={<ExpandMoreIcon/>}
                             sx={accordionSummaryStyle(theme)}
                         >
-                            <Box sx={{display: 'flex', alignItems: 'center', columnGap: 1, width: '100%'}}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: '1 1 50%', paddingRight: 1 }}>
+                            <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
+                                <Box sx={{ display: 'flex', gap: 'inherit', flex: '1 1 70%', paddingRight: 1 }}>
                                     {
                                         device.flowType === DeviceFlowType.RenderAndCapture ? (
                                             <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -236,14 +236,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                             <SpeakerOutlinedIcon fontSize="medium" />
                                         )
                                     }
-                                    <Typography variant="subtitle1">{device.name}</Typography>
+                                    <Typography variant="body2">{device.name}</Typography>
                                 </Box>
 
                                 <Box sx={{
                                     display: 'flex',
-                                    alignItems: 'center',
                                     gap: 'inherit',
-                                    flex: '1 1 20%',
+                                    flex: '1 1 15%',
                                     paddingRight: 1,
                                     paddingLeft: 1
                                 }}>
@@ -251,9 +250,8 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 </Box>
                                 <Box sx={{
                                     display: 'flex',
-                                    alignItems: 'center',
                                     gap: 'inherit',
-                                    flex: '1 1 30%',
+                                    flex: '1 1 20%',
                                     paddingLeft: 1
                                 }}>
                                     <Typography variant="body2">{formatDateTimeToSQL(device.updateDate)}</Typography>
