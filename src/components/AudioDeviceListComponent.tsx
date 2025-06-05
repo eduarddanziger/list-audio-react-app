@@ -68,7 +68,9 @@ const AudioDeviceListComponent: React.FC = () => {
                     sx={{
                         fontSize: '0.8rem',
                         padding: 0,
-                        boxShadow: 'none'
+                        boxShadow: 'none',
+                        border: 'none',
+                        '&:before': {display: 'none'}
                     }}
                 >
                     <AccordionSummary
