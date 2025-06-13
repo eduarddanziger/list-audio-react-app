@@ -85,7 +85,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
         }
     };
 
-    const handleAccordationChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+    const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
 
@@ -108,7 +108,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                     <Accordion
                         key={device.key}
                         expanded={expanded === device.key}
-                        onChange={handleAccordationChange(device.key)}
+                        onChange={handleAccordionChange(device.key)}
                         sx={accordionStyle}
                     >
                         <AccordionSummary
@@ -129,21 +129,15 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     <Typography variant="body2">{device.name}</Typography>
                                 </Box>
 
-                                <Box sx={{
-                                    display: 'flex',
-                                    gap: 'inherit',
-                                    flex: '1 1 10%',
-                                    paddingRight: 1,
-                                    paddingLeft: 1
-                                }}>
-                                    <Typography variant="body2">{device.hostName}</Typography>
+                                <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 15%', paddingRight: 1, paddingLeft: 1}}>
+                                    <Typography variant="body2">
+                                        {device.hostName}
+                                        {device.operationSystemName &&
+                                            device.operationSystemName !== '' &&
+                                            ` (${device.operationSystemName})`}
+                                    </Typography>
                                 </Box>
-                                <Box sx={{
-                                    display: 'flex',
-                                    gap: 'inherit',
-                                    flex: '1 1 20%',
-                                    paddingLeft: 1
-                                }}>
+                                <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 15%', paddingLeft: 1}}>
                                     <Typography variant="body2">{formatDateTimeToSQL(device.updateDate)}</Typography>
                                 </Box>
                             </Box>

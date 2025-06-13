@@ -8,6 +8,7 @@ export interface ApiAudioDevice {
     captureVolume: number;
     updateDate: string;
     hostName: string;
+    operationSystemName: string;
     flowType: DeviceFlowType;
     deviceMessageType: DeviceMessageType;
 }
