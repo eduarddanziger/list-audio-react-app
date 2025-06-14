@@ -17,8 +17,8 @@ import {formatDateTimeToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
 import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
-import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles.ts";
-import SortAndSearchAccordion from './SortAndSearchAccordion.tsx'; // adjust path as needed
+import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles";
+import SortAndSearchAccordion from './SortAndSearchAccordion';
 
 
 interface AudioDeviceListProps {
