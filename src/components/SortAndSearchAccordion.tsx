@@ -94,12 +94,12 @@ const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
                                     padding: 0,
                                     '& .MuiChip-label': {
                                         padding: '0 0.5rem',
-                                        fontSize: '0.75rem',
+                                        fontSize: '0.9rem',
                                         lineHeight: 1.1,
                                     },
                                     '&  .MuiChip-deleteIcon': {
                                         padding: '0 0.2rem',
-                                        fontSize: '1.35rem',
+                                        fontSize: '1.6rem',
                                     }
                                 }}
                             />
@@ -124,7 +124,7 @@ const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
                         sx={{
                             width: 180,
                             '& .MuiInputBase-input': {
-                                fontSize: '0.8rem'
+                                fontSize: '0.9rem'
                             }
                         }}
                         placeholder="Search..."
@@ -162,7 +162,7 @@ const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
                                     PaperProps: {
                                         sx: {
                                             '& .MuiMenuItem-root': {
-                                                fontSize: '0.8rem'
+                                                fontSize: '0.9rem'
                                             }
                                         }
                                     }
