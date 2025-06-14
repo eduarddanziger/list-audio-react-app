@@ -134,7 +134,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                         {device.hostName}
                                         {device.operationSystemName &&
                                             device.operationSystemName !== '' &&
-                                            ` (${device.operationSystemName})`}
+                                            `, ${device.operationSystemName}`}
                                     </Typography>
                                 </Box>
                                 <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 15%', paddingLeft: 1}}>

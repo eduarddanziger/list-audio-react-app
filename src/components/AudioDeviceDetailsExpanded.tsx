@@ -39,7 +39,12 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <HostIcon fontSize="small" />
-                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.hostName}</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>
+                    {device.hostName}
+                    {device.operationSystemName &&
+                        device.operationSystemName !== '' &&
+                        `, ${device.operationSystemName}`}
+                </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <DateIcon fontSize="small" />
