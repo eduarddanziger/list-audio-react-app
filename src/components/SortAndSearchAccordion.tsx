@@ -131,21 +131,23 @@ const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        //slotProps={}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon fontSize="small" sx={{mr: 1, color: 'action.active'}}/>
-                                </InputAdornment>
-                            ),
-                            endAdornment: searchQuery && (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={clearSearch} size="small" edge="end">
-                                        <ClearIcon fontSize="small"/>
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
+                        slotProps={                            {
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchIcon fontSize="small" sx={{mr: 1, color: 'action.active'}}/>
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: searchQuery && (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={clearSearch} size="small" edge="end">
+                                                <ClearIcon fontSize="small"/>
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }
+                            }
+                        }
                     />
 
                     <Box sx={{width: 20}}/>
