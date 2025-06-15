@@ -116,7 +116,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             sx={accordionSummaryStyle(theme)}
                         >
                             <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
-                                <Box sx={{ display: 'flex', gap: 'inherit', flex: '1 1 70%', paddingRight: 1, minWidth: '13rem'}}>
+                                <Box sx={{ display: 'flex', gap: 'inherit', flex: '1 1 63%', paddingRight: 1, minWidth: '13rem'}}>
                                     {
                                         device.flowType === DeviceFlowType.RenderAndCapture ? (
                                             <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -129,7 +129,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     <Typography variant="body2">{device.name}</Typography>
                                 </Box>
 
-                                <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 15%', paddingRight: 1, paddingLeft: 1}}>
+                                <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 22%', paddingRight: 1, paddingLeft: 1}}>
                                     <Typography variant="body2">
                                         {device.hostName}
                                         {device.operationSystemName &&
