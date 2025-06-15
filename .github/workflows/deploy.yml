@@ -64,7 +64,7 @@ jobs:
         id: get_latest_commit_date
         run: |
           # Get the latest commit date in ISO 8601 format
-          LATEST_COMMIT_DATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%MT%H:%M:%S%z')
+          LATEST_COMMIT_DATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%dT%H:%M:%S%z')
           echo "LATEST_COMMIT_DATE=$LATEST_COMMIT_DATE" >> $GITHUB_OUTPUT
           echo "Latest commit date: $LATEST_COMMIT_DATE"    
 
