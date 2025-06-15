@@ -9,7 +9,7 @@ Visualizes an audio devices repository utilizing React JS (TypeScript). The back
 
 ### Starting ASP.NET Core Web API Server
 
-- Checkout a repo [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/) and install dotnet tools
+- Checkout a git repository [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/) and install dotnet tools
 
 - Start via Terminal using the following command:
 
