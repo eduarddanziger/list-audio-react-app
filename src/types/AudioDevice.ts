@@ -10,6 +10,7 @@ export class AudioDevice {
         public captureVolume: number,
         public updateDate: string,
         public hostName: string,
+        public operationSystemName: string,
         public flowType: DeviceFlowType,
         public deviceMessageType: DeviceMessageType
     ) {}
@@ -27,6 +28,7 @@ export class AudioDevice {
             apiDevice.captureVolume,
             apiDevice.updateDate,
             apiDevice.hostName,
+            apiDevice.operationSystemName,
             apiDevice.flowType,
             apiDevice.deviceMessageType
        );

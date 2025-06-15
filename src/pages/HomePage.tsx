@@ -1,12 +1,12 @@
 // src/pages/HomePage.tsx
 import React from 'react';
 import { Container } from '@mui/material';
-import AudioDeviceList from '../components/AudioDeviceListComponent.tsx';
+import AudioDeviceListComponent from '../components/AudioDeviceListComponent';
 
 const HomePage: React.FC = () => {
     return (
         <Container>
-            <AudioDeviceList />
+            <AudioDeviceListComponent />
         </Container>
     );
 };

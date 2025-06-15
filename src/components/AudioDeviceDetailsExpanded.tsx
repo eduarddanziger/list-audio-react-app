@@ -39,7 +39,12 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <HostIcon fontSize="small" />
-                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.hostName}</Typography>
+                <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>
+                    {device.hostName}
+                    {device.operationSystemName &&
+                        device.operationSystemName !== '' &&
+                        `, ${device.operationSystemName}`}
+                </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                 <DateIcon fontSize="small" />
@@ -49,14 +54,14 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Render) &&
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                     <VolumeUpIcon fontSize="small" />
-                    <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.renderVolume} / 1000</Typography>
+                    <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.renderVolume / 10}%</Typography>
                 </Box>
             }
             {
                 (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Capture) &&
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                     <MicOutlinedIcon fontSize="small" />
-                    <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.captureVolume} / 1000</Typography>
+                    <Typography variant="body1" sx={{ fontSize: '0.9rem', lineHeight: 0.8 }}>{device.captureVolume / 10}%</Typography>
                 </Box>
             }
         </Box>

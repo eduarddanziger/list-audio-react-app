@@ -34,24 +34,28 @@ const AboutPage = () => {
     }, [serverInfoApiUrl]);
 
     return (
-        <Container sx={{ marginTop: 2, marginLeft: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <InfoIcon sx={{ marginRight: 1 }} />
-                <Typography variant="body1">
-                    client: {clientVersion}, {clientCodeDate}
-                </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <InfoIcon sx={{ marginRight: 1 }} />
-                <Typography variant="body1">
-                    server: {serverVersion}, {serverCodeDate}
-                </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <PersonIcon sx={{ marginRight: 1 }} />
-                <Typography variant="body1">
-                    Eduard Danziger
-                </Typography>
+        <Container>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, paddingTop: 1 }}>
+                <Container sx={{ marginTop: 2, marginLeft: -1.6 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                        <InfoIcon sx={{ marginRight: 1 }} />
+                        <Typography variant="body1">
+                            client: {clientVersion}, {clientCodeDate}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                        <InfoIcon sx={{ marginRight: 1 }} />
+                        <Typography variant="body1">
+                            server: {serverVersion}, {serverCodeDate}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                        <PersonIcon sx={{ marginRight: 1 }} />
+                        <Typography variant="body1">
+                            Eduard Danziger
+                        </Typography>
+                    </Box>
+                </Container>
             </Box>
         </Container>
     );
