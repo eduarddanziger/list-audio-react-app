@@ -27,7 +27,7 @@ export function getApiUrl(
                 apiUrl = encryptedDeviceApiUrlFromEnv;
                 console.log('Dev Mode: Api URL is unlikely encrypted, use it as-is');
             } else {
-                console.log('Dev Mode: Api URL is deviceApiUrl: ', apiUrl);
+                console.log('Dev Mode: Api URL is decrypted: ', apiUrl);
             }
         } else {
             apiUrl = `http://localhost:5027/api`;
@@ -36,7 +36,7 @@ export function getApiUrl(
     } else {
         apiUrl = 'https://probable-space-computing-machine-x5vwx5vxr959cvq6j-5027.app.github.dev/api';
 // https://crispy-system-wrxg596p5wrrh9wg9-5027.app.github.dev/api/AudioDevices
-        console.log('Prod Mode: Use hardcoded Api URL: ', apiUrl);
+        console.log('Prod Mode: GitHub infrastructure Api URL: ', apiUrl);
     }
     return apiUrl;
 }
