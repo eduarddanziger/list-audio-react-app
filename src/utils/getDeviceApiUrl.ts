@@ -16,13 +16,15 @@ export function getInfoApiUrl(
 export function getApiUrl(
     isDevMode: boolean
 ): string {
-    let apiUrl: string;
+    let apiUrl = '';
     if (isDevMode) {
         const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_URL_DEV_MODE;
         if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== ``) {
             console.log('Dev Mode: Api URL read out of environment as a secret, possibly encrypted,: ', encryptedDeviceApiUrlFromEnv);
             const bytes = CryptoJS.AES.decrypt(encryptedDeviceApiUrlFromEnv, `32-characters-long-secure-key-12`);
-            apiUrl = bytes.toString(CryptoJS.enc.Utf8);
+            if (bytes.sigBytes > 0) {
+                apiUrl = bytes.toString(CryptoJS.enc.Utf8);
+            }
             if (apiUrl === '') {
                 apiUrl = encryptedDeviceApiUrlFromEnv;
                 console.log('Dev Mode: Api URL is unlikely encrypted, use it as-is');
