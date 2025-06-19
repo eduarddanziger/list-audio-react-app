@@ -1,4 +1,4 @@
-export enum DeviceMessageType {
+export const enum DeviceMessageType {
     Confirmed = 0,
     Discovered,
     Detached,
