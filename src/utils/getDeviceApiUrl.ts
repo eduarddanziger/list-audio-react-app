@@ -22,8 +22,11 @@ export function getApiUrl(
         if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== ``) {
             console.log('Dev Mode: Api URL read out of environment as a secret, possibly encrypted,: ', encryptedDeviceApiUrlFromEnv);
             const bytes = CryptoJS.AES.decrypt(encryptedDeviceApiUrlFromEnv, `32-characters-long-secure-key-12`);
-            if (bytes.sigBytes > 0) {
+            try {
                 apiUrl = bytes.toString(CryptoJS.enc.Utf8);
+            } catch (error) {
+                console.log('Failed to decode apiUrl:', error);
+                apiUrl = '';
             }
             if (apiUrl === '') {
                 apiUrl = encryptedDeviceApiUrlFromEnv;
