@@ -13,7 +13,6 @@ export class AudioDeviceFetchService {
 
     constructor(
         private readonly apiUrl: string,
-        private readonly isDevMode: boolean,
         private readonly onProgress: (progress: FetchProgress) => void,
         private readonly translateError: (key: string) => string
     ) {}
@@ -47,8 +46,16 @@ export class AudioDeviceFetchService {
         });
     }
 
-    private async handleProdModeError(err: unknown, attempt: number): Promise<void> {
-        console.error(`Device fetch error in prod mode (attempt ${attempt + 1}):`, err);
+    private handleProdModeErrorAttemptsExhausted(err: unknown): void {
+        console.error('Device fetch error in dev mode, start-codespace-attempts exhausted:', err);
+        this.onProgress({
+            progress: 100,
+            error: this.translateError('audioDevicesErrorProdModeCodespaceStartAttemptsExhausted')
+        });
+    }
+
+    private async handleProdModeErrorInStaringCodespaceAsync(err: unknown, attempt: number): Promise<void> {
+        console.log(`Device fetch error in prod mode (attempt ${attempt + 1}):`, err);
         this.onProgress({
             progress: this.calculateProgress(attempt),
             error: this.translateError('audioDevicesErrorProdMode')
@@ -68,11 +75,16 @@ export class AudioDeviceFetchService {
                 this.onProgress({ progress: 100, error: null });
                 return audioDevices;
             } catch (err) {
-                if (this.isDevMode || ++attempts === this.retryCount) {
+                if(process.env.NODE_ENV === 'development')
+                {
                     this.handleDevModeError(err);
                     return [];
                 }
-                await this.handleProdModeError(err, attempts);
+                if (++attempts === this.retryCount) {
+                    this.handleProdModeErrorAttemptsExhausted(err);
+                    return [];
+                }
+                await this.handleProdModeErrorInStaringCodespaceAsync(err, attempts);
             }
         }
 
