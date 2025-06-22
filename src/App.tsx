@@ -4,11 +4,11 @@ import AboutPage from './pages/AboutPage';
 import NavBar from './components/NavBar';
 import { ThemeProviderComponent } from './contexts/ThemeContext';
 
-function App() {
+const App: React.FC<{ appTitle: string }> = ({ appTitle }) => {
     return (
         <ThemeProviderComponent>
             <Router basename="/list-audio-react-app">
-                <NavBar />
+                <NavBar appTitle={appTitle} />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/about" element={<AboutPage />} />
