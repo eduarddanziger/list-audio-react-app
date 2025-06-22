@@ -1,13 +1,14 @@
+import { SxProps } from "@mui/material";
 import {Theme} from "@mui/material/styles";
 
-export const accordionStyle = {
+export const accordionStyle: SxProps= {
     padding: 0,
     boxShadow: 'none',
     border: 'none',
     '&:before': {display: 'none'}
 }
 
-export const accordionSummaryStyle = (theme: Theme) => ({
+export const accordionSummaryStyle = (theme: Theme): SxProps => ({
     paddingLeft: 1,
     minHeight: '32px',
     display: 'flex',

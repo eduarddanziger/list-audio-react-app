@@ -19,6 +19,7 @@ import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
 import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles";
 import SortAndSearchAccordion from './SortAndSearchAccordion';
+import {ellipsisTextStyle, getFlexStyle} from "../styles/listStyles";
 
 
 interface AudioDeviceListProps {
@@ -117,15 +118,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         >
                             <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        gap: 'inherit',
-                                        flex: '1 1 50%',
-                                        paddingRight: 1,
-                                        minWidth: '13rem',
-                                        maxWidth: '100%',
-                                        overflow: 'hidden'
-                                    }}
+                                    sx={getFlexStyle(50)}
                                 >
                                     {device.flowType === DeviceFlowType.RenderAndCapture ? (
                                         <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -137,36 +130,18 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     <Typography
                                         variant="body2"
                                         noWrap
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flexGrow: 1,
-                                            width: 0
-                                        }}
+                                        sx={ellipsisTextStyle}
                                     >
                                         {device.name}
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        gap: 'inherit',
-                                        flex: '1 1 16%',
-                                        paddingRight: 1,
-                                        overflow: 'hidden'
-                                    }}
+                                    sx={getFlexStyle(16)}
                                 >
                                     <Typography
                                         variant="body2"
                                         noWrap
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flexGrow: 1,
-                                            width: 0
-                                        }}
+                                        sx={ellipsisTextStyle}
                                     >
                                         {device.hostName}
                                         {device.operationSystemName &&
@@ -175,24 +150,12 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        gap: 'inherit',
-                                        flex: '1 1 24%',
-                                        paddingRight: 1,
-                                        overflow: 'hidden'
-                                    }}
+                                    sx={getFlexStyle(24)}
                                 >
                                     <Typography
                                         variant="body2"
                                         noWrap
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flexGrow: 1,
-                                            width: 0
-                                        }}
+                                        sx={ellipsisTextStyle}
                                     >
                                         {formatDateToSQL(device.updateDate)}
                                     </Typography>
