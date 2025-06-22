@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
                             }}
                         >
                             <SpeakerGroupOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
-                            Audio Device Repository
+                            {document.title}
                         </Typography>
                     </Link>
                     <Box sx={{
