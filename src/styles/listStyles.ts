@@ -8,10 +8,10 @@ export const ellipsisTextStyle: SxProps = {
     width: 0
 };
 
-export const getFlexStyle = (percent: number): SxProps => ({
+export const getFlexStylePercent = (percent: number): SxProps => ({
     display: 'flex',
     gap: 'inherit',
-    flex: `1 1 ${percent}%`, // Calculate the flex value dynamically
-    paddingRight: 1,
-    overflow: 'hidden',
+    flex: `1 1 ${percent}%`,
+    paddingRight: '0.2rem',
+    overflow: 'hidden'
 });

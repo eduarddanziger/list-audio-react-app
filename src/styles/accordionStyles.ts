@@ -5,6 +5,7 @@ export const accordionStyle: SxProps= {
     padding: 0,
     boxShadow: 'none',
     border: 'none',
+    width: '100%',
     '&:before': {display: 'none'}
 }
 

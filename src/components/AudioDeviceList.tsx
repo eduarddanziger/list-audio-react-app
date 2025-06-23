@@ -19,7 +19,7 @@ import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
 import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles";
 import SortAndSearchAccordion from './SortAndSearchAccordion';
-import {ellipsisTextStyle, getFlexStyle} from "../styles/listStyles";
+import {ellipsisTextStyle, getFlexStylePercent} from "../styles/listStyles";
 
 
 interface AudioDeviceListProps {
@@ -105,7 +105,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             />
 
             <List>
-                {sortedDevices.map((device) => (
+            {sortedDevices.map((device) => (
                     <Accordion
                         key={device.key}
                         expanded={expanded === device.key}
@@ -118,7 +118,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         >
                             <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
                                 <Box
-                                    sx={getFlexStyle(50)}
+                                    sx={getFlexStylePercent(170)}
                                 >
                                     {device.flowType === DeviceFlowType.RenderAndCapture ? (
                                         <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -136,7 +136,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={getFlexStyle(16)}
+                                    sx={getFlexStylePercent(50)}
                                 >
                                     <Typography
                                         variant="body2"
@@ -150,7 +150,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={getFlexStyle(24)}
+                                    sx={{
+                                        display: 'flex',
+                                        flex: `1 1 33rex`,
+                                        paddingRight: '0.2rem'
+                                    }}
                                 >
                                     <Typography
                                         variant="body2"
