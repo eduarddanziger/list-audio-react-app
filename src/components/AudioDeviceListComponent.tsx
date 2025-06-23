@@ -29,7 +29,6 @@ const AudioDeviceListComponent: React.FC = () => {
     useEffect(() => {
         const service = new AudioDeviceFetchService(
             deviceApiUrl,
-            isDevMode,
             ({ progress, error }) => {
                 setProgress(progress);
                 setError(error);

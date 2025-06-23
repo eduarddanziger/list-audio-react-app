@@ -13,12 +13,13 @@ import SpeakerGroupOutlinedIcon from '@mui/icons-material/SpeakerGroupOutlined';
 import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
 import SpeakerOutlinedIcon from '@mui/icons-material/SpeakerOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {formatDateTimeToSQL} from '../utils/formatDate';
+import {formatDateToSQL} from '../utils/formatDate';
 import AudioDeviceDetailsExpanded from './AudioDeviceDetailsExpanded';
 import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
 import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles";
 import SortAndSearchAccordion from './SortAndSearchAccordion';
+import {ellipsisTextStyle, getFlexStylePercent} from "../styles/listStyles";
 
 
 interface AudioDeviceListProps {
@@ -104,7 +105,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             />
 
             <List>
-                {sortedDevices.map((device) => (
+            {sortedDevices.map((device) => (
                     <Accordion
                         key={device.key}
                         expanded={expanded === device.key}
@@ -116,29 +117,52 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             sx={accordionSummaryStyle(theme)}
                         >
                             <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
-                                <Box sx={{ display: 'flex', gap: 'inherit', flex: '1 1 63%', paddingRight: 1, minWidth: '13rem'}}>
-                                    {
-                                        device.flowType === DeviceFlowType.RenderAndCapture ? (
-                                            <SpeakerGroupOutlinedIcon fontSize="medium" />
-                                        ) : device.flowType === DeviceFlowType.Capture ? (
-                                            <MicOutlinedIcon fontSize="medium" />
-                                        ) : ( // Render
-                                            <SpeakerOutlinedIcon fontSize="medium" />
-                                        )
-                                    }
-                                    <Typography variant="body2">{device.name}</Typography>
+                                <Box
+                                    sx={getFlexStylePercent(170)}
+                                >
+                                    {device.flowType === DeviceFlowType.RenderAndCapture ? (
+                                        <SpeakerGroupOutlinedIcon fontSize="medium" />
+                                    ) : device.flowType === DeviceFlowType.Capture ? (
+                                        <MicOutlinedIcon fontSize="medium" />
+                                    ) : ( // Render
+                                        <SpeakerOutlinedIcon fontSize="medium" />
+                                    )}
+                                    <Typography
+                                        variant="body2"
+                                        noWrap
+                                        sx={ellipsisTextStyle}
+                                    >
+                                        {device.name}
+                                    </Typography>
                                 </Box>
-
-                                <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 22%', paddingRight: 1, paddingLeft: 1}}>
-                                    <Typography variant="body2">
+                                <Box
+                                    sx={getFlexStylePercent(50)}
+                                >
+                                    <Typography
+                                        variant="body2"
+                                        noWrap
+                                        sx={ellipsisTextStyle}
+                                    >
                                         {device.hostName}
                                         {device.operationSystemName &&
                                             device.operationSystemName !== '' &&
                                             `, ${device.operationSystemName}`}
                                     </Typography>
                                 </Box>
-                                <Box sx={{display: 'flex', gap: 'inherit', flex: '1 1 15%', paddingLeft: 1}}>
-                                    <Typography variant="body2">{formatDateTimeToSQL(device.updateDate)}</Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flex: `1 1 33rex`,
+                                        paddingRight: '0.2rem'
+                                    }}
+                                >
+                                    <Typography
+                                        variant="body2"
+                                        noWrap
+                                        sx={ellipsisTextStyle}
+                                    >
+                                        {formatDateToSQL(device.updateDate)}
+                                    </Typography>
                                 </Box>
                             </Box>
                         </AccordionSummary>

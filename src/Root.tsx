@@ -10,7 +10,7 @@ const Root = () => {
         document.title = appTitle;
     }, [appTitle]);
 
-    return <App />;
+    return <App appTitle={appTitle} />; // Pass appTitle as a prop to App
 };
 
 export default Root;

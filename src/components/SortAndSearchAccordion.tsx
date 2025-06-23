@@ -172,6 +172,7 @@ const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
                             >
                                 <MenuItem value="name">Device Name</MenuItem>
                                 <MenuItem value="hostName">Host Name</MenuItem>
+                                <MenuItem value="operationSystemName">Operation System</MenuItem>
                                 <MenuItem value="updateDate">Last Update</MenuItem>
                             </Select>
                         </FormControl>

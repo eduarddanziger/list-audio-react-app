@@ -1,4 +1,4 @@
-export enum DeviceFlowType {
+export const enum DeviceFlowType {
     Unknown = 0,
     Render = 1,
     Capture = 2,
