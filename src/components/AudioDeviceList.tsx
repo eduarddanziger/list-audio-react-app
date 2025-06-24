@@ -35,7 +35,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
 
     const [expanded, setExpanded] = useState<string | false>();
 
@@ -45,7 +44,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
         const savedQuery = localStorage.getItem('appliedSearchQuery');
         if (savedQuery) {
             setSearchQuery(savedQuery);
-            setAppliedSearchQuery(savedQuery);
         }
     }, []);
 
@@ -69,13 +67,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
 
     const handleSearch = () => {
         onSearch(searchQuery);
-        setAppliedSearchQuery(searchQuery);
         localStorage.setItem('appliedSearchQuery', searchQuery);
     };
 
     const clearSearch = () => {
         setSearchQuery('');
-        setAppliedSearchQuery('');
         onSearch('');
         localStorage.removeItem('appliedSearchQuery');
     };
@@ -93,7 +89,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     return (
         <Box sx={{flexGrow: 1, paddingTop: '0.1rem'}}>
             <SortAndSearchAccordion
-                appliedSearchQuery={appliedSearchQuery}
                 clearSearch={clearSearch}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
