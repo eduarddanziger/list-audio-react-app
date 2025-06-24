@@ -118,7 +118,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         >
                             <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
                                 <Box
-                                    sx={getFlexStylePercent(170)}
+                                    sx={getFlexStylePercent(116)}
                                 >
                                     {device.flowType === DeviceFlowType.RenderAndCapture ? (
                                         <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -136,7 +136,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={getFlexStylePercent(50)}
+                                    sx={getFlexStylePercent(92)}
                                 >
                                     <Typography
                                         variant="body2"
@@ -152,8 +152,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        flex: `1 1 33rex`,
-                                        paddingRight: '0.2rem'
+                                        flex: `1 1 30rex`
                                     }}
                                 >
                                     <Typography
