@@ -147,7 +147,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        flex: `1 1 30rex`
+                                        flex: `1 1 14rem`
                                     }}
                                 >
                                     <Typography

@@ -38,8 +38,7 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                 <Toolbar
                     sx={{
                         minHeight: '48px !important',
-                        paddingTop: '2px',
-                        paddingBottom: '2px',
+                        paddingTop: '0.7rem',
                         justifyContent: 'space-between',
                     }}
                 >
@@ -49,15 +48,16 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                fontSize: '1rem',
-                                fontWeight: 700,
+                                fontSize: '1.2rem',
+                                fontWeight: 500,
                                 textAlign: 'left',
                                 paddingLeft: '12px',
                                 flex: 1,
                                 cursor: 'pointer',
+                                lineHeight: '1.4rem'
                             }}
                         >
-                            <SpeakerGroupOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+                            <SpeakerGroupOutlinedIcon fontSize="medium" sx={{ mr: 1 }} />
                             {appTitle}
                         </Typography>
                     </Link>

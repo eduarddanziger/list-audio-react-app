@@ -40,15 +40,15 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         >
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <LabelOutlined fontSize="small"/>
-                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem', marginTop: '0.2rex'}}>{device.name}</Typography>
+                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>{device.name}</Typography>
             </Box>
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <Tag fontSize="small"/>
-                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem', marginTop: '0.2rex'}}>{device.pnpId}</Typography>
+                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>{device.pnpId}</Typography>
             </Box>
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <HostIcon fontSize="small"/>
-                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem', marginTop: '0.2rex'}}>
+                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
                     {device.hostName}
                     {device.operationSystemName &&
                         device.operationSystemName !== '' &&
@@ -60,8 +60,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <Typography variant="body1"
                             sx={{
                                 fontSize: '0.9rem',
-                                lineHeight: '1.1rem',
-                                marginTop: '0.2rex'
+                                lineHeight: '1.1rem'
                             }}>{formatDateTimeToSQL(device.updateDate)} ({deviceMessageTypeToString(device.deviceMessageType)})</Typography>
             </Box>
             {
