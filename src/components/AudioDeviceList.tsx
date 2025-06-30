@@ -111,9 +111,9 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             expandIcon={<ExpandMoreIcon/>}
                             sx={accordionSummaryStyle(theme)}
                         >
-                            <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
+                            <Box sx={{display: 'flex', columnGap: 1, width: '100%', alignItems: 'center'}}>
                                 <Box
-                                    sx={getFlexStylePercent(116)}
+                                    sx={getFlexStylePercent(50)}
                                 >
                                     {device.flowType === DeviceFlowType.RenderAndCapture ? (
                                         <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -131,7 +131,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={getFlexStylePercent(92)}
+                                    sx={{...getFlexStylePercent(40), minWidth: '6.6rem'}}
                                 >
                                     <Typography
                                         variant="body2"
@@ -145,10 +145,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flex: `1 1 14rem`
-                                    }}
+                                    sx={{...getFlexStylePercent(10), minWidth: '4.8rem'}}
                                 >
                                     <Typography
                                         variant="body2"

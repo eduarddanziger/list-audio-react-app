@@ -12,6 +12,5 @@ export const getFlexStylePercent = (percent: number): SxProps => ({
     display: 'flex',
     gap: 'inherit',
     flex: `1 1 ${percent}%`,
-    paddingRight: '0.2rem',
-    overflow: 'hidden'
+    paddingRight: '0.1rem',
 });

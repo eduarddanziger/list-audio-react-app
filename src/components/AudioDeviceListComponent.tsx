@@ -60,7 +60,12 @@ const AudioDeviceListComponent: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, paddingTop: 1 }}>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '100%',
+            gap: 1, paddingTop: 1
+        }}>
             <Box>
                 <Accordion
                     sx={{
