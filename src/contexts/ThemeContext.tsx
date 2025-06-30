@@ -1,4 +1,4 @@
-import React, { useState, useMemo, ReactNode } from 'react';
+import React, { useState, useMemo, ReactNode, useEffect } from 'react';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import { ThemeContext } from './themeContextUtils';
 import { GlobalStyles } from '@mui/material';
@@ -8,11 +8,16 @@ interface ThemeProviderComponentProps {
 }
 
 export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ children }) => {
-    const defaultForDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const defaultForDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const [darkMode, setDarkMode] = useState(defaultForDarkMode);
+    const savedTheme = localStorage.getItem('themeMode');
+    const initialDarkMode = savedTheme ? savedTheme === 'dark' : defaultForDarkMode;
 
-    //setDarkMode(defaultForDarkMode);
+    const [darkMode, setDarkMode] = useState(initialDarkMode);
+
+    useEffect(() => {
+        localStorage.setItem('themeMode', darkMode ? 'dark' : 'light');
+    }, [darkMode]);
 
     const theme = useMemo(
         () =>

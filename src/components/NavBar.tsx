@@ -1,15 +1,16 @@
 import React from 'react';
-import {AppBar, Toolbar, IconButton, Typography, Box, Tooltip} from '@mui/material';
-import {Link} from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip } from '@mui/material';
+import { Link } from 'react-router-dom';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import InfoIcon from '@mui/icons-material/Info';
-import {useThemeContext} from '../contexts/themeContextUtils';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { useThemeContext } from '../contexts/themeContextUtils';
 import SpeakerGroupOutlinedIcon from '@mui/icons-material/SpeakerGroupOutlined';
 
+const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
 
-const Navbar: React.FC = () => {
-    const {toggleTheme, theme} = useThemeContext();
+    const { toggleTheme, theme } = useThemeContext();
 
     return (
         <AppBar
@@ -37,8 +38,7 @@ const Navbar: React.FC = () => {
                 <Toolbar
                     sx={{
                         minHeight: '48px !important',
-                        paddingTop: '2px',
-                        paddingBottom: '2px',
+                        paddingTop: '0.7rem',
                         justifyContent: 'space-between',
                     }}
                 >
@@ -48,27 +48,43 @@ const Navbar: React.FC = () => {
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                fontSize: '1rem',
-                                fontWeight: 700,
+                                fontSize: '1.2rem',
+                                fontWeight: 500,
                                 textAlign: 'left',
                                 paddingLeft: '12px',
                                 flex: 1,
                                 cursor: 'pointer',
+                                lineHeight: '1.4rem'
                             }}
                         >
-                            <SpeakerGroupOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
-                            Audio Device Repository
+                            <SpeakerGroupOutlinedIcon fontSize="medium" sx={{ mr: 1 }} />
+                            {appTitle}
                         </Typography>
                     </Link>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        flexBasis: '80px',
-                        gap: 1
-                    }}>
-                        <Tooltip title={theme.palette.mode === 'dark' ? "Light Mode" : "Dark Mode"}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            flexBasis: '80px',
+                            gap: 1,
+                        }}
+                    >
+                        <Tooltip title="Refresh">
+                            <IconButton
+                                color="inherit"
+                                onClick={() => window.location.reload()}
+                                size="small"
+                            >
+                                <RefreshIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title={theme.palette.mode === 'dark' ? 'Light Mode' : 'Dark Mode'}>
                             <IconButton color="inherit" onClick={toggleTheme} size="small">
-                                {theme.palette.mode === 'dark' ? <Brightness7Icon fontSize="small"/> : <Brightness4Icon fontSize="small"/>}
+                                {theme.palette.mode === 'dark' ? (
+                                    <Brightness7Icon fontSize="small" />
+                                ) : (
+                                    <Brightness4Icon fontSize="small" />
+                                )}
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="About">

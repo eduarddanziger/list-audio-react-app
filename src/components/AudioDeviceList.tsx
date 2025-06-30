@@ -19,6 +19,7 @@ import {AudioDevice} from '../types/AudioDevice';
 import {DeviceFlowType} from "../types/DeviceFlowType";
 import {accordionStyle, accordionSummaryStyle} from "../styles/accordionStyles";
 import SortAndSearchAccordion from './SortAndSearchAccordion';
+import {ellipsisTextStyle, getFlexStylePercent} from "../styles/listStyles";
 
 
 interface AudioDeviceListProps {
@@ -34,7 +35,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
 
     const [expanded, setExpanded] = useState<string | false>();
 
@@ -44,7 +44,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
         const savedQuery = localStorage.getItem('appliedSearchQuery');
         if (savedQuery) {
             setSearchQuery(savedQuery);
-            setAppliedSearchQuery(savedQuery);
         }
     }, []);
 
@@ -68,13 +67,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
 
     const handleSearch = () => {
         onSearch(searchQuery);
-        setAppliedSearchQuery(searchQuery);
         localStorage.setItem('appliedSearchQuery', searchQuery);
     };
 
     const clearSearch = () => {
         setSearchQuery('');
-        setAppliedSearchQuery('');
         onSearch('');
         localStorage.removeItem('appliedSearchQuery');
     };
@@ -92,7 +89,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     return (
         <Box sx={{flexGrow: 1, paddingTop: '0.1rem'}}>
             <SortAndSearchAccordion
-                appliedSearchQuery={appliedSearchQuery}
                 clearSearch={clearSearch}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
@@ -104,7 +100,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
             />
 
             <List>
-                {sortedDevices.map((device) => (
+            {sortedDevices.map((device) => (
                     <Accordion
                         key={device.key}
                         expanded={expanded === device.key}
@@ -117,15 +113,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                         >
                             <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        gap: 'inherit',
-                                        flex: '1 1 50%',
-                                        paddingRight: 1,
-                                        minWidth: '13rem',
-                                        maxWidth: '100%',
-                                        overflow: 'hidden'
-                                    }}
+                                    sx={getFlexStylePercent(116)}
                                 >
                                     {device.flowType === DeviceFlowType.RenderAndCapture ? (
                                         <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -137,36 +125,18 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     <Typography
                                         variant="body2"
                                         noWrap
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flexGrow: 1,
-                                            width: 0
-                                        }}
+                                        sx={ellipsisTextStyle}
                                     >
                                         {device.name}
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        gap: 'inherit',
-                                        flex: '1 1 16%',
-                                        paddingRight: 1,
-                                        overflow: 'hidden'
-                                    }}
+                                    sx={getFlexStylePercent(92)}
                                 >
                                     <Typography
                                         variant="body2"
                                         noWrap
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flexGrow: 1,
-                                            width: 0
-                                        }}
+                                        sx={ellipsisTextStyle}
                                     >
                                         {device.hostName}
                                         {device.operationSystemName &&
@@ -177,22 +147,13 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        gap: 'inherit',
-                                        flex: '1 1 24%',
-                                        paddingRight: 1,
-                                        overflow: 'hidden'
+                                        flex: `1 1 14rem`
                                     }}
                                 >
                                     <Typography
                                         variant="body2"
                                         noWrap
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flexGrow: 1,
-                                            width: 0
-                                        }}
+                                        sx={ellipsisTextStyle}
                                     >
                                         {formatDateToSQL(device.updateDate)}
                                     </Typography>

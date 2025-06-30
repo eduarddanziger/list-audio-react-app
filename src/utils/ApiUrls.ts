@@ -1,23 +1,20 @@
 import CryptoJS from "crypto-js";
 
-export function getDeviceApiUrl(
-    isDevMode: boolean
-): string {
-    return getBaseApiUrl(isDevMode) + '/AudioDevices';
+export function getAudioDevicesApiUrl(): string {
+    return getBaseApiUrl() + '/AudioDevices';
 }
 
-export function getInfoApiUrl(
-    isDevMode: boolean
-): string {
-    return getBaseApiUrl(isDevMode) + '/Info';
+export function getInfoApiUrl(): string {
+    return getBaseApiUrl() + '/Info';
 }
 
 
 // Cache for dev mode API URL
 let cachedDevModeApiUrl: string | null = null;
 
-export function getBaseApiUrl(isDevMode: boolean): string {
+export function getBaseApiUrl(): string {
 
+    const isDevMode = import.meta.env.MODE === 'development';
     let apiUrl = '';
     if (isDevMode) {
         if (cachedDevModeApiUrl !== null) {
