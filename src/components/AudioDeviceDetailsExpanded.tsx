@@ -40,11 +40,15 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         >
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <LabelOutlined fontSize="small"/>
-                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>{device.name}</Typography>
+                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
+                    {device.name}
+                </Typography>
             </Box>
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <Tag fontSize="small"/>
-                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>{device.pnpId}</Typography>
+                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
+                    {device.pnpId}
+                </Typography>
             </Box>
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <HostIcon fontSize="small"/>
@@ -57,29 +61,28 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             </Box>
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                 <DateIcon fontSize="small"/>
-                <Typography variant="body1"
-                            sx={{
-                                fontSize: '0.9rem',
-                                lineHeight: '1.1rem'
-                            }}>{formatDateTimeToSQL(device.updateDate)} ({deviceMessageTypeToString(device.deviceMessageType)})</Typography>
+                <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
+                    {formatDateTimeToSQL(device.updateDate)}
+                    {' '}
+                    ({deviceMessageTypeToString(device.deviceMessageType)})
+                </Typography>
             </Box>
             {
                 (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Render) &&
                 <Box sx={{display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1}}>
                     <VolumeUpIcon fontSize="small"/>
-                    <Typography variant="body1"
-                                sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>{device.renderVolume / 10}%</Typography>
+                    <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
+                        {device.renderVolume / 10}%
+                    </Typography>
                 </Box>
             }
             {
                 (device.flowType === DeviceFlowType.RenderAndCapture || device.flowType === DeviceFlowType.Capture) &&
                 <Box sx={{display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1}}>
                     <MicOutlinedIcon fontSize="small"/>
-                    <Typography variant="body1"
-                                sx={{
-                                    fontSize: '0.9rem',
-                                    lineHeight: '1.1rem'
-                                }}>{device.captureVolume / 10}%</Typography>
+                    <Typography variant="body1" sx={{fontSize: '0.9rem',  lineHeight: '1.1rem'}}>
+                        {device.captureVolume / 10}%
+                    </Typography>
                 </Box>
             }
         </Box>
