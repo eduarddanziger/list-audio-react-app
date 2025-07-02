@@ -16,7 +16,9 @@ interface AudioDeviceDetailsExpandedProps {
 }
 
 const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device}) => {
-    const deviceMessageTypeToString = (deviceMessageType: DeviceMessageType): string => {
+
+    const deviceMessageTypeToString
+        = (deviceMessageType: DeviceMessageType): string => {
         switch (deviceMessageType) {
             case DeviceMessageType.Confirmed:
                 return 'Confirmed';
@@ -32,6 +34,21 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 return 'Unknown';
         }
     }
+
+    const deviceTypeToString
+        = (flowType: DeviceFlowType): string => {
+        switch (flowType) {
+            case DeviceFlowType.RenderAndCapture:
+                return 'Render and Capture';
+            case DeviceFlowType.Capture:
+                return 'Capture';
+            case DeviceFlowType.Render:
+                return 'Render';
+            default:
+                return 'Unknown';
+        }
+    };
+
     return (
         <Box
             sx={{
@@ -42,6 +59,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <LabelOutlined fontSize="small"/>
                 <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
                     {device.name}
+                    {', <'}
+                    {deviceTypeToString(device.flowType)}
+                    {' Device>'}
                 </Typography>
             </Box>
             <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
@@ -63,8 +83,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <DateIcon fontSize="small"/>
                 <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
                     {formatDateTimeToSQL(device.updateDate)}
-                    {' '}
-                    ({deviceMessageTypeToString(device.deviceMessageType)})
+                    {', <'}
+                    {deviceMessageTypeToString(device.deviceMessageType)}
+                    {'>'}
                 </Typography>
             </Box>
             {
