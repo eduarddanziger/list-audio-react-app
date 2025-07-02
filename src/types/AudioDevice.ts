@@ -15,9 +15,8 @@ export class AudioDevice {
         public deviceMessageType: DeviceMessageType
     ) {}
 
-    // Dynamic getter for 'key' (calculated on access)
     get key(): string {
-        return `${this.pnpId}_${this.hostName}`; // Example: Combine with a delimiter
+        return `${this.pnpId}/${this.hostName}`;
     }
 
     static fromApiData(apiDevice: ApiAudioDevice): AudioDevice {
