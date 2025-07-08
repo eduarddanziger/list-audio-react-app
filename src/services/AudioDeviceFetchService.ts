@@ -38,27 +38,27 @@ export class AudioDeviceFetchService {
         return await response.json();
     }
 
-    private handleDevModeError(err: unknown): void {
-        console.error('Device fetch error in dev mode:', err);
+    private handleFetchErrorNoAttempts(err: unknown): void {
+        console.error('Device fetch error:', err);
         this.onProgress({
             progress: 100,
-            error: this.translateError('audioDevicesErrorDevMode')
+            error: this.translateError('audioDevicesFetchErrorNoAttempts')
         });
     }
 
-    private handleProdModeErrorAttemptsExhausted(err: unknown): void {
-        console.error('Device fetch error in dev mode, start-codespace-attempts exhausted:', err);
+    private handleFetchErrorAttemptsExhausted(err: unknown): void {
+        console.error('Device fetch error (start-codespace-attempts exhausted):', err);
         this.onProgress({
             progress: 100,
-            error: this.translateError('audioDevicesErrorProdModeCodespaceStartAttemptsExhausted')
+            error: this.translateError('audioDevicesFetchErrorStartAttemptsExhausted')
         });
     }
 
-    private async handleProdModeErrorInStaringCodespaceAsync(err: unknown, attempt: number): Promise<void> {
-        console.log(`Device fetch error in prod mode (attempt ${attempt + 1}):`, err);
+    private async handleFetchErrorAsStaringCodespaceAsync(err: unknown, attempt: number): Promise<void> {
+        console.log(`Device fetch error (attempt ${attempt + 1}):`, err);
         this.onProgress({
             progress: this.calculateProgress(attempt),
-            error: this.translateError('audioDevicesErrorProdMode')
+            error: this.translateError('audioDevicesFetchErrorStaringCodespace')
         });
         await startCodespace();
         await this.delay();
@@ -72,19 +72,19 @@ export class AudioDeviceFetchService {
                 const apiDevices = await this.fetchDevices();
                 const audioDevices = apiDevices.map(AudioDevice.fromApiData);
 
-                this.onProgress({ progress: 100, error: null });
+                this.onProgress({progress: 100, error: null});
                 return audioDevices;
             } catch (err) {
-                if(import.meta.env.MODE === 'development')
-                {
-                    this.handleDevModeError(err);
+                if (!this.apiUrl.includes('.github.')) {
+                    console.info(`Api URL ${this.apiUrl} has no substring ".github.", so we don't start any reconnection attempt.`);
+                    this.handleFetchErrorNoAttempts(err);
                     return [];
                 }
                 if (++attempts === this.retryCount) {
-                    this.handleProdModeErrorAttemptsExhausted(err);
+                    this.handleFetchErrorAttemptsExhausted(err);
                     return [];
                 }
-                await this.handleProdModeErrorInStaringCodespaceAsync(err, attempts);
+                await this.handleFetchErrorAsStaringCodespaceAsync(err, attempts);
             }
         }
 
