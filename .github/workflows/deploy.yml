@@ -73,24 +73,31 @@ jobs:
           node -e "
             const CryptoJS = require('crypto-js');
             const encryptionKey = '32-characters-long-secure-key-12';
-            // decrypt the secrets:
+            //
+            // read and encrypt secrets:
             const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
             if (!tokenSecret) {
                throw new Error('UNIVERSAL_PAT secret is empty or undefined');
             }
             const encryptedTokenSecret = CryptoJS.AES.encrypt(tokenSecret, encryptionKey).toString();
-            const urlSecret = '${{ secrets.AUDIO_API_URL }}';
-            if (!urlSecret) {
-               throw new Error('AUDIO_API_URL secret is empty or undefined');
+            const githubUrlSecret = '${{ secrets.AUDIO_API_GITHUB_URL }}';
+            if (!githubUrlSecret) {
+               throw new Error('AUDIO_API_GITHUB_URL secret is empty or undefined');
             }
-            const encryptedUrlSecret = CryptoJS.AES.encrypt(urlSecret, encryptionKey).toString();
-            // use environment for version and commit date:
+            const encryptedGithubUrlSecret = CryptoJS.AES.encrypt(githubUrlSecret, encryptionKey).toString();
+            const azureUrlSecret = '${{ secrets.AUDIO_API_AZURE_URL }}';
+            if (!azureUrlSecret) {
+               throw new Error('AUDIO_API_AZURE_URL secret is empty or undefined');
+            }
+            const encryptedAzureUrlSecret = CryptoJS.AES.encrypt(azureUrlSecret, encryptionKey).toString();
+            // read version and latest commit date:
             const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
             const latestCommitDate = '${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}';
             // Write to .env.production file:
             const fs = require('fs');
             fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_API_URL_DEV_MODE=' + encryptedUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
             fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
             fs.appendFileSync('./.env.production', 'VITE_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
             console.log('.env.production file created successfully');
