@@ -23,14 +23,12 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                         : 'rgba(255,255,255,0.7)',
                 color: theme.palette.text.primary,
                 backdropFilter: 'blur(8px)',
-                boxShadow: '0 2px 8px 0 rgba(0,0,0,0.02)',
-                borderRadius: '0 0 12px 12px',
-                minHeight: '48px',
+                minHeight: '3.4rem',
             }}
         >
             <Box
                 sx={{
-                    maxWidth: 1200,
+                    maxWidth: '70rem',
                     margin: '0 auto',
                     width: '100%',
                 }}
@@ -38,8 +36,7 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                 <Toolbar
                     sx={{
                         minHeight: '48px !important',
-                        paddingTop: '2px',
-                        paddingBottom: '2px',
+                        paddingTop: '0.5rem',
                         justifyContent: 'space-between',
                     }}
                 >
@@ -48,16 +45,16 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                             variant="subtitle1"
                             sx={{
                                 display: 'flex',
-                                alignItems: 'center',
-                                fontSize: '1rem',
-                                fontWeight: 700,
+                                fontSize: '1.2rem',
+                                fontWeight: 500,
                                 textAlign: 'left',
-                                paddingLeft: '12px',
+                                paddingLeft: '0.3rem',
                                 flex: 1,
                                 cursor: 'pointer',
+                                lineHeight: '1.4rem'
                             }}
                         >
-                            <SpeakerGroupOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+                            <SpeakerGroupOutlinedIcon fontSize="medium" sx={{ mr: 1 }} />
                             {appTitle}
                         </Typography>
                     </Link>
@@ -65,7 +62,6 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                         sx={{
                             display: 'flex',
                             justifyContent: 'flex-end',
-                            flexBasis: '80px',
                             gap: 1,
                         }}
                     >

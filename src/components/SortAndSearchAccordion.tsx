@@ -6,7 +6,6 @@ import {
     SelectChangeEvent,
     Box,
     Typography,
-    Chip,
     TextField,
     InputAdornment,
     IconButton,
@@ -24,7 +23,6 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {accordionSummaryStyle} from "../styles/accordionStyles.ts";
 
 interface SortSearchAccordionProps {
-    appliedSearchQuery: string;
     clearSearch: () => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
@@ -38,7 +36,6 @@ interface SortSearchAccordionProps {
 
 const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
     = ({
-           appliedSearchQuery,
            clearSearch,
            searchQuery,
            setSearchQuery,
@@ -78,33 +75,6 @@ const SortAndSearchAccordion: React.FC<SortSearchAccordionProps>
                     <Typography sx={{fontSize: 'inherit', paddingBottom: 0, display: 'flex', gap: 'inherit', }}>
                         Filter / Sort
                     </Typography>
-                    {appliedSearchQuery && (
-                        <Box sx={{fontSize: 'inherit', paddingBottom: 0, display: 'flex', gap: 'inherit'}}>
-                            <Chip
-                                label={`${appliedSearchQuery}`}
-                                onDelete={clearSearch}
-                                variant="outlined"
-                                sx={{
-                                    fontSize: '0.72rem',
-                                    height: 22,
-                                    minHeight: 22,
-                                    display: 'flex', gap: 'inherit',
-                                    border: `1.8px solid ${theme.palette.divider}`,
-                                    backgroundColor: theme.palette.background.paper,
-                                    padding: 0,
-                                    '& .MuiChip-label': {
-                                        padding: '0 0.5rem',
-                                        fontSize: '0.9rem',
-                                        lineHeight: 1.1,
-                                    },
-                                    '&  .MuiChip-deleteIcon': {
-                                        padding: '0 0.2rem',
-                                        fontSize: '1.6rem',
-                                    }
-                                }}
-                            />
-                        </Box>
-                    )}
                 </Box>
             </AccordionSummary>
             <AccordionDetails sx={{fontSize: 'inherit', p: 0}}>

@@ -35,7 +35,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
 
     const [expanded, setExpanded] = useState<string | false>();
 
@@ -45,7 +44,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
         const savedQuery = localStorage.getItem('appliedSearchQuery');
         if (savedQuery) {
             setSearchQuery(savedQuery);
-            setAppliedSearchQuery(savedQuery);
         }
     }, []);
 
@@ -69,13 +67,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
 
     const handleSearch = () => {
         onSearch(searchQuery);
-        setAppliedSearchQuery(searchQuery);
         localStorage.setItem('appliedSearchQuery', searchQuery);
     };
 
     const clearSearch = () => {
         setSearchQuery('');
-        setAppliedSearchQuery('');
         onSearch('');
         localStorage.removeItem('appliedSearchQuery');
     };
@@ -93,7 +89,6 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     return (
         <Box sx={{flexGrow: 1, paddingTop: '0.1rem'}}>
             <SortAndSearchAccordion
-                appliedSearchQuery={appliedSearchQuery}
                 clearSearch={clearSearch}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
@@ -116,9 +111,9 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                             expandIcon={<ExpandMoreIcon/>}
                             sx={accordionSummaryStyle(theme)}
                         >
-                            <Box sx={{display: 'flex', columnGap: 1, width: '100%'}}>
+                            <Box sx={{display: 'flex', columnGap: 1, width: '100%', alignItems: 'center'}}>
                                 <Box
-                                    sx={getFlexStylePercent(170)}
+                                    sx={getFlexStylePercent(50)}
                                 >
                                     {device.flowType === DeviceFlowType.RenderAndCapture ? (
                                         <SpeakerGroupOutlinedIcon fontSize="medium" />
@@ -136,7 +131,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={getFlexStylePercent(50)}
+                                    sx={{...getFlexStylePercent(40), minWidth: '6.6rem'}}
                                 >
                                     <Typography
                                         variant="body2"
@@ -150,11 +145,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                     </Typography>
                                 </Box>
                                 <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flex: `1 1 33rex`,
-                                        paddingRight: '0.2rem'
-                                    }}
+                                    sx={{...getFlexStylePercent(10), minWidth: '4.8rem'}}
                                 >
                                     <Typography
                                         variant="body2"

@@ -11,17 +11,23 @@ export const accordionStyle: SxProps= {
 
 export const accordionSummaryStyle = (theme: Theme): SxProps => ({
     paddingLeft: 1,
-    minHeight: '32px',
+    minHeight: 0,
     display: 'flex',
     alignItems: 'flex-start',
     '&.Mui-expanded': {
-        minHeight: '32px'
+        margin: '0.1rem 0',
+        minHeight: 0
     },
     '.MuiAccordionSummary-content': {
         margin: '0.3rem 0',
+        minHeight: 0,
         alignItems: 'flex-start',
         display: 'flex',
         flexDirection: 'column',
+        '&.Mui-expanded': {
+            margin: 0,
+            minHeight: 0
+        }
     },
     '&:hover': {
         backgroundColor: 'transparent'

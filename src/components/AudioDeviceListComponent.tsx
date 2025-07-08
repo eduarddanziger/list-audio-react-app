@@ -6,7 +6,7 @@ import {Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography} f
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
-import { getDeviceApiUrl } from '../utils/getDeviceApiUrl';
+import { getAudioDevicesApiUrl } from '../utils/ApiUrls.ts';
 
 const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
@@ -16,8 +16,7 @@ const AudioDeviceListComponent: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const { t: translate } = useTranslation();
 
-    const isDevMode = process.env.NODE_ENV === 'development';
-    const deviceApiUrl = getDeviceApiUrl(isDevMode);
+    const deviceApiUrl = getAudioDevicesApiUrl();
 
     useEffect(() => {
         const savedQuery = localStorage.getItem('appliedSearchQuery');
@@ -54,15 +53,20 @@ const AudioDeviceListComponent: React.FC = () => {
         };
 
         fetchData(searchQuery).catch(console.error);
-    }, [translate, isDevMode, deviceApiUrl, searchQuery]);
+    }, [translate, deviceApiUrl, searchQuery]);
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, paddingTop: 1 }}>
-            <Box sx={{ flex: 1 }}>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '100%',
+            gap: 1, paddingTop: 1
+        }}>
+            <Box>
                 <Accordion
                     sx={{
                         fontSize: '0.8rem',
