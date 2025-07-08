@@ -28,15 +28,15 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         = (deviceMessageType: DeviceMessageType): string => {
         switch (deviceMessageType) {
             case DeviceMessageType.Confirmed:
-                return 'Confirmed';
+                return 'Confirmation';
             case DeviceMessageType.Detached:
-                return 'Detached';
+                return 'Detachment';
             case DeviceMessageType.Discovered:
-                return 'Discovered';
+                return 'Discovery';
             case DeviceMessageType.VolumeRenderChanged:
-                return 'Render Volume Updated';
+                return 'Render volume\'s update';
             case DeviceMessageType.VolumeCaptureChanged:
-                return 'Capture Volume Updated';
+                return 'Capture volume\'s update';
             default:
                 return 'Unknown';
         }
@@ -46,7 +46,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         = (flowType: DeviceFlowType): string => {
         switch (flowType) {
             case DeviceFlowType.RenderAndCapture:
-                return 'Render and Capture';
+                return 'Render-and-capture';
             case DeviceFlowType.Capture:
                 return 'Capture';
             case DeviceFlowType.Render:
@@ -87,10 +87,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                     <LabelOutlined fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                        {device.name}
-                        {', <'}
                         {deviceTypeToString(device.flowType)}
-                        {' Device>'}
+                        {'-device '}
+                        {device.name}
                     </Typography>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
@@ -102,7 +101,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                     <HostIcon fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
+                        {' Host '}
                         {device.hostName}
+                        {' (hashed)'}
                         {device.operationSystemName &&
                             device.operationSystemName !== '' &&
                             `, ${device.operationSystemName}`}
@@ -111,10 +112,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                     <DateIcon fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                        {formatDateTimeToSQL(device.updateDate)}
-                        {', <'}
                         {deviceMessageTypeToString(device.deviceMessageType)}
-                        {'>'}
+                        {' on '}
+                        {formatDateTimeToSQL(device.updateDate)}
                     </Typography>
                 </Box>
                 {
@@ -122,7 +122,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     <Box sx={{display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1}}>
                         <VolumeUpIcon fontSize="small"/>
                         <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                            {device.renderVolume / 10}%
+                            {' Latest output '}
+                            {device.renderVolume / 10}
+                            %
                         </Typography>
                     </Box>
                 }
@@ -131,7 +133,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     <Box sx={{display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1}}>
                         <MicOutlinedIcon fontSize="small"/>
                         <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                            {device.captureVolume / 10}%
+                            {' Latest input '}
+                            {device.captureVolume / 10}
+                            %
                         </Typography>
                     </Box>
                 }
