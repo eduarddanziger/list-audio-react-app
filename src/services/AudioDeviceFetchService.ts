@@ -75,7 +75,7 @@ export class AudioDeviceFetchService {
                 this.onProgress({ progress: 100, error: null });
                 return audioDevices;
             } catch (err) {
-                if(process.env.NODE_ENV === 'development')
+                if(import.meta.env.MODE === 'development')
                 {
                     this.handleDevModeError(err);
                     return [];
