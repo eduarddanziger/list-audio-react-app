@@ -1,6 +1,6 @@
 import React from 'react';
 import {AudioDevice} from '../types/AudioDevice';
-import { useTheme, Box, Typography, Paper, IconButton} from '@mui/material';
+import { Box, Typography} from '@mui/material';
 import HostIcon from '@mui/icons-material/Computer';
 import DateIcon from '@mui/icons-material/AccessTime';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -10,10 +10,15 @@ import {DeviceFlowType} from "../types/DeviceFlowType";
 import {DeviceMessageType} from "../types/DeviceMessageType";
 import LabelOutlined from '@mui/icons-material/LabelOutlined';
 import Tag from '@mui/icons-material/Tag';
+/*
+// Uncomment these if refresh and delete functionality continued
+import { useTheme} from '@mui/material';
+import { Paper, IconButton} from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import {getAudioDevicesApiUrl} from '../utils/ApiUrls';
+*/
 
 
 interface AudioDeviceDetailsExpandedProps {
@@ -21,8 +26,6 @@ interface AudioDeviceDetailsExpandedProps {
 }
 
 const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device}) => {
-
-    const theme = useTheme();
 
     const deviceMessageTypeToString
         = (deviceMessageType: DeviceMessageType): string => {
@@ -56,6 +59,10 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         }
     };
 
+/*
+    // Uncomment these if refresh and delete functionality continued
+    const theme = useTheme();
+
     const handleRefresh = async (deviceKey: string) => {
         try {
             const response = await axios.get(`${getAudioDevicesApiUrl()}/${deviceKey}`);
@@ -75,6 +82,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             console.error('Error deleting device:', error);
         }
     };
+*/
 
 
     return (
@@ -140,6 +148,8 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     </Box>
                 }
             </Box>
+{/*
+// Uncomment these if refresh and delete functionality continued
             <Box
                 sx={{
                     paddingLeft: '0.0rem'
@@ -170,6 +180,8 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     </IconButton>
                 </Paper>
             </Box>
+*/}
+
         </Box>
     );
 };
