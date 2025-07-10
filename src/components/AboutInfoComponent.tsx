@@ -16,6 +16,7 @@ const AboutInfoComponent = () => {
 
     const [serverVersion, setServerVersion] = useState<string>('loading...');
     const [serverCodeDate, setServerCodeDate] = useState<string>('loading...');
+    const [serverRuntime, setServerRuntime] = useState<string>('loading...');
 
     useEffect(() => {
         fetch(`${serverInfoApiUrl}/version`)
@@ -26,10 +27,12 @@ const AboutInfoComponent = () => {
             .then(data => {
                 setServerVersion(data.releaseVersion || 'unknown-version');
                 setServerCodeDate(data.lastCommitDate || 'unknown-date');
+                setServerRuntime(data.runtime || 'unknown-runtime');
             })
             .catch(() => {
                 setServerVersion('version unavailable');
                 setServerCodeDate('date unavailable');
+                setServerRuntime('runtime description unavailable');
             });
     }, [serverInfoApiUrl]);
 
@@ -39,13 +42,13 @@ const AboutInfoComponent = () => {
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
                     <DevicesIcon fontSize={"small"} sx={{ marginRight: 1 }} />
                     <Typography variant="body1" sx={{lineHeight: '1.2rem' }}>
-                        client: {clientVersion}, {clientCodeDate}
+                        Client: {clientVersion}, {clientCodeDate}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
                     <DnsIcon fontSize={"small"} sx={{ marginRight: 1 }} />
                     <Typography variant="body1" sx={{lineHeight: '1.2rem' }}>
-                        server: {serverVersion}, {serverCodeDate}
+                        Server: {serverVersion}, {serverCodeDate}; Runtime: {serverRuntime}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
