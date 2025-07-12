@@ -42,13 +42,13 @@ const AboutInfoComponent = () => {
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
                     <DevicesIcon fontSize={"small"} sx={{ marginRight: 1 }} />
                     <Typography variant="body1" sx={{lineHeight: '1.2rem' }}>
-                        Client: {clientVersion}, {clientCodeDate}
+                        Frontend: {clientVersion}, {clientCodeDate}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
                     <DnsIcon fontSize={"small"} sx={{ marginRight: 1 }} />
                     <Typography variant="body1" sx={{lineHeight: '1.2rem' }}>
-                        Server: {serverVersion}, {serverCodeDate}; Runtime: {serverRuntime}
+                        Backend: {serverVersion}, {serverCodeDate}; Runtime: {serverRuntime}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>

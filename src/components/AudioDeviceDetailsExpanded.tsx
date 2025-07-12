@@ -31,15 +31,15 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         = (deviceMessageType: DeviceMessageType): string => {
         switch (deviceMessageType) {
             case DeviceMessageType.Confirmed:
-                return 'Confirmation';
+                return 'Existence confirmed';
             case DeviceMessageType.Detached:
-                return 'Detachment';
+                return 'Device detached';
             case DeviceMessageType.Discovered:
-                return 'Discovery';
+                return 'Device discovered';
             case DeviceMessageType.VolumeRenderChanged:
-                return 'Render volume\'s update';
+                return 'Output volume updated';
             case DeviceMessageType.VolumeCaptureChanged:
-                return 'Capture volume\'s update';
+                return 'Input volume updated';
             default:
                 return 'Unknown';
         }
@@ -96,20 +96,21 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     <LabelOutlined fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
                         {deviceTypeToString(device.flowType)}
-                        {'-device '}
+                        {' device: '}
                         {device.name}
                     </Typography>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                     <Tag fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
+                        {' PnP Id: '}
                         {device.pnpId}
                     </Typography>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                     <HostIcon fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                        {' Host '}
+                        {' End point: '}
                         {device.hostName}
                         {' (hashed)'}
                         {device.operationSystemName &&
@@ -120,9 +121,9 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 <Box sx={{display: 'flex', alignItems: 'flex-start', gap: 1, marginBottom: 1}}>
                     <DateIcon fontSize="small"/>
                     <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                        {deviceMessageTypeToString(device.deviceMessageType)}
-                        {' on '}
                         {formatDateTimeToSQL(device.updateDate)}
+                        {': '}
+                        {deviceMessageTypeToString(device.deviceMessageType)}
                     </Typography>
                 </Box>
                 {
@@ -130,7 +131,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     <Box sx={{display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1}}>
                         <VolumeUpIcon fontSize="small"/>
                         <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                            {' Latest output '}
+                            {' Output volume: '}
                             {device.renderVolume / 10}
                             %
                         </Typography>
@@ -141,7 +142,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     <Box sx={{display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1}}>
                         <MicOutlinedIcon fontSize="small"/>
                         <Typography variant="body1" sx={{fontSize: '0.9rem', lineHeight: '1.1rem'}}>
-                            {' Latest input '}
+                            {' Input volume: '}
                             {device.captureVolume / 10}
                             %
                         </Typography>
