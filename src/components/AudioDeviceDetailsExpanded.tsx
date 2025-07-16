@@ -31,7 +31,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         = (deviceMessageType: DeviceMessageType): string => {
         switch (deviceMessageType) {
             case DeviceMessageType.Confirmed:
-                return 'Existence confirmed';
+                return 'Availability confirmed';
             case DeviceMessageType.Detached:
                 return 'Device detached';
             case DeviceMessageType.Discovered:
