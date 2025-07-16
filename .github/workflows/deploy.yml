@@ -98,6 +98,7 @@ jobs:
             fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
             fs.appendFileSync('./.env.production', 'VITE_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
             fs.appendFileSync('./.env.production', 'VITE_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'VITE_API_HOSTED_ON=AZURE\n'); // can be GITHUB or AZURE
             fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
             fs.appendFileSync('./.env.production', 'VITE_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
             console.log('.env.production file created successfully');

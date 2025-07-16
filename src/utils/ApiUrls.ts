@@ -10,8 +10,10 @@ export function getInfoApiUrl(): string {
 
 
 export function getBaseApiUrl(): string {
-    // const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_GITHUB_URL;
-    const encryptedDeviceApiUrlFromEnv = import.meta.env.VITE_API_AZURE_URL;
+    const encryptedDeviceApiUrlFromEnv
+        = import.meta.env.VITE_API_HOSTED_ON === 'AZURE'
+        ? import.meta.env.VITE_API_AZURE_URL
+        : import.meta.env.VITE_API_GITHUB_URL;
 
     let apiUrl = '';
     if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== ``) {
