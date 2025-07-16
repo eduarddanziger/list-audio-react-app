@@ -9,15 +9,18 @@ interface ThemeProviderComponentProps {
 
 export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ children }) => {
     const defaultForDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    const savedTheme = localStorage.getItem('themeMode');
-    const initialDarkMode = savedTheme ? savedTheme === 'dark' : defaultForDarkMode;
-
-    const [darkMode, setDarkMode] = useState(initialDarkMode);
+    const [darkMode, setDarkMode] = useState(defaultForDarkMode);
 
     useEffect(() => {
-        localStorage.setItem('themeMode', darkMode ? 'dark' : 'light');
-    }, [darkMode]);
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = (event: MediaQueryListEvent) => {
+            setDarkMode(event.matches);
+        };
+        mediaQuery.addEventListener('change', handleChange);
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
+    }, []);
 
     const theme = useMemo(
         () =>
