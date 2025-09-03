@@ -13,7 +13,21 @@ export const startCodespace = async (): Promise<void> => {
     try {
         const encryptedSecret = import.meta.env.VITE_UNIVERSAL_PAT;
         const bytes = CryptoJS.AES.decrypt(encryptedSecret, '32-characters-long-secure-key-12');
-        const universalPat = bytes.toString(CryptoJS.enc.Utf8);
+
+        let universalPat: string;
+
+        try {
+            universalPat = bytes.toString(CryptoJS.enc.Utf8);
+        } catch (error) {
+            console.log('Failed to decode universalPat:', error);
+            universalPat = '';
+        }
+        if (universalPat === '') {
+            universalPat = encryptedSecret;
+            console.log('universalPat is unlikely encrypted, use it as-is.');
+        } else {
+            console.log('universalPat is decrypted.');
+        }
 
         const headers = {
             'Authorization': `token ${universalPat}`,
