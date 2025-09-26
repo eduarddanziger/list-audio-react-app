@@ -89,7 +89,7 @@ const AudioDeviceListComponent: React.FC = () => {
                         }}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
-                            List of collected audio devices
+                            About a list of collected audio devices
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails
