@@ -1,12 +1,14 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { AudioDeviceFetchService } from '../services/AudioDeviceFetchService.ts';
+import { AudioDeviceFetchService } from '../services/AudioDeviceFetchService';
 import { AudioDevice } from '../types/AudioDevice';
 import AudioDeviceList from './AudioDeviceList';
 import {Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
-import { getAudioDevicesApiUrl } from '../utils/ApiUrls.ts';
+import { getAudioDevicesApiUrl } from '../utils/ApiUrls';
 
 const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
@@ -102,7 +104,7 @@ const AudioDeviceListComponent: React.FC = () => {
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows a list of audio devices that were collected on connected hosts.<br />
-                            The application is built using React (TypeScript + Vite).<br />
+                            The application is built using React (Next.js + TypeScript).<br />
                             The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br />
                             NOTE: Initializing could delay due to the infrastructure starting process.
                         </Typography>

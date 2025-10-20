@@ -1,40 +1,27 @@
 {
-  "homepage": "https://eduarddanziger.github.io/list-audio-react-app",
   "name": "list-audio-react-app",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
-    "@types/react-router-dom": "^5.3.3",
-    "assert": "^2.1.0",
+    "@mui/material-nextjs": "^7.3.3",
     "axios": ">=1.12.2",
-    "crypto-browserify": "^3.12.1",
     "crypto-js": "^4.2.0",
-    "dotenv": "^17.2.2",
-    "https-browserify": "^1.0.0",
+    "eslint-config-next": "^15.5.6",
     "i18next": "^25.5.2",
-    "node-polyfill-webpack-plugin": "^4.1.0",
-    "os-browserify": "^0.3.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-i18next": "^16.0.0",
-    "react-router-dom": "^7.9.2",
-    "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "url": "^0.11.4",
-    "vite-plugin-node-polyfills": "^0.24.0"
+    "next": "^15.5.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-i18next": "^16.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
@@ -42,15 +29,11 @@
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.3",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.22",
-    "gh-pages": "^6.3.0",
     "globals": "^16.4.0",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.44.1",
-    "vite": "^7.1.7"
+    "typescript-eslint": "^8.44.1"
   },
   "overrides": {
     "sha.js": "^2.4.12"

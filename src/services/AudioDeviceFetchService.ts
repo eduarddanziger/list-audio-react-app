@@ -1,6 +1,6 @@
 import {AudioDevice} from '../types/AudioDevice';
 import {ApiAudioDevice} from '../types/ApiAudioDevice';
-import {startCodespace} from './startCodespace.ts';
+import {startCodespace} from './startCodespace';
 
 export interface FetchProgress {
     progress: number;

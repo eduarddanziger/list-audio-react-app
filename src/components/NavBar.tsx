@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip } from '@mui/material';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import InfoIcon from '@mui/icons-material/Info';
@@ -40,7 +42,7 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit', flex: 1 }}>
+                    <Link href="/" style={{ textDecoration: 'none', color: 'inherit', flex: 1 }}>
                         <Typography
                             variant="subtitle1"
                             sx={{
@@ -84,7 +86,12 @@ const Navbar: React.FC<{ appTitle: string }> = ({ appTitle }) => {
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="About">
-                            <IconButton color="inherit" component={Link} to="/about" size="small">
+                            <IconButton
+                                color="inherit"
+                                size="small"
+                                component={Link}
+                                href="/about"
+                            >
                                 <InfoIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
