@@ -57,6 +57,21 @@ export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ 
         [darkMode]
     );
 
+    // Keep DOM in sync with theme for UA rendering and CSS selectors.
+    useEffect(() => {
+        try {
+            const mode = darkMode ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', mode);
+            const meta: HTMLMetaElement | null = document.querySelector('meta[name="color-scheme"]');
+            if (meta) meta.setAttribute('content', mode);
+            // Keep body background in sync until MUI GlobalStyles applies
+            document.documentElement.style.setProperty('background-color', mode === 'dark' ? '#121212' : '#ffffff');
+            if (document.body) document.body.style.setProperty('background-color', mode === 'dark' ? '#121212' : '#ffffff');
+        } catch {
+            // ignore
+        }
+    }, [darkMode]);
+
     const toggleTheme = () => {
         setDarkMode((prevMode) => {
             const newMode = !prevMode;
@@ -76,6 +91,9 @@ export const ThemeProviderComponent: React.FC<ThemeProviderComponentProps> = ({ 
                 <CssBaseline />
                 <GlobalStyles
                     styles={{
+                        html: {
+                            backgroundColor: theme.palette.background.default,
+                        },
                         body: {
                             backgroundColor: theme.palette.background.default,
                         },
