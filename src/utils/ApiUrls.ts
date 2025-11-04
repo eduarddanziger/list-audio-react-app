@@ -10,10 +10,10 @@ export function getInfoApiUrl(): string {
 
 
 export function getBaseApiUrl(): string {
-    const azureOrCodespace = process.env.NEXT_PUBLIC_API_HOSTED_ON === 'AZURE';
-    console.log('API hosting environment is', azureOrCodespace ? 'Azure' : 'GitHub Codespace');
+    const azureOrGitHubCodespace = process.env.NEXT_PUBLIC_API_HOSTED_ON === 'AZURE';
+    console.log('API hosting environment is', azureOrGitHubCodespace ? 'Azure' : 'GitHub Codespace');
 
-    const encryptedDeviceApiUrlFromEnv = azureOrCodespace ? process.env.NEXT_PUBLIC_API_AZURE_URL : process.env.NEXT_PUBLIC_API_GITHUB_URL;
+    const encryptedDeviceApiUrlFromEnv = azureOrGitHubCodespace ? process.env.NEXT_PUBLIC_API_AZURE_URL : process.env.NEXT_PUBLIC_API_GITHUB_URL;
 
     let apiUrl = '';
     if (encryptedDeviceApiUrlFromEnv && encryptedDeviceApiUrlFromEnv !== ``) {
