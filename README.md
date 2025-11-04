@@ -1,19 +1,21 @@
 # Audio Device Repository Client, React / TypeScript
 
-Visualizes an audio devices repository using React. The respective backend is ASP.NET Core Server.
+Visualizes an audio devices repository using Next.js / React.
+The respective data backend is ASP.NET Core Server.
 
-## Latest Release
+## On Web
 
-### The backend starts automatically on-demand
-- The backend ASP.NET Core Server primary instance is hosted on Azure. The second instance is hosted on GitHub Codespaces.
+### Backend
+- The backend ASP.NET Core Server is hosted on GitHub Codespaces. It starts automatically on-demand.
 
-### Start the client application
-- This repository now uses Next.js (App Router) for the frontend.
-- Locally, the app runs on http://localhost:3000 when using the Next.js dev server.
+### Frontend
+
+*Notes*:
+- *The backend server's second instance is hosted on Azure and has to be manually started*
 
 ## Development Environment
 
-### Start the backend locally
+### 1. Start the backend locally
 
 - Check out the backend repo [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/) and install .NET tools
 - Start the ASP.NET Core Web API Server:
@@ -23,21 +25,20 @@ cd DeviceRepoAspNetCore
 dotnet run --launch-profile http
 ```
 
-### Start the frontend locally (Next.js)
+### 2. Start the frontend locally (Next.js)
 
-Configure environment variables so the frontend points to your local backend:
+Configure environment variables so the frontend points to your local backend.
+You can edit `.env.development` file or set the environment variables directly: 
 
 - PowerShell
 
 ```powershell
-$env:NEXT_PUBLIC_API_HOSTED_ON = "CODESPACE"
 $env:NEXT_PUBLIC_API_GITHUB_URL = "http://localhost:5027/api"
 ```
 
 - cmd.exe
 
 ```bat
-set NEXT_PUBLIC_API_HOSTED_ON=CODESPACE
 set NEXT_PUBLIC_API_GITHUB_URL=http://localhost:5027/api
 ```
 
@@ -49,9 +50,9 @@ npm run dev
 
 Open a browser at http://localhost:3000.
 
-Notes:
-- The app also supports Azure as a target by setting `NEXT_PUBLIC_API_HOSTED_ON=AZURE` and providing `NEXT_PUBLIC_API_AZURE_URL`.
-- The values can be plain URLs or encrypted strings (the app will attempt to decrypt and fall back to plaintext if decryption fails).
+*Notes*:
+- *The app also supports Azure as a target by setting `NEXT_PUBLIC_API_HOSTED_ON=AZURE` and providing `NEXT_PUBLIC_API_AZURE_URL`, see `.env.development` file*.
+- *The values can be plain URLs or encrypted strings (the app will attempt to decrypt and fall back to plaintext if decryption fails)*.
 
 ## Deployment
 
