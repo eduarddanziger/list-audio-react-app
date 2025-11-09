@@ -25,16 +25,19 @@ export class AudioDeviceFetchService {
         await new Promise(resolve => setTimeout(resolve, this.pauseDuration));
     }
 
+    private internalBase(): string {
+        return '/api/audio-devices';
+    }
+
     private async fetchDevices(): Promise<ApiAudioDevice[]> {
-        const response = await fetch(this.apiUrl);
+        const response = await fetch(this.internalBase());
         return await response.json();
     }
 
     private async searchDevices(query: string): Promise<ApiAudioDevice[]> {
         const params = new URLSearchParams();
         params.append('query', query);
-
-        const response = await fetch(`${this.apiUrl}/search?${params}`);
+        const response = await fetch(`${this.internalBase()}/search?${params}`);
         return await response.json();
     }
 
