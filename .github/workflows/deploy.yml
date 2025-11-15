@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Vercel
 
 on:
   push:
@@ -26,6 +26,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 'node'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
 
       - name: Install dependencies
         run: npm install
@@ -95,26 +98,22 @@ jobs:
             const latestCommitDate = '${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}';
             // Write to .env.production file:
             const fs = require('fs');
-            fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
-            // fs.appendFileSync('./.env.production', 'VITE_API_HOSTED_ON=AZURE\n'); // can be GITHUB or AZURE
-            fs.appendFileSync('./.env.production', 'VITE_API_HOSTED_ON=GITHUB\n'); // can be GITHUB or AZURE
-            fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
+            fs.writeFileSync('./.env.production', 'NEXT_PUBLIC_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
+            // fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_HOSTED_ON=AZURE\n'); // can be GITHUB or AZURE
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_HOSTED_ON=GITHUB\n'); // can be GITHUB or AZURE
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_VERSION=' + clientVersion + '\n');
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
             console.log('.env.production file created successfully');
           "
 
-      - name: Build project
-        run: npm run build
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - name: Pull, build and deploy to Vercel
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/Release-')
+        run: |
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Create Release
         run: |

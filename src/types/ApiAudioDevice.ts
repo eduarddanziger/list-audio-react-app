@@ -1,5 +1,5 @@
-import {DeviceFlowType} from "./DeviceFlowType.ts";
-import {DeviceMessageType} from "./DeviceMessageType.ts";
+import {DeviceFlowType} from "./DeviceFlowType";
+import {DeviceMessageType} from "./DeviceMessageType";
 
 export interface ApiAudioDevice {
     pnpId: string;
