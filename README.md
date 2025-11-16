@@ -1,48 +1,75 @@
-# Audio Device Repository Client, React / TypeScript 
+# Audio Device Repository Client, React / TypeScript
 
-Visualizes an audio devices repository using React.
-The respective backend is ASP.Net Core Server.
+Visualizes an audio devices repository using Next.js / React, deployed on Vercel, see
+[Web Frontend](https://list-audio-react-app.vercel.app) (ASP.NET Core server used as backend).
 
-## Latest Release
+## Web Hosting
 
-### The backend starts automatically on-demand:
-- The backend ASP.Net Core Server primary instance is hosted on Azure. The second instance is hosted on GitHub Codespace.
- 
-### Start the client application: [Audio Device Repository Client](https://eduarddanziger.github.io/list-audio-react-app/)
-- The application frontend resides on GitHub Pages
-- Which backend is used depends on the `VITE_API_HOSTED_ON` environment variable (AZURE or CODESPACE).
+### Backend
+- The backend ASP.NET Core Server is hosted on GitHub Codespaces.
+It starts automatically on-demand.
 
+### Frontend
+- The Next.js / React frontend is deployed on Vercel at https://list-audio-react-app.vercel.app, connecting to the ASP.NET Core backend.
+
+*Notes*:
+- *The backend server's second instance is hosted on Azure and has to be manually started*
 
 ## Development Environment
 
-### Start the backend locally:
+### 1. Start the backend locally
 
-- Check out a git repository [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/) and install dotnet tools
+- Check out the backend repo [audio-device-repo-server](https://github.com/eduarddanziger/audio-device-repo-server/) and install .NET tools
+- Start the ASP.NET Core Web API Server:
 
-- Start the ASP.NET Core Web API Server via Terminal using the following command:
-
-```powershell or bash
+```powershell
 cd DeviceRepoAspNetCore
 dotnet run --launch-profile http
 ```
 
-### Start the client application:
-- In the development environment, set the `VITE_API_HOSTED_ON`' and `VITE_API_GITHUB_URL` environment variables
-to `COFDESPACE` and `http://localhost:5027/api`, respectively. *This will allow
-the client application to communicate with the ASP.NET Core Web API Server running locally*
-- Start the static development web server via Terminal:
+### 2. Start the frontend locally (Next.js)
 
-```powershell or bash
-# bash:
-VITE_API_HOSTED_ON=CODESPACE
-VITE_API_GITHUB_URL=http://localhost:5027/api
-# powershell:
-$env:VITE_API_HOSTED_ON="CODESPACE"
-$env:VITE_API_GITHUB_URL="http://localhost:5027/api"
+Configure environment variables so the frontend points to your local backend.
+You can edit `.env.development` file or set the environment variables directly: 
 
+- PowerShell
+
+```powershell
+$env:NEXT_PUBLIC_API_GITHUB_URL = "http://localhost:5027/api"
+```
+
+- cmd.exe
+
+```bat
+set NEXT_PUBLIC_API_GITHUB_URL=http://localhost:5027/api
+```
+
+Then run the dev server:
+
+```bash
 npm run dev
 ```
 
-- Open a browser and navigate to [https://localhost:5173/](https://localhost:5173/)
+Open a browser at http://localhost:3000.
 
+*Notes*:
+- *The app also supports Azure as a target by setting `NEXT_PUBLIC_API_HOSTED_ON=AZURE` and providing `NEXT_PUBLIC_API_AZURE_URL`, see `.env.development` file*.
+- *The values can be plain URLs or encrypted strings (the app will attempt to decrypt and fall back to plaintext if decryption fails)*.
 
+## Deployment
+
+- Build for production:
+
+```bash
+npm run build
+```
+
+- Start the production server:
+
+```bash
+npm start
+```
+
+## Changelog (tooling)
+- Migrated from a Vite-based SPA to Next.js (App Router).
+- Removed Vite-specific files and updated imports and configuration accordingly.

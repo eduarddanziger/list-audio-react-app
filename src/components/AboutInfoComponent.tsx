@@ -1,15 +1,17 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Typography, Box, Container } from '@mui/material';
 import DevicesIcon from '@mui/icons-material/Devices';
 import DnsIcon from '@mui/icons-material/Dns';
 import PersonIcon from '@mui/icons-material/Person';
-import { getInfoApiUrl } from '../utils/ApiUrls.ts';
+import { getInfoApiUrl } from '../utils/ApiUrls';
 
 const AboutInfoComponent = () => {
-    const envClientVersion = import.meta.env.VITE_CLIENT_VERSION;
+    const envClientVersion = process.env.NEXT_PUBLIC_CLIENT_VERSION;
     const clientVersion = envClientVersion && envClientVersion !== '' ? envClientVersion : 'unknown-version';
 
-    const envClientCodeDate = import.meta.env.VITE_CLIENT_LATEST_COMMIT_DATE;
+    const envClientCodeDate = process.env.NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE;
     const clientCodeDate = envClientCodeDate && envClientCodeDate !== '' ? envClientCodeDate : 'unknown-date';
 
     const serverInfoApiUrl = getInfoApiUrl();
