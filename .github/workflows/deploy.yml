@@ -103,6 +103,10 @@ jobs:
             fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_VERSION=' + clientVersion + '\n');
             fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
             console.log('.env.production file created successfully');
+            const content = fs.readFileSync('./.env.production', 'utf8');
+            console.log('----- .env.production (raw) -----');
+            console.log(content);
+            console.log('---------------------------------');
           "
 
       - name: Pull, build and deploy to Vercel
