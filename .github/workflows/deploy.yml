@@ -115,8 +115,14 @@ jobs:
           vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
           vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Create Release
+      - name: Create or update Release
         run: |
           VERS=${{ steps.get_version.outputs.VERSION }}
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-          gh release create "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          if gh release view "$VERS" > /dev/null 2>&1; then
+            echo "Release $VERS already exists, updating..."
+            gh release edit "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          else
+            echo "Creating new release $VERS..."
+            gh release create "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          fi
