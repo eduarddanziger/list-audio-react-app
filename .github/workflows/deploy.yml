@@ -111,6 +111,13 @@ jobs:
 
       - name: Pull, build and deploy to Vercel
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/Release-')
+        env:
+          NEXT_PUBLIC_UNIVERSAL_PAT: ${{ secrets.UNIVERSAL_PAT }}
+          NEXT_PUBLIC_API_GITHUB_URL: ${{ secrets.AUDIO_API_GITHUB_URL }}
+          NEXT_PUBLIC_API_AZURE_URL: ${{ secrets.AUDIO_API_AZURE_URL }}
+          NEXT_PUBLIC_API_HOSTED_ON: GITHUB
+          NEXT_PUBLIC_CLIENT_VERSION: ${{ steps.get_version.outputs.VERSION }}
+          NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE: ${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}
         run: |
           npm install -g vercel@latest
           vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
