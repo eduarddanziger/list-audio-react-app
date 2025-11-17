@@ -68,49 +68,15 @@ jobs:
           echo "LATEST_COMMIT_DATE=$LATEST_COMMIT_DATE" >> $GITHUB_OUTPUT
           echo "Latest commit date: $LATEST_COMMIT_DATE"    
 
-      - name: Generate .env.production file
-        run: |
-          node -e "
-            const CryptoJS = require('crypto-js');
-            const encryptionKey = '32-characters-long-secure-key-12';
-            //
-            // read and encrypt secrets:
-            const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
-            if (!tokenSecret) {
-               throw new Error('UNIVERSAL_PAT secret is empty or undefined');
-            }
-            const encryptedTokenSecret = CryptoJS.AES.encrypt(tokenSecret, encryptionKey).toString();
-            const githubUrlSecret = '${{ secrets.AUDIO_API_GITHUB_URL }}';
-            if (!githubUrlSecret) {
-               throw new Error('AUDIO_API_GITHUB_URL secret is empty or undefined');
-            }
-            const encryptedGithubUrlSecret = CryptoJS.AES.encrypt(githubUrlSecret, encryptionKey).toString();
-            const azureUrlSecret = '${{ secrets.AUDIO_API_AZURE_URL }}';
-            if (!azureUrlSecret) {
-               throw new Error('AUDIO_API_AZURE_URL secret is empty or undefined');
-            }
-            const encryptedAzureUrlSecret = CryptoJS.AES.encrypt(azureUrlSecret, encryptionKey).toString();
-            // read version and latest commit date:
-            const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
-            const latestCommitDate = '${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}';
-            // Write to .env.production file:
-            const fs = require('fs');
-            fs.writeFileSync('./.env.production', 'NEXT_PUBLIC_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
-            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
-            // fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_HOSTED_ON=AZURE\n'); // can be GITHUB or AZURE
-            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_HOSTED_ON=GITHUB\n'); // can be GITHUB or AZURE
-            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_VERSION=' + clientVersion + '\n');
-            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
-            console.log('.env.production file created successfully');
-            const content = fs.readFileSync('./.env.production', 'utf8');
-            console.log('----- .env.production (raw) -----');
-            console.log(content);
-            console.log('---------------------------------');
-          "
-
       - name: Pull, build and deploy to Vercel
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/Release-')
+        env:
+          NEXT_PUBLIC_UNIVERSAL_PAT: ${{ secrets.UNIVERSAL_PAT }}
+          NEXT_PUBLIC_API_GITHUB_URL: ${{ secrets.AUDIO_API_GITHUB_URL }}
+          NEXT_PUBLIC_API_AZURE_URL: ${{ secrets.AUDIO_API_AZURE_URL }}
+          NEXT_PUBLIC_API_HOSTED_ON: GITHUB
+          NEXT_PUBLIC_CLIENT_VERSION: ${{ steps.get_version.outputs.VERSION }}
+          NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE: ${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}
         run: |
           npm install -g vercel@latest
           vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
