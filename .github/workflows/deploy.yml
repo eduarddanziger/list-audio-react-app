@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Vercel
 
 on:
   push:
@@ -6,6 +6,8 @@ on:
       - main
     tags:
       - 'Release-*'
+
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -45,76 +47,84 @@ jobs:
           # Get the distance since the latest tag
           DISTANCE=$(git rev-list --count "$LATEST_TAG"..HEAD)
           echo "DISTANCE: $DISTANCE"
-          # Append -SP<distance> if distance is greater than 0
+          # Append -RC<distance> if distance is greater than 0
           if [ "$DISTANCE" -gt 0 ]; then
             # Increment the third number
             VERSION_NUMBER=$(echo "$VERSION_NUMBER" | awk -F. -v OFS=. '{$3++; print}')
-            # Add SP info
+            # Add RC info
             DISTANCE=$(printf "%03d" "$DISTANCE")
-            VERSION="$VERSION_NUMBER-SP$DISTANCE"
+            VERSION="$VERSION_NUMBER-RC$DISTANCE"
           else
             VERSION="$VERSION_NUMBER"
           fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Using version: $VERSION"
 
-      - name: Build project
-        run: npm run build
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
+      - name: Get latest check-in time from Git
+        id: get_latest_commit_date
+        run: |
+          # Get the latest commit date in ISO 8601 format
+          LATEST_COMMIT_DATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%dT%H:%M:%S%z')
+          echo "LATEST_COMMIT_DATE=$LATEST_COMMIT_DATE" >> $GITHUB_OUTPUT
+          echo "Latest commit date: $LATEST_COMMIT_DATE"    
 
-      - name: Generate .env.production file in build directory
+      - name: Generate .env.production file
         run: |
           node -e "
             const CryptoJS = require('crypto-js');
-            const secret = '${{ secrets.UNIVERSAL_PAT }}';
             const encryptionKey = '32-characters-long-secure-key-12';
-            if (!secret) {
-               throw new Error('Secret is empty or undefined');
+            //
+            // read and encrypt secrets:
+            const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
+            if (!tokenSecret) {
+               throw new Error('UNIVERSAL_PAT secret is empty or undefined');
             }
-            const encryptedSecret = CryptoJS.AES.encrypt(secret, encryptionKey).toString();
-            if (typeof encryptedSecret !== 'string') {
-                throw new Error('Encryption failed: Result is not a string');
+            const encryptedTokenSecret = CryptoJS.AES.encrypt(tokenSecret, encryptionKey).toString();
+            const githubUrlSecret = '${{ secrets.AUDIO_API_GITHUB_URL }}';
+            if (!githubUrlSecret) {
+               throw new Error('AUDIO_API_GITHUB_URL secret is empty or undefined');
             }
-            require('fs').writeFileSync('./dist/.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedSecret);
+            const encryptedGithubUrlSecret = CryptoJS.AES.encrypt(githubUrlSecret, encryptionKey).toString();
+            const azureUrlSecret = '${{ secrets.AUDIO_API_AZURE_URL }}';
+            if (!azureUrlSecret) {
+               throw new Error('AUDIO_API_AZURE_URL secret is empty or undefined');
+            }
+            const encryptedAzureUrlSecret = CryptoJS.AES.encrypt(azureUrlSecret, encryptionKey).toString();
+            // read version and latest commit date:
+            const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
+            const latestCommitDate = '${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}';
+            // Write to .env.production file:
+            const fs = require('fs');
+            fs.writeFileSync('./.env.production', 'NEXT_PUBLIC_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
+            // fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_HOSTED_ON=AZURE\n'); // can be GITHUB or AZURE
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_API_HOSTED_ON=GITHUB\n'); // can be GITHUB or AZURE
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_VERSION=' + clientVersion + '\n');
+            fs.appendFileSync('./.env.production', 'NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
             console.log('.env.production file created successfully');
+            const content = fs.readFileSync('./.env.production', 'utf8');
+            console.log('----- .env.production (raw) -----');
+            console.log(content);
+            console.log('---------------------------------');
           "
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-
-      - name: Start ASP.NET Core Service on Workspace
+      - name: Pull, build and deploy to Vercel
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/Release-')
         run: |
-          PAT=${{ secrets.UNIVERSAL_PAT }}
-          CS_DISPLAY_NAME="CodeSpaceMain"
-          OWNER="eduarddanziger"          # Replace with your GitHub username or organization name
-          REPO="list-audio-react-app"     # Replace with your repository name (if applicable)
-          GITHUB_API_URL="https://api.github.com"
-          # Headers for API requests
-          HEADERS=(
-              "-H" "Authorization: token $PAT"
-              "-H" "Accept: application/vnd.github+json"
-          )
-          echo "Try getting codespaces..."
-          INFO_URL="$GITHUB_API_URL/user/codespaces"
-          RESPONSE=$(curl -s "${HEADERS[@]}" "$INFO_URL")
-          # Check if the response contains Codespaces
-          if echo "$RESPONSE" | jq -e '.codespaces == null or .codespaces == []' > /dev/null; then
-              echo "No codespaces found."
-              exit 1
-          fi
-          echo ".. Got codespaces. Try getting codespace name on display name..."
-          CS_NAME=$(echo "$RESPONSE" | jq -r --arg NAME "$CS_DISPLAY_NAME" '.codespaces[] | select(.display_name == $NAME) | .name')
-          echo ".. Got codespaces name: $CS_NAME. Try rebuilding codespace..."
-          START_URL="$GITHUB_API_URL/user/codespaces/$CS_NAME/rebuild"
-          curl -X POST "${HEADERS[@]}" "$START_URL"
-          echo "...Codespace rebuilded"
+          npm install -g vercel@latest
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Create Release
+      - name: Create or update Release
         run: |
           VERS=${{ steps.get_version.outputs.VERSION }}
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-          gh release create "$VERS" --title "Audio Device Manager $VERS" --notes "Release of Audio Device Manager $VERS"
+          if gh release view "$VERS" > /dev/null 2>&1; then
+            echo "Release $VERS already exists, updating..."
+            gh release edit "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          else
+            echo "Creating new release $VERS..."
+            gh release create "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          fi

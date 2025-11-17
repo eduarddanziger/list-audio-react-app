@@ -44,10 +44,15 @@ node_modules
 dist
 dist-ssr
 *.local
+.next
+.vercel
+out
+.env.production
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/launch.json
 .DS_Store
 *.suo
 *.ntvs*
@@ -63,8 +68,3 @@ dist-ssr
 !.idea/inspectionProfiles/
 
 /public/version.json
-
-**/wwwroot/lib/*
-**/.vs/*
-**/nohup.out
-**/.env
