@@ -1,16 +1,16 @@
-# Audio Device Repository Client, React / TypeScript
+# Audio Device Repository Client (React / TypeScript / Next.js)
 
 Visualizes an audio devices repository using Next.js / React, deployed on Vercel,
 [https://list-audio-react-app.vercel.app](https://list-audio-react-app.vercel.app). The backend is a ASP.Net Core Server with RESTful API.
 
 ## Web Hosting
 
-### Backend
-- The backend ASP.NET Core Server is hosted on GitHub Codespaces.
-It starts automatically on-demand.
-
 ### Frontend
 - The Next.js / React frontend is deployed on Vercel at https://list-audio-react-app.vercel.app, connecting to the ASP.NET Core backend.
+
+### Backend
+- The backend ASP.NET Core Server is hosted on GitHub Codespaces.
+  It starts automatically on-demand.
 
 *Notes*:
 - *The backend server's second instance is hosted on Azure and has to be manually started*
@@ -70,6 +70,6 @@ npm run build
 npm start
 ```
 
-## Changelog (tooling)
+## Changelog
 - Migrated from a Vite-based SPA to Next.js (App Router).
-- Removed Vite-specific files and updated imports and configuration accordingly.
+- Fetching code moved to the Next.js Server Components (RCS)
