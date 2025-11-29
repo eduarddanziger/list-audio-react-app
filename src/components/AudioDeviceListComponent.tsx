@@ -1,12 +1,14 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { AudioDeviceFetchService } from '../services/AudioDeviceFetchService.ts';
 import { AudioDevice } from '../types/AudioDevice';
 import AudioDeviceList from './AudioDeviceList';
 import {Box, Alert, Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import LoadingComponent from './LoadingComponent';
-import { getAudioDevicesApiUrl } from '../utils/ApiUrls.ts';
+import { getAudioDevicesApiUrl } from '../utils/ApiUrls';
+import { AudioDeviceFetchService } from '../services/AudioDeviceFetchService';
 
 const AudioDeviceListComponent: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
@@ -26,38 +28,43 @@ const AudioDeviceListComponent: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        let cancelled = false;
+
         const service = new AudioDeviceFetchService(
             deviceApiUrl,
-            ({ progress, error }) => {
-                setProgress(progress);
-                setError(error);
+            ({ progress: p, error: e }) => {
+                if (!cancelled) {
+                    setProgress(p);
+                    setError(e);
+                }
             },
-            translate
+            (key: string) => translate(key)
         );
 
-        const fetchData = async (searchQuery: string = '') => {
+        const run = async (query: string) => {
             setLoading(true);
-            setProgress(3);
-
+            setError(null);
             try {
-                const audioDeviceInstances = searchQuery
-                    ? await service.searchAudioDevices(searchQuery)
-                    : await service.fetchAudioDevices();
+                console.info(`Starting query, next.js server part: ${query}`);
 
-                setAudioDevices(audioDeviceInstances);
+                const fetchFn = query
+                    ? service.searchAudioDevices.bind(service)
+                    : service.fetchAudioDevices.bind(service);
+                const devices = await fetchFn(query);
+                if (!cancelled) setAudioDevices(devices);
             } catch (err) {
-                setError(err instanceof Error ? err.message : String(err));
+                if (!cancelled) setError(err instanceof Error ? err.message : String(err));
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
         };
 
-        fetchData(searchQuery).catch(console.error);
-    }, [translate, deviceApiUrl, searchQuery]);
+        console.info(`Starting query, client part: ${searchQuery}`);
+        void run(searchQuery);
+        return () => { cancelled = true; };
+    }, [searchQuery, deviceApiUrl, translate]);
 
-    const handleSearch = (query: string) => {
-        setSearchQuery(query);
-    };
+    const handleSearch = (query: string) => setSearchQuery(query);
 
     return (
         <Box sx={{
@@ -89,7 +96,7 @@ const AudioDeviceListComponent: React.FC = () => {
                         }}
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
-                            List of collected audio devices
+                            About a list of collected audio devices
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails
@@ -102,7 +109,7 @@ const AudioDeviceListComponent: React.FC = () => {
                     >
                         <Typography sx={{ fontSize: 'inherit' }}>
                             This repository shows a list of audio devices that were collected on connected hosts.<br />
-                            The application is built using React (TypeScript + Vite).<br />
+                            The application is built using React (Next.js + TypeScript).<br />
                             The server part is implemented as ASP.Net Core Web API with MongoDB as a database.<br />
                             NOTE: Initializing could delay due to the infrastructure starting process.
                         </Typography>
@@ -110,19 +117,10 @@ const AudioDeviceListComponent: React.FC = () => {
                 </Accordion>
                 {loading ? (
                     <LoadingComponent progress={progress} error={error} />
+                ) : error ? (
+                    <Alert severity="info" sx={{ mt: 1 }}>{error}</Alert>
                 ) : (
-                    <>
-                        {error ? (
-                            <Alert severity="info" sx={{ mt: 1 }}>
-                                {error}
-                            </Alert>
-                        ) : (
-                            <AudioDeviceList
-                                audioDevices={audioDevices}
-                                onSearch={handleSearch}
-                            />
-                        )}
-                    </>
+                    <AudioDeviceList audioDevices={audioDevices} onSearch={handleSearch} />
                 )}
             </Box>
         </Box>

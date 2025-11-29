@@ -11,7 +11,13 @@ interface Codespace {
 
 export const startCodespace = async (): Promise<void> => {
     try {
-        const encryptedSecret = import.meta.env.VITE_UNIVERSAL_PAT;
+        const encryptedSecret = process.env.NEXT_PUBLIC_UNIVERSAL_PAT;
+
+        if (!encryptedSecret) {
+            console.error('NEXT_PUBLIC_UNIVERSAL_PAT is not defined');
+            return;
+        }
+
         const bytes = CryptoJS.AES.decrypt(encryptedSecret, '32-characters-long-secure-key-12');
 
         let universalPat: string;

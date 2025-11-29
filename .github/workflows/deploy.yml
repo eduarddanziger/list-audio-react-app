@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Vercel
 
 on:
   push:
@@ -68,55 +68,28 @@ jobs:
           echo "LATEST_COMMIT_DATE=$LATEST_COMMIT_DATE" >> $GITHUB_OUTPUT
           echo "Latest commit date: $LATEST_COMMIT_DATE"    
 
-      - name: Generate .env.production file
-        run: |
-          node -e "
-            const CryptoJS = require('crypto-js');
-            const encryptionKey = '32-characters-long-secure-key-12';
-            //
-            // read and encrypt secrets:
-            const tokenSecret = '${{ secrets.UNIVERSAL_PAT }}';
-            if (!tokenSecret) {
-               throw new Error('UNIVERSAL_PAT secret is empty or undefined');
-            }
-            const encryptedTokenSecret = CryptoJS.AES.encrypt(tokenSecret, encryptionKey).toString();
-            const githubUrlSecret = '${{ secrets.AUDIO_API_GITHUB_URL }}';
-            if (!githubUrlSecret) {
-               throw new Error('AUDIO_API_GITHUB_URL secret is empty or undefined');
-            }
-            const encryptedGithubUrlSecret = CryptoJS.AES.encrypt(githubUrlSecret, encryptionKey).toString();
-            const azureUrlSecret = '${{ secrets.AUDIO_API_AZURE_URL }}';
-            if (!azureUrlSecret) {
-               throw new Error('AUDIO_API_AZURE_URL secret is empty or undefined');
-            }
-            const encryptedAzureUrlSecret = CryptoJS.AES.encrypt(azureUrlSecret, encryptionKey).toString();
-            // read version and latest commit date:
-            const clientVersion = '${{ steps.get_version.outputs.VERSION }}';
-            const latestCommitDate = '${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}';
-            // Write to .env.production file:
-            const fs = require('fs');
-            fs.writeFileSync('./.env.production', 'VITE_UNIVERSAL_PAT=' + encryptedTokenSecret + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_API_GITHUB_URL=' + encryptedGithubUrlSecret + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_API_AZURE_URL=' + encryptedAzureUrlSecret + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_API_HOSTED_ON=AZURE\n'); // can be GITHUB or AZURE
-            fs.appendFileSync('./.env.production', 'VITE_CLIENT_VERSION=' + clientVersion + '\n');
-            fs.appendFileSync('./.env.production', 'VITE_CLIENT_LATEST_COMMIT_DATE=' + latestCommitDate + '\n');
-            console.log('.env.production file created successfully');
-          "
-
-      - name: Build project
-        run: npm run build
+      - name: Pull, build and deploy to Vercel
         env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
+          NEXT_PUBLIC_UNIVERSAL_PAT: ${{ secrets.UNIVERSAL_PAT }}
+          NEXT_PUBLIC_API_GITHUB_URL: ${{ secrets.AUDIO_API_GITHUB_URL }}
+          NEXT_PUBLIC_API_AZURE_URL: ${{ secrets.AUDIO_API_AZURE_URL }}
+          NEXT_PUBLIC_API_HOSTED_ON: GITHUB
+          NEXT_PUBLIC_CLIENT_VERSION: ${{ steps.get_version.outputs.VERSION }}
+          NEXT_PUBLIC_CLIENT_LATEST_COMMIT_DATE: ${{ steps.get_latest_commit_date.outputs.LATEST_COMMIT_DATE }}
+        run: |
+          npm install -g vercel@latest
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-
-      - name: Create Release
+      - name: Create or update Release
         run: |
           VERS=${{ steps.get_version.outputs.VERSION }}
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-          gh release create "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          if gh release view "$VERS" > /dev/null 2>&1; then
+            echo "Release $VERS already exists, updating..."
+            gh release edit "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          else
+            echo "Creating new release $VERS..."
+            gh release create "$VERS" --title "AudioDeviceRepoClient $VERS" --notes "Release of Audio Device Repository Client $VERS"
+          fi

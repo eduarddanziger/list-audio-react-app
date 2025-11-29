@@ -20,7 +20,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {accordionSummaryStyle} from "../styles/accordionStyles.ts";
+import {accordionSummaryStyle} from "../styles/accordionStyles";
 
 interface SortSearchAccordionProps {
     clearSearch: () => void;
