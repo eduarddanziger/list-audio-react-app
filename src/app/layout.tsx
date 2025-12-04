@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   other: {
     'color-scheme': 'dark light',
   },
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default async function RootLayout({
