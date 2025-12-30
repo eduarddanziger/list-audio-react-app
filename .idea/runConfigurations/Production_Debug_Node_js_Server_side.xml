@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Production Debug Node.js Server-side" type="NodeJSConfigurationType" application-parameters="start" path-to-js-file="node_modules/next/dist/bin/next" working-dir="$PROJECT_DIR$">
+    <envs>
+      <env name="NODE_ENV" value="production" />
+    </envs>
+    <EXTENSION ID="com.intellij.javascript.debugger.execution.StartBrowserRunConfigurationExtension">
+      <browser with-js-debugger="true" />
+    </EXTENSION>
+    <method v="2" />
+  </configuration>
+</component>
