@@ -29,16 +29,31 @@ export class AudioDeviceFetchService {
         return '/api/audio-devices';
     }
 
+    // Minimal shared helper to fetch, check status, parse JSON and ensure it's an array
+    private async fetchDevicesFromUrl(url: string, context: string): Promise<ApiAudioDevice[]> {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Failed to ${context}: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error(`Unexpected ${context} response shape: expected array`);
+        }
+
+        return data as ApiAudioDevice[];
+    }
+
     private async fetchDevices(): Promise<ApiAudioDevice[]> {
-        const response = await fetch(this.internalBase());
-        return await response.json();
+        return this.fetchDevicesFromUrl(this.internalBase(), 'fetch devices');
     }
 
     private async searchDevices(query: string): Promise<ApiAudioDevice[]> {
         const params = new URLSearchParams();
         params.append('query', query);
-        const response = await fetch(`${this.internalBase()}/search?${params}`);
-        return await response.json();
+        return this.fetchDevicesFromUrl(`${this.internalBase()}/search?${params}`, 'search devices');
     }
 
     private handleFetchErrorNoAttempts(err: unknown): void {
