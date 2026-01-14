@@ -6,6 +6,7 @@ import DevicesIcon from '@mui/icons-material/Devices';
 import DnsIcon from '@mui/icons-material/Dns';
 import PersonIcon from '@mui/icons-material/Person';
 import { getInfoApiUrl } from '../utils/ApiUrls';
+import nextPackage from 'next/package.json';
 
 const AboutInfoComponent = () => {
     const envClientVersion = process.env.NEXT_PUBLIC_CLIENT_VERSION;
@@ -32,11 +33,13 @@ const AboutInfoComponent = () => {
                 setServerRuntime(data.runtime || 'unknown-runtime');
             })
             .catch(() => {
-                setServerVersion('version unavailable');
-                setServerCodeDate('date unavailable');
-                setServerRuntime('runtime description unavailable');
+                setServerVersion('version (yet) unavailable');
+                setServerCodeDate('date (yet) unavailable');
+                setServerRuntime('runtime description (yet) unavailable');
             });
     }, [serverInfoApiUrl]);
+
+    const nextJsVersion = nextPackage.version;
 
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 1, paddingTop: 1 }}>
@@ -44,13 +47,13 @@ const AboutInfoComponent = () => {
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
                     <DevicesIcon fontSize={"small"} sx={{ marginRight: 1 }} />
                     <Typography variant="body1" sx={{lineHeight: '1.2rem' }}>
-                        Frontend: {clientVersion}, {clientCodeDate}
+                        Frontend: {clientVersion}, {clientCodeDate}. Using next.js {nextJsVersion})
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>
                     <DnsIcon fontSize={"small"} sx={{ marginRight: 1 }} />
                     <Typography variant="body1" sx={{lineHeight: '1.2rem' }}>
-                        Backend: {serverVersion}, {serverCodeDate}; Runtime: {serverRuntime}
+                        Backend: {serverVersion}, {serverCodeDate}. Runtime: {serverRuntime}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 2 }}>

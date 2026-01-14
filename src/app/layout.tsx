@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Providers from './Providers';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
+import React from "react";
 
 export const metadata: Metadata = {
   title: 'Audio Device Repository',
