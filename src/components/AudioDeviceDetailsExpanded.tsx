@@ -23,9 +23,10 @@ import ConfirmDeleteDialog from './ConfirmDeleteDialog';
 interface AudioDeviceDetailsExpandedProps {
     device: AudioDevice;
     onListRefreshRequested?: () => void | Promise<void>;
+    onReExpandRequested?: () => void | Promise<void>;
 }
 
-const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device, onListRefreshRequested}) => {
+const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device, onListRefreshRequested, onReExpandRequested}) => {
 
     const deviceMessageTypeToString
         = (deviceMessageType: DeviceMessageType): string => {
@@ -83,6 +84,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             console.log('Refresh successful:', response.data);
 
             await onListRefreshRequested?.();
+            await onReExpandRequested?.();
         } catch (error) {
             console.error('Error refreshing device:', error);
         }
