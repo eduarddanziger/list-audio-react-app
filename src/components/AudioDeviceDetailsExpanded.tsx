@@ -17,6 +17,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import {getAudioDevicesApiUrl} from '../utils/ApiUrls';
 
+import ConfirmDeleteDialog from './ConfirmDeleteDialog';
+
 
 interface AudioDeviceDetailsExpandedProps {
     device: AudioDevice;
@@ -62,6 +64,8 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
     const [isDeletePending, setIsDeletePending] = React.useState(false);
     const refreshTimeoutRef = React.useRef<number | null>(null);
 
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+
     React.useEffect(() => {
         return () => {
             if (refreshTimeoutRef.current !== null) {
@@ -87,6 +91,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
     const handleDelete = async (deviceKey: string) => {
         if (isDeletePending) return;
 
+        setIsDeleteDialogOpen(false);
         setIsDeletePending(true);
         try {
             const response = await axios.delete(`${getAudioDevicesApiUrl()}/${deviceKey}`);
@@ -96,11 +101,21 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 void Promise.resolve(onListRefreshRequested?.()).finally(() => {
                     setIsDeletePending(false);
                 });
-            }, 2000);
+            }, 500);
         } catch (error) {
             console.error('Error deleting device:', error);
             setIsDeletePending(false);
         }
+    };
+
+    const openDeleteDialog = () => {
+        if (isDeletePending) return;
+        setIsDeleteDialogOpen(true);
+    };
+
+    const closeDeleteDialog = () => {
+        if (isDeletePending) return;
+        setIsDeleteDialogOpen(false);
     };
 
     return (
@@ -167,6 +182,14 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     </Box>
                 }
             </Box>
+            <ConfirmDeleteDialog
+                open={isDeleteDialogOpen}
+                title="Delete device?"
+                description={`This will permanently delete “${device.name}”.`}
+                isPending={isDeletePending}
+                onCancel={closeDeleteDialog}
+                onConfirm={() => handleDelete(device.key)}
+            />
             {
                 <Box
                     sx={{
@@ -193,7 +216,7 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                         <IconButton size="small" disabled={isDeletePending} onClick={() => handleRefresh(device.key)}>
                             <RefreshIcon fontSize="small"/>
                         </IconButton>
-                        <IconButton size="small" disabled={isDeletePending} onClick={() => handleDelete(device.key)}>
+                        <IconButton size="small" disabled={isDeletePending} onClick={openDeleteDialog}>
                             <DeleteIcon fontSize="small"/>
                         </IconButton>
                     </Paper>
