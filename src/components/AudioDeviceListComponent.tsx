@@ -20,6 +20,31 @@ const AudioDeviceListComponent: React.FC = () => {
 
     const deviceApiUrl = getAudioDevicesApiUrl();
 
+    const refetchDevices = React.useCallback(async (queryOverride?: string) => {
+        const query = queryOverride ?? searchQuery;
+
+        const service = new AudioDeviceFetchService(
+            deviceApiUrl,
+            ({ progress: p, error: e }) => {
+                setProgress(p);
+                setError(e);
+            },
+            (key: string) => translate(key)
+        );
+
+        setLoading(true);
+        setError(null);
+        try {
+            const fetchFn = query
+                ? service.searchAudioDevices.bind(service)
+                : service.fetchAudioDevices.bind(service);
+            const devices = await fetchFn(query);
+            setAudioDevices(devices);
+        } finally {
+            setLoading(false);
+        }
+    }, [deviceApiUrl, searchQuery, translate]);
+
     useEffect(() => {
         const savedQuery = localStorage.getItem('appliedSearchQuery');
         if (savedQuery) {
@@ -120,7 +145,7 @@ const AudioDeviceListComponent: React.FC = () => {
                 ) : error ? (
                     <Alert severity="info" sx={{ mt: 1 }}>{error}</Alert>
                 ) : (
-                    <AudioDeviceList audioDevices={audioDevices} onSearch={handleSearch} />
+                    <AudioDeviceList audioDevices={audioDevices} onSearch={handleSearch} onRefreshListRequested={refetchDevices} />
                 )}
             </Box>
         </Box>

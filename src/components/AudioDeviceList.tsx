@@ -27,11 +27,13 @@ import {ellipsisTextStyle, getFlexStylePercent} from "../styles/listStyles";
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
     onSearch: (query: string) => void;
+    onRefreshListRequested?: () => void | Promise<void>;
 }
 
 const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              audioDevices,
-                                                             onSearch
+                                                             onSearch,
+                                                             onRefreshListRequested
                                                          }) => {
     const [sortField, setSortField] = useState<keyof AudioDevice>('updateDate');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
@@ -166,7 +168,7 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 paddingLeft: 1.3
                             }}
                         >
-                            <AudioDeviceDetailsExpanded device={device}/>
+                            <AudioDeviceDetailsExpanded device={device} onListRefreshRequested={onRefreshListRequested}/>
                         </AccordionDetails>
                     </Accordion>
                 ))}

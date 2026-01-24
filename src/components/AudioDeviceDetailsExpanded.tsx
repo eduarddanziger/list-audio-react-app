@@ -20,9 +20,10 @@ import {getAudioDevicesApiUrl} from '../utils/ApiUrls';
 
 interface AudioDeviceDetailsExpandedProps {
     device: AudioDevice;
+    onListRefreshRequested?: () => void | Promise<void>;
 }
 
-const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device}) => {
+const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device, onListRefreshRequested}) => {
 
     const deviceMessageTypeToString
         = (deviceMessageType: DeviceMessageType): string => {
@@ -59,25 +60,25 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
     const theme = useTheme();
 
     const [isDeletePending, setIsDeletePending] = React.useState(false);
-    const reloadTimeoutRef = React.useRef<number | null>(null);
+    const refreshTimeoutRef = React.useRef<number | null>(null);
 
     React.useEffect(() => {
         return () => {
-            if (reloadTimeoutRef.current !== null) {
-                window.clearTimeout(reloadTimeoutRef.current);
-                reloadTimeoutRef.current = null;
+            if (refreshTimeoutRef.current !== null) {
+                window.clearTimeout(refreshTimeoutRef.current);
+                refreshTimeoutRef.current = null;
             }
         };
     }, []);
 
     const handleRefresh = async (deviceKey: string) => {
-        // Deleting implies a pending page refresh; ignore refresh requests.
         if (isDeletePending) return;
 
         try {
             const response = await axios.get(`${getAudioDevicesApiUrl()}/${deviceKey}`);
             console.log('Refresh successful:', response.data);
-            //state updates!
+
+            await onListRefreshRequested?.();
         } catch (error) {
             console.error('Error refreshing device:', error);
         }
@@ -91,8 +92,10 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
             const response = await axios.delete(`${getAudioDevicesApiUrl()}/${deviceKey}`);
             console.log('Delete successful:', response.data);
 
-            reloadTimeoutRef.current = window.setTimeout(() => {
-                window.location.reload();
+            refreshTimeoutRef.current = window.setTimeout(() => {
+                void Promise.resolve(onListRefreshRequested?.()).finally(() => {
+                    setIsDeletePending(false);
+                });
             }, 2000);
         } catch (error) {
             console.error('Error deleting device:', error);
@@ -165,7 +168,6 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                 }
             </Box>
             {
-// Uncomment these if refresh and delete functionality continued
                 <Box
                     sx={{
                         paddingLeft: '0.0rem'
@@ -203,3 +205,4 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
 };
 
 export default AudioDeviceDetailsExpanded;
+
