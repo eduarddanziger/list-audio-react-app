@@ -27,18 +27,27 @@ import {ellipsisTextStyle, getFlexStylePercent} from "../styles/listStyles";
 interface AudioDeviceListProps {
     audioDevices: AudioDevice[];
     onSearch: (query: string) => void;
+    onRefreshListRequested?: () => void | Promise<void>;
+    onExpandRequested: (deviceKey: string | false) => void;
+    expandedKey: string | false;
+    onReExpandRequested?: (deviceKey: string) => void | Promise<void>;
 }
 
 const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                                              audioDevices,
-                                                             onSearch
+                                                             onSearch,
+                                                             onRefreshListRequested,
+                                                             onExpandRequested,
+                                                             expandedKey,
+                                                             onReExpandRequested
                                                          }) => {
     const [sortField, setSortField] = useState<keyof AudioDevice>('updateDate');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [expanded, setExpanded] = useState<string | false>();
+    // Controlled expansion: parent owns expandedKey; we only request changes.
+    const expanded = expandedKey;
 
     const theme = useTheme();
 
@@ -85,7 +94,8 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
     };
 
     const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-        setExpanded(isExpanded ? panel : false);
+        const next = isExpanded ? panel : false;
+        onExpandRequested(next);
     };
 
     return (
@@ -166,7 +176,11 @@ const AudioDeviceList: React.FC<AudioDeviceListProps> = ({
                                 paddingLeft: 1.3
                             }}
                         >
-                            <AudioDeviceDetailsExpanded device={device}/>
+                            <AudioDeviceDetailsExpanded
+                                device={device}
+                                onListRefreshRequested={onRefreshListRequested}
+                                onReExpandRequested={onReExpandRequested ? () => onReExpandRequested(device.key) : undefined}
+                            />
                         </AccordionDetails>
                     </Accordion>
                 ))}

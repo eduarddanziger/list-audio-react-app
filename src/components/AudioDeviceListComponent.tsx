@@ -16,9 +16,51 @@ const AudioDeviceListComponent: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [progress, setProgress] = useState<number>(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const [expandedKey, setExpandedKey] = useState<string | false>(false);
+    const [pendingExpandKey, setPendingExpandKey] = useState<string | null>(null);
     const { t: translate } = useTranslation();
 
     const deviceApiUrl = getAudioDevicesApiUrl();
+
+    const refetchDevices = React.useCallback(async (queryOverride?: string) => {
+        const query = queryOverride ?? searchQuery;
+
+        const service = new AudioDeviceFetchService(
+            deviceApiUrl,
+            ({ progress: p, error: e }) => {
+                setProgress(p);
+                setError(e);
+            },
+            (key: string) => translate(key)
+        );
+
+        setLoading(true);
+        setError(null);
+        try {
+            const fetchFn = query
+                ? service.searchAudioDevices.bind(service)
+                : service.fetchAudioDevices.bind(service);
+            const devices = await fetchFn(query);
+            setAudioDevices(devices);
+
+            if (expandedKey && !devices.some(d => d.key === expandedKey)) {
+                setExpandedKey(false);
+            }
+
+            // If  re-expand requested (after refresh), expand it only if it still exists.
+            if (pendingExpandKey) {
+                setExpandedKey(devices.some(d => d.key === pendingExpandKey) ? pendingExpandKey : false);
+                setPendingExpandKey(null);
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [deviceApiUrl, searchQuery, translate, expandedKey, pendingExpandKey]);
+
+    const requestExpandAfterRefresh = React.useCallback(async (deviceKey: string) => {
+        setPendingExpandKey(deviceKey);
+        await refetchDevices();
+    }, [refetchDevices]);
 
     useEffect(() => {
         const savedQuery = localStorage.getItem('appliedSearchQuery');
@@ -120,7 +162,14 @@ const AudioDeviceListComponent: React.FC = () => {
                 ) : error ? (
                     <Alert severity="info" sx={{ mt: 1 }}>{error}</Alert>
                 ) : (
-                    <AudioDeviceList audioDevices={audioDevices} onSearch={handleSearch} />
+                    <AudioDeviceList
+                        audioDevices={audioDevices}
+                        onSearch={handleSearch}
+                        onRefreshListRequested={refetchDevices}
+                        expandedKey={expandedKey}
+                        onExpandRequested={setExpandedKey}
+                        onReExpandRequested={requestExpandAfterRefresh}
+                    />
                 )}
             </Box>
         </Box>

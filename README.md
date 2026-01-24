@@ -71,5 +71,7 @@ npm start
 ```
 
 ## Changelog
-- Migrated from a Vite-based SPA to Next.js (App Router).
-- Fetching code moved to the Next.js Server Components (RCS)
+- 2026.01 Device removal added 
+- 2025.12 Fetching code moved to the Next.js Server Components (RCS)
+- 2025.12 Migrated from a Vite-based SPA to Next.js (App Router).
+

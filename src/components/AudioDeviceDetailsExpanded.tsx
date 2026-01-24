@@ -10,22 +10,23 @@ import {DeviceFlowType} from "../types/DeviceFlowType";
 import {DeviceMessageType} from "../types/DeviceMessageType";
 import LabelOutlined from '@mui/icons-material/LabelOutlined';
 import Tag from '@mui/icons-material/Tag';
-/*
-// Uncomment these if refresh and delete functionality continued
 import { useTheme} from '@mui/material';
 import { Paper, IconButton} from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import {getAudioDevicesApiUrl} from '../utils/ApiUrls';
-*/
+
+import ConfirmDeleteDialog from './ConfirmDeleteDialog';
 
 
 interface AudioDeviceDetailsExpandedProps {
     device: AudioDevice;
+    onListRefreshRequested?: () => void | Promise<void>;
+    onReExpandRequested?: () => void | Promise<void>;
 }
 
-const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device}) => {
+const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({device, onListRefreshRequested, onReExpandRequested}) => {
 
     const deviceMessageTypeToString
         = (deviceMessageType: DeviceMessageType): string => {
@@ -59,31 +60,65 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         }
     };
 
-/*
-    // Uncomment these if refresh and delete functionality continued
     const theme = useTheme();
 
+    const [isDeletePending, setIsDeletePending] = React.useState(false);
+    const refreshTimeoutRef = React.useRef<number | null>(null);
+
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        return () => {
+            if (refreshTimeoutRef.current !== null) {
+                window.clearTimeout(refreshTimeoutRef.current);
+                refreshTimeoutRef.current = null;
+            }
+        };
+    }, []);
+
     const handleRefresh = async (deviceKey: string) => {
+        if (isDeletePending) return;
+
         try {
             const response = await axios.get(`${getAudioDevicesApiUrl()}/${deviceKey}`);
             console.log('Refresh successful:', response.data);
-            //state updates!
+
+            await onListRefreshRequested?.();
+            await onReExpandRequested?.();
         } catch (error) {
             console.error('Error refreshing device:', error);
         }
     };
 
     const handleDelete = async (deviceKey: string) => {
+        if (isDeletePending) return;
+
+        setIsDeleteDialogOpen(false);
+        setIsDeletePending(true);
         try {
             const response = await axios.delete(`${getAudioDevicesApiUrl()}/${deviceKey}`);
             console.log('Delete successful:', response.data);
-            //state updates!
+
+            refreshTimeoutRef.current = window.setTimeout(() => {
+                void Promise.resolve(onListRefreshRequested?.()).finally(() => {
+                    setIsDeletePending(false);
+                });
+            }, 500);
         } catch (error) {
             console.error('Error deleting device:', error);
+            setIsDeletePending(false);
         }
     };
-*/
 
+    const openDeleteDialog = () => {
+        if (isDeletePending) return;
+        setIsDeleteDialogOpen(true);
+    };
+
+    const closeDeleteDialog = () => {
+        if (isDeletePending) return;
+        setIsDeleteDialogOpen(false);
+    };
 
     return (
         <Box>
@@ -149,42 +184,50 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     </Box>
                 }
             </Box>
-{/*
-// Uncomment these if refresh and delete functionality continued
-            <Box
-                sx={{
-                    paddingLeft: '0.0rem'
-                }}
-            >
-                <Paper
-                    elevation={0}
+            <ConfirmDeleteDialog
+                open={isDeleteDialogOpen}
+                title="Delete device?"
+                description={`This will permanently delete “${device.name}”.`}
+                isPending={isDeletePending}
+                onCancel={closeDeleteDialog}
+                onConfirm={() => handleDelete(device.key)}
+            />
+            {
+                <Box
                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        px: '0.5rem',
-                        py: '0.25rem',
-                        borderRadius: '16px',
-                        width: 'fit-content',
-                        border: `1.6px solid ${theme.palette.divider}`,
-                        transition: 'border-color 0.2s',
-                        cursor: 'pointer',
-                        '&:hover': {
-                            borderColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
-                        },
+                        paddingLeft: '0.0rem'
                     }}
                 >
-                    <IconButton size="small" onClick={() => handleRefresh(device.key)}>
-                        <RefreshIcon fontSize="small"/>
-                    </IconButton>
-                    <IconButton size="small" onClick={() => handleDelete(device.key)}>
-                        <DeleteIcon fontSize="small"/>
-                    </IconButton>
-                </Paper>
-            </Box>
-*/}
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            px: '0.5rem',
+                            py: '0.25rem',
+                            borderRadius: '16px',
+                            width: 'fit-content',
+                            border: `1.6px solid ${theme.palette.divider}`,
+                            transition: 'border-color 0.2s',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                borderColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
+                            },
+                        }}
+                    >
+                        <IconButton size="small" disabled={isDeletePending} onClick={() => handleRefresh(device.key)}>
+                            <RefreshIcon fontSize="small"/>
+                        </IconButton>
+                        <IconButton size="small" disabled={isDeletePending} onClick={openDeleteDialog}>
+                            <DeleteIcon fontSize="small"/>
+                        </IconButton>
+                    </Paper>
+                </Box>
+            }
 
         </Box>
     );
 };
 
 export default AudioDeviceDetailsExpanded;
+
