@@ -10,15 +10,12 @@ import {DeviceFlowType} from "../types/DeviceFlowType";
 import {DeviceMessageType} from "../types/DeviceMessageType";
 import LabelOutlined from '@mui/icons-material/LabelOutlined';
 import Tag from '@mui/icons-material/Tag';
-/*
-// Uncomment these if refresh and delete functionality continued
 import { useTheme} from '@mui/material';
 import { Paper, IconButton} from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import {getAudioDevicesApiUrl} from '../utils/ApiUrls';
-*/
 
 
 interface AudioDeviceDetailsExpandedProps {
@@ -59,11 +56,24 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
         }
     };
 
-/*
-    // Uncomment these if refresh and delete functionality continued
     const theme = useTheme();
 
+    const [isDeletePending, setIsDeletePending] = React.useState(false);
+    const reloadTimeoutRef = React.useRef<number | null>(null);
+
+    React.useEffect(() => {
+        return () => {
+            if (reloadTimeoutRef.current !== null) {
+                window.clearTimeout(reloadTimeoutRef.current);
+                reloadTimeoutRef.current = null;
+            }
+        };
+    }, []);
+
     const handleRefresh = async (deviceKey: string) => {
+        // Deleting implies a pending page refresh; ignore refresh requests.
+        if (isDeletePending) return;
+
         try {
             const response = await axios.get(`${getAudioDevicesApiUrl()}/${deviceKey}`);
             console.log('Refresh successful:', response.data);
@@ -74,16 +84,21 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
     };
 
     const handleDelete = async (deviceKey: string) => {
+        if (isDeletePending) return;
+
+        setIsDeletePending(true);
         try {
             const response = await axios.delete(`${getAudioDevicesApiUrl()}/${deviceKey}`);
             console.log('Delete successful:', response.data);
-            //state updates!
+
+            reloadTimeoutRef.current = window.setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } catch (error) {
             console.error('Error deleting device:', error);
+            setIsDeletePending(false);
         }
     };
-*/
-
 
     return (
         <Box>
@@ -149,39 +164,39 @@ const AudioDeviceDetailsExpanded: React.FC<AudioDeviceDetailsExpandedProps> = ({
                     </Box>
                 }
             </Box>
-{/*
+            {
 // Uncomment these if refresh and delete functionality continued
-            <Box
-                sx={{
-                    paddingLeft: '0.0rem'
-                }}
-            >
-                <Paper
-                    elevation={0}
+                <Box
                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        px: '0.5rem',
-                        py: '0.25rem',
-                        borderRadius: '16px',
-                        width: 'fit-content',
-                        border: `1.6px solid ${theme.palette.divider}`,
-                        transition: 'border-color 0.2s',
-                        cursor: 'pointer',
-                        '&:hover': {
-                            borderColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
-                        },
+                        paddingLeft: '0.0rem'
                     }}
                 >
-                    <IconButton size="small" onClick={() => handleRefresh(device.key)}>
-                        <RefreshIcon fontSize="small"/>
-                    </IconButton>
-                    <IconButton size="small" onClick={() => handleDelete(device.key)}>
-                        <DeleteIcon fontSize="small"/>
-                    </IconButton>
-                </Paper>
-            </Box>
-*/}
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            px: '0.5rem',
+                            py: '0.25rem',
+                            borderRadius: '16px',
+                            width: 'fit-content',
+                            border: `1.6px solid ${theme.palette.divider}`,
+                            transition: 'border-color 0.2s',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                borderColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
+                            },
+                        }}
+                    >
+                        <IconButton size="small" disabled={isDeletePending} onClick={() => handleRefresh(device.key)}>
+                            <RefreshIcon fontSize="small"/>
+                        </IconButton>
+                        <IconButton size="small" disabled={isDeletePending} onClick={() => handleDelete(device.key)}>
+                            <DeleteIcon fontSize="small"/>
+                        </IconButton>
+                    </Paper>
+                </Box>
+            }
 
         </Box>
     );
