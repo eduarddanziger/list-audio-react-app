@@ -14,8 +14,8 @@ profile:
   name: qodana.starter
 
 #Enable inspections
-#include:
-#  - name: <SomeEnabledInspectionId>
+include:
+  - name: CyclomaticComplexityInspection
 
 #Disable inspections
 exclude:
@@ -24,6 +24,7 @@ exclude:
       - ./.next
       - next.config.js
       - next-env.d.ts
+  - name: Eslint
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
